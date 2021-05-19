@@ -72,7 +72,7 @@ Here are some sample PLP queries that configure virtual tables and execute queri
   > FROM evt  
   > GROUP BY EventType, EventTypeName;
 
-![Portable Log Parser console output in markdown text format](documentation/images/PortableLogParser_Console_MarkDown.png "Portable Log Parser console output in markdown text format")    
+![Portable Log Parser console output in markdown text format](https://raw.githubusercontent.com/lizardlabs/logparser/main/Documentation/Images/PortableLogParser_Console_MarkDown.png "Portable Log Parser console output in markdown text format")    
 
 - Counting the GET requests in IIS W3C log:
 
@@ -128,7 +128,7 @@ Example command lines:
   > plogparser.exe -i=EVT -from="System" -select="TimeCreated, Message" -where="EventTypeName='Error'" -orderby="TimeCreated DESC" -limit=100 -o=tui 
 
 
-![Portable Log Parser Text-based user interface - TUI](documentation/images/PortableLogParser_TUI.png "Portable Log Parser Text-based user interface - TUI")
+![Portable Log Parser Text-based user interface - TUI](https://raw.githubusercontent.com/lizardlabs/logparser/main/Documentation/Images/PortableLogParser_TUI.png "Portable Log Parser Text-based user interface - TUI")
 
 ## Available Input Formats
 This is a list of available input format. Input format is set with ***-i=format*** switch. Each format can be configured with additional parameters. More information about configuration parameters can be found in the documentation.
