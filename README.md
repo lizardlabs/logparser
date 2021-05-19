@@ -72,7 +72,7 @@ Here are some sample PLP queries that configure virtual tables and execute queri
   > FROM evt  
   > GROUP BY EventType, EventTypeName;
 
-![Portable Log Parser console output in markdown text format](../Documentation/Images/PortableLogParser_Console_MarkDown.png "Portable Log Parser console output in markdown text format")    
+![Portable Log Parser console output in markdown text format](Documentation/Images/PortableLogParser_Console_MarkDown.png "Portable Log Parser console output in markdown text format")    
 
 - Counting the GET requests in IIS W3C log:
 
@@ -128,26 +128,26 @@ Example command lines:
   > plogparser.exe -i=EVT -from="System" -select="TimeCreated, Message" -where="EventTypeName='Error'" -orderby="TimeCreated DESC" -limit=100 -o=tui 
 
 
-![Portable Log Parser Text-based user interface - TUI](../Documentation/Images/PortableLogParser_TUI.png "Portable Log Parser Text-based user interface - TUI")
+![Portable Log Parser Text-based user interface - TUI](Documentation/Images/PortableLogParser_TUI.png "Portable Log Parser Text-based user interface - TUI")
 
 ## Available Input Formats
 
 This is a list of available input format. Input format is set with ***-i=format*** switch. Each format can be configured with additional parameters. More information about configuration parameters can be found in the documentation.
 
-- [Windows event log reader: -i=EVT](../Documentation/evt_info.md)
-- [Multiline text parser using regular expressions (also supports Grok syntax): -i=RegEx](../Documentation/regex_info.md)
-- [Comma-separated values: -i=CSV](../Documentation/csv_info.md)
-- [Tab-separated values: -i=TSV](../Documentation/tsv_info.md)
-- [W3C format reader (IIS, FTP, Apache, ISA, Exchange, SMTP, MediaSvc, etc.): -i=W3C](../Documentation/w3c_info.md)
-- [Text line input format: -i=TextLine](../Documentation/textline_info.md)
-- [Text word input format: -i=TextWord](../Documentation/textword_info.md)
-- [Dates table: -i=Delimiter](../Documentation/delimiter_info.md)
-- [Log4j/log4net XML Format: -i=log4jXML](../Documentation/log4jxml_info.md)
-- [JSON formated log: -i=JsonLog](../Documentation/jsonlog_info.md)
-- [Numbers table: -i=Numbers](../Documentation/numbers_info.md)
-- [Media files information: -i=Dates](../Documentation/dates_info.md)
-- [Delimiter-separated values: -i=MediaFiles](../Documentation/mediafiles_info.md)
-- [Custom plugin built with Microsoft .Net: -i=CustomPlugin](../Documentation/customplugin_info.md)
+- [Windows event log reader: -i=EVT](Documentation/evt_info.md)
+- [Multiline text parser using regular expressions (also supports Grok syntax): -i=RegEx](Documentation/regex_info.md)
+- [Comma-separated values: -i=CSV](Documentation/csv_info.md)
+- [Tab-separated values: -i=TSV](Documentation/tsv_info.md)
+- [W3C format reader (IIS, FTP, Apache, ISA, Exchange, SMTP, MediaSvc, etc.): -i=W3C](Documentation/w3c_info.md)
+- [Text line input format: -i=TextLine](Documentation/textline_info.md)
+- [Text word input format: -i=TextWord](Documentation/textword_info.md)
+- [Dates table: -i=Delimiter](Documentation/delimiter_info.md)
+- [Log4j/log4net XML Format: -i=log4jXML](Documentation/log4jxml_info.md)
+- [JSON formated log: -i=JsonLog](Documentation/jsonlog_info.md)
+- [Numbers table: -i=Numbers](Documentation/numbers_info.md)
+- [Media files information: -i=Dates](Documentation/dates_info.md)
+- [Delimiter-separated values: -i=MediaFiles](Documentation/mediafiles_info.md)
+- [Custom plugin built with Microsoft .Net: -i=CustomPlugin](Documentation/customplugin_info.md)
 
 ## Available Output types and formats
 
