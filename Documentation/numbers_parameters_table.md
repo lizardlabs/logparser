@@ -10,26 +10,12 @@ ON|OFF or 1|0. Date-time values are ISO formatted date or date time strings (Ex.
 by double quotes. When there is a list of available values, the parameter can be one of the listed options.
 Some parameters are grouped in separate categories or prefixed with a name for easier reading.
 
- - Culture
-
-	* Default value: -Culture="en-US"
-	* Description: Type: string value.
-
- - From
-
-	* Default value: -From=1
-	* Description: Type: integer number.
-
- - Step
-
-	* Default value: -Step=1
-	* Description: Type: integer number.
-
- - To
-
-	* Default value: -To=10000
-	* Description: Type: integer number.
-
+ Parameter    | Type           | Default Value | Description | Category
+ ------------ | -------------- | ------------- | ----------- | -------- 
+ -**Culture** | string value   | "en-US"       |             |         
+ -**From**    | integer number | 1             |             |         
+ -**Step**    | integer number | 1             |             |         
+ -**To**      | integer number | 10000         |             |         
 
 ------------------------------------------------------------
 

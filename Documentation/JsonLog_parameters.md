@@ -1,5 +1,7 @@
 # JSON formated log: -i=JsonLog
 
+[Home](../Readme.md) | [Information](jsonlog_info.md) | [List of parameters](jsonlog_parameters.md) | [Parameters table](jsonlog_parameters_table.md) |  [Default parameter values](jsonlog_parameters_defaults.md)
+
 ## Parameters:
 Parameters for configuring 'JSON formated log'. String values must be enclosed by double quotes when they
 contain spaces and special characters can be escaped with the '\' (backslash). Boolean value can be True|False
@@ -90,7 +92,7 @@ lines). Most users won't need this. *Parameters:*
  - TextReaderOptions.IgnoreLastLines
 
 	* Default value: -TextReaderOptions.IgnoreLastLines=0
-	* Description: Ignore last N lines of each file when reading text stream. Type: string value.
+	* Description: Ignore last N lines of each file when reading text stream. Type: integer number.
 
  - TextReaderOptions.LineSeparator
 
@@ -115,7 +117,7 @@ lines). Most users won't need this. *Parameters:*
  - TextReaderOptions.SkipFirstLines
 
 	* Default value: -TextReaderOptions.SkipFirstLines=0
-	* Description: Skip first N lines of each file when reading text stream. Type: string value.
+	* Description: Skip first N lines of each file when reading text stream. Type: integer number.
 
  - TextReaderOptions.StartOfLineComment
 

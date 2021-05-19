@@ -1,5 +1,7 @@
 # W3C format reader (IIS, FTP, Apache, ISA, Exchange, SMTP, MediaSvc, etc.): -i=W3C
 
+[Home](../Readme.md) | [Information](w3c_info.md) | [List of parameters](w3c_parameters.md) | [Parameters table](w3c_parameters_table.md) |  [Default parameter values](w3c_parameters_defaults.md)
+
 ## Parameters:
 Parameters for configuring 'W3C format reader (IIS, FTP, Apache, ISA, Exchange, SMTP, MediaSvc, etc.)'. String
 values must be enclosed by double quotes when they contain spaces and special characters can be escaped with

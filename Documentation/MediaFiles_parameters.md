@@ -1,5 +1,7 @@
 # Delimiter-separated values: -i=MediaFiles
 
+[Home](../Readme.md) | [Information](mediafiles_info.md) | [List of parameters](mediafiles_parameters.md) | [Parameters table](mediafiles_parameters_table.md) |  [Default parameter values](mediafiles_parameters_defaults.md)
+
 ## Parameters:
 Parameters for configuring 'Delimiter-separated values'. String values must be enclosed by double quotes when
 they contain spaces and special characters can be escaped with the '\' (backslash). Boolean value can be

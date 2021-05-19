@@ -10,26 +10,12 @@ True|False or ON|OFF or 1|0. Date-time values are ISO formatted date or date tim
 values enclosed by double quotes. When there is a list of available values, the parameter can be one of the
 listed options. Some parameters are grouped in separate categories or prefixed with a name for easier reading.
 
- - Culture
-
-	* Default value: -Culture="current"
-	* Description: Type: string value.
-
- - DateFrom
-
-	* Default value: -DateFrom=2020-05-19
-	* Description: Type: date-time value.
-
- - DateTo
-
-	* Default value: -DateTo=2021-05-19
-	* Description: Type: date-time value.
-
- - Extended
-
-	* Default value: -Extended=True
-	* Description: Type: boolean value.
-
+ Parameter     | Type            | Default Value | Description | Category
+ ------------- | --------------- | ------------- | ----------- | -------- 
+ -**Culture**  | string value    | "current"     |             |         
+ -**DateFrom** | date-time value | 2020-05-19    |             |         
+ -**DateTo**   | date-time value | 2021-05-19    |             |         
+ -**Extended** | boolean value   | True          |             |         
 
 ------------------------------------------------------------
 

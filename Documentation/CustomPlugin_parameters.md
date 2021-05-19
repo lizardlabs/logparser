@@ -1,5 +1,7 @@
 # Custom plugin built with Microsoft .Net: -i=CustomPlugin
 
+[Home](../Readme.md) | [Information](customplugin_info.md) | [List of parameters](customplugin_parameters.md) | [Parameters table](customplugin_parameters_table.md) |  [Default parameter values](customplugin_parameters_defaults.md)
+
 ## Parameters:
 Parameters for configuring 'Custom plugin built with Microsoft .Net'. String values must be enclosed by double
 quotes when they contain spaces and special characters can be escaped with the '\' (backslash). Boolean value
@@ -27,7 +29,7 @@ easier reading.
 
  - Assemblies
 
-	* Default value: -Assemblies={ "system.dll", "System.Core.dll", "system.xml.dll", "system.data.dll", "System.ServiceModel.dll", "System.xml.Linq.dll", "System.Data.Linq.dll" }
+	* Default value: -Assemblies={ -Assemblies={ "system.dll", "System.Core.dll", "system.xml.dll", "system.data.dll", "System.ServiceModel.dll", "System.xml.Linq.dll", "System.Data.Linq.dll" }
 	* Description: Type: array.
 
  - ClassName
@@ -37,7 +39,7 @@ easier reading.
 
  - Imports
 
-	* Default value: -Imports={ "System", "System.Xml", "System.Data", "System.Collections", "System.Collections.Generic", "System.Linq", "System.Data.Linq", "Microsoft.VisualBasic", "LizardLabs", "LizardLabs.LogParserLizard", "LizardLabs.LogParser.InputFormats" }
+	* Default value: -Imports={ -Imports={ "System", "System.Xml", "System.Data", "System.Collections", "System.Collections.Generic", "System.Linq", "System.Data.Linq", "Microsoft.VisualBasic", "LizardLabs", "LizardLabs.LogParserLizard", "LizardLabs.LogParser.InputFormats" }
 	* Description: Type: array.
 
  - Namespace

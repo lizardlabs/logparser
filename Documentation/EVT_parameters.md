@@ -1,5 +1,7 @@
 # Windows event log reader: -i=EVT
 
+[Home](../Readme.md) | [Information](evt_info.md) | [List of parameters](evt_parameters.md) | [Parameters table](evt_parameters_table.md) |  [Default parameter values](evt_parameters_defaults.md)
+
 ## Parameters:
 Parameters for configuring 'Windows event log reader'. String values must be enclosed by double quotes when
 they contain spaces and special characters can be escaped with the '\' (backslash). Boolean value can be

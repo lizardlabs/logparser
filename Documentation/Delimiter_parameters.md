@@ -1,5 +1,7 @@
 # Dates table: -i=Delimiter
 
+[Home](../Readme.md) | [Information](delimiter_info.md) | [List of parameters](delimiter_parameters.md) | [Parameters table](delimiter_parameters_table.md) |  [Default parameter values](delimiter_parameters_defaults.md)
+
 ## Parameters:
 Parameters for configuring 'Dates table'. String values must be enclosed by double quotes when they contain
 spaces and special characters can be escaped with the '\' (backslash). Boolean value can be True|False or
@@ -127,7 +129,7 @@ lines). Most users won't need this. *Parameters:*
  - TextReaderOptions.IgnoreLastLines
 
 	* Default value: -TextReaderOptions.IgnoreLastLines=0
-	* Description: Ignore last N lines of each file when reading text stream. Type: string value.
+	* Description: Ignore last N lines of each file when reading text stream. Type: integer number.
 
  - TextReaderOptions.LineSeparator
 
@@ -152,7 +154,7 @@ lines). Most users won't need this. *Parameters:*
  - TextReaderOptions.SkipFirstLines
 
 	* Default value: -TextReaderOptions.SkipFirstLines=0
-	* Description: Skip first N lines of each file when reading text stream. Type: string value.
+	* Description: Skip first N lines of each file when reading text stream. Type: integer number.
 
  - TextReaderOptions.StartOfLineComment
 
