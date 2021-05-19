@@ -1,7 +1,7 @@
 # Portable Log Parser
 
 Portable log parser  is a command line tool for Microsoft Windows that will parse various system logs and use SQLite 
-engine to query them. Output the results to the console, file, database, web service, etc. This repository is for documentation, plugins and samples. Developed by [Lizard Labs Software](http://www.lizard-labs.com){:target="_blank"}
+engine to query them. Output the results to the console, file, database, web service, etc. This repository is for documentation, plugins and samples. Developed by [Lizard Labs Software](http://www.lizard-labs.com)
 
 *Note: this project is still in test and development phase. Portable log parser is not available yet for general public. 
 The final version will be released soon. The documentation here may be changed with the final release*
@@ -43,7 +43,7 @@ This is a general syntax of PLP query used to query some data from log files:
 - **from**  is a comma separated list of files or event sources. Accepts wildcards and glob characters (ex. 'c:\logs\*.log, c:\logs\somelog.txt')
 - **input format and parameters** sets the parsing format and properties that will be used to parse the input
 
-Logs are imported trough the [virtual table mechanism of SQLite](https://sqlite.org/vtab.html){:target="_blank"}. ParsingModule, which is 
+Logs are imported trough the [virtual table mechanism of SQLite](https://sqlite.org/vtab.html). ParsingModule, which is 
 built in Portable Log Parser, receives parameters for logs source (ex. path to the log file or files using GLOB syntax) and input format properties that tells the 
 engine how to process records, columns, etc. Multiple virtual tables for same or different input formats can be created in a single query. More details about input format 
 parameters can be found in the PLP documentation.
@@ -52,8 +52,8 @@ parameters can be found in the PLP documentation.
 After configuring the virtual table, SQLLite query language is used to query data. This includes a number of powerful 
 features including filtering, grouping, joins, grouping, set operations (union, except, intersect), window-functions, etc. 
 SQLite querying engine is really powerful and capable to execute very complex queries. Find out more about writing 
-SQLite SELECT queries reading the [official SQLite documentation](https://sqlite.org/windowfunctions.html){:target="_blank"} or 
-various [tutorials](https://www.sqlitetutorial.net/sqlite-select/){:target="_blank"} that can be found all around the Internet.
+SQLite SELECT queries reading the [official SQLite documentation](https://sqlite.org/windowfunctions.html) or 
+various [tutorials](https://www.sqlitetutorial.net/sqlite-select/) that can be found all around the Internet.
 
 
 ### Sample queries
@@ -72,7 +72,7 @@ Here are some sample PLP queries that configure virtual tables and execute queri
   > FROM evt  
   > GROUP BY EventType, EventTypeName;
 
-![Portable Log Parser console output in markdown text format](./documentation/images/PortableLogParser_Console_MarkDown.png "Portable Log Parser console output in markdown text format")    
+![Portable Log Parser console output in markdown text format](documentation/images/PortableLogParser_Console_MarkDown.png "Portable Log Parser console output in markdown text format")    
 
 - Counting the GET requests in IIS W3C log:
 
@@ -128,7 +128,7 @@ Example command lines:
   > plogparser.exe -i=EVT -from="System" -select="TimeCreated, Message" -where="EventTypeName='Error'" -orderby="TimeCreated DESC" -limit=100 -o=tui 
 
 
-![Portable Log Parser Text-based user interface - TUI](./documentation/images/PortableLogParser_TUI.png "Portable Log Parser Text-based user interface - TUI")
+![Portable Log Parser Text-based user interface - TUI](documentation/images/PortableLogParser_TUI.png "Portable Log Parser Text-based user interface - TUI")
 
 ## Available Input Formats
 This is a list of available input format. Input format is set with ***-i=format*** switch. Each format can be configured with additional parameters. More information about configuration parameters can be found in the documentation.
@@ -202,7 +202,7 @@ If you accept EULA, then launch Portable Log Parser. Otherwise delete all files 
 Microsoft Logparser 2.2 is a popular and versatile tool that provides universal query access to text-based data such as log files, 
 XML files and CSV files, as well as key data sources on the Windows operating system such as the Event Log and the Registry. 
 Logparser is loved by the community for its flexibility and performance and still used by many professionals. We even made a 
-GUI for MS Logparser, [Log Parser Lizard](https://lizard-labs.com/log_parser_lizard.aspx){:target="_blank"}, that is downloaded by a hundred of 
+GUI for MS Logparser, [Log Parser Lizard](https://lizard-labs.com/log_parser_lizard.aspx), that is downloaded by a hundred of 
 thousands of users worldwide. You can find more about log parser here () and here()
 
 Unfortunately Microsoft stopped its development a while ago. There are no new features added for years. MS Logparser is a 32 bit application
@@ -231,14 +231,14 @@ You can contribute in the following ways:
 - Which features you are missing in other log parsing tools so we can develop them in PLP and LPL.
 - Creating tutorials and guides.
 - Tweet or blog about how you used PLP in certain situation.
-- Check our software offering at [Lizard Labs Software](http://www.lizard-labs.com){:target="_blank"}. There are pretty good tools there, you might find something useful.
-- For complete log parsing GUI experience take a look at [Log Parser Lizard](https://lizard-labs.com/log_parser_lizard.aspx){:target="_blank"}
+- Check our software offering at [Lizard Labs Software](http://www.lizard-labs.com). There are pretty good tools there, you might find something useful.
+- For complete log parsing GUI experience take a look at [Log Parser Lizard](https://lizard-labs.com/log_parser_lizard.aspx)
 
 We're glad to know you're interested in this project.
 
 
 ## Log parsing with desktop GUI
-To get the best log parsing experience using SQL queries, you can try our [Log Parser Lizard](https://lizard-labs.com/log_parser_lizard.aspx){:target="_blank"} which can also manage and run SQL Server queries against various log formats. To support "Portable Log Parser", you can buy a LPL license.
+To get the best log parsing experience using SQL queries, you can try our [Log Parser Lizard](https://lizard-labs.com/log_parser_lizard.aspx) which can also manage and run SQL Server queries against various log formats. To support "Portable Log Parser", you can buy a LPL license.
 
 ![Log Parser Lizard - GUI](https://lizard-labs.com/images/lpl/Log%20Parser%20Lizard%20screenshot%20animation.gif "Log Parser Lizard")
 
