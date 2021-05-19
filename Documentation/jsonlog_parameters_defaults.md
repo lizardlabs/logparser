@@ -1,6 +1,6 @@
 # JSON formated log: -i=JsonLog
 
-[Home](../Readme.md) | [Information](jsonlog_info.md) | [List of parameters](jsonlog_parameters.md) | [Parameters table](jsonlog_parameters_table.md) |  [Default parameter values](jsonlog_parameters_defaults.md)
+[Home](../README.MD) | [Information](jsonlog_info.md) | [List of parameters](jsonlog_parameters_list.md) | [Parameters table](jsonlog_parameters_table.md) |  [Default parameter values](jsonlog_parameters_defaults.md)
 
 ## Default parameter values:
 

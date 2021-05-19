@@ -1,6 +1,6 @@
 # Dates table: -i=Delimiter
 
-[Home](../Readme.md) | [Information](delimiter_info.md) | [List of parameters](delimiter_parameters.md) | [Parameters table](delimiter_parameters_table.md) |  [Default parameter values](delimiter_parameters_defaults.md)
+[Home](../README.MD) | [Information](delimiter_info.md) | [List of parameters](delimiter_parameters_list.md) | [Parameters table](delimiter_parameters_table.md) |  [Default parameter values](delimiter_parameters_defaults.md)
 
 ## Parameters:
 Parameters for configuring 'Dates table'. String values must be enclosed by double quotes when they contain

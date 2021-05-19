@@ -1,6 +1,6 @@
 # Text word input format: -i=TextWord
 
-[Home](../Readme.md) | [Information](textword_info.md) | [List of parameters](textword_parameters.md) | [Parameters table](textword_parameters_table.md) |  [Default parameter values](textword_parameters_defaults.md)
+[Home](../README.MD) | [Information](textword_info.md) | [List of parameters](textword_parameters_list.md) | [Parameters table](textword_parameters_table.md) |  [Default parameter values](textword_parameters_defaults.md)
 
 ## Default parameter values:
 

@@ -1,14 +1,19 @@
-# Text line input format: -i=TextLine
+# JSON formated log: -i=JsonLog
 
-[Home](../Readme.md) | [Information](textline_info.md) | [List of parameters](textline_parameters.md) | [Parameters table](textline_parameters_table.md) |  [Default parameter values](textline_parameters_defaults.md)
+[Home](../README.MD) | [Information](jsonlog_info.md) | [List of parameters](jsonlog_parameters_list.md) | [Parameters table](jsonlog_parameters_table.md) |  [Default parameter values](jsonlog_parameters_defaults.md)
 
 ## Parameters:
-Parameters for configuring 'Text line input format'. String values must be enclosed by double quotes when they
+Parameters for configuring 'JSON formated log'. String values must be enclosed by double quotes when they
 contain spaces and special characters can be escaped with the '\' (backslash). Boolean value can be True|False
 or ON|OFF or 1|0. Date-time values are ISO formatted date or date time strings (Ex. 2021-05-16 or
 "2021-015-016 12:40:23"). Integer and decimal numbers are written without quotes. Arrays are comma separated
 values enclosed by double quotes. When there is a list of available values, the parameter can be one of the
 listed options. Some parameters are grouped in separate categories or prefixed with a name for easier reading.
+
+ - JsonPropertyToRead
+
+	* Default value: -JsonPropertyToRead=""
+	* Description: Type: string value.
 
 ### Category: Record fields.
 
@@ -21,7 +26,7 @@ listed options. Some parameters are grouped in separate categories or prefixed w
 
  - ExtendedFileds
 
-	* Default value: -ExtendedFileds=False
+	* Default value: -ExtendedFileds=True
 	* Description: Include extended fields like file path, line number, record number, etc. Type:
 	boolean value.
 

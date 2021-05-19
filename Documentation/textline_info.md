@@ -13,8 +13,8 @@ The <from-entity> specified in queries using the TextLine input format can be:
 
 ## Parameters
 
-- [Home](../Readme.md)
-- [List of parameters](textline_parameters.md)
+- [Home](../README.MD)
+- [List of parameters](textline_parameters_list.md)
 - [Parameters table](textline_parameters_table.md)
 - [Default parameter values](textline_parameters_defaults.md)
 ## Fields

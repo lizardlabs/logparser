@@ -13,8 +13,8 @@ The <from-entity> specified in queries using the MediaFiles input format can be:
 
 ## Parameters
 
-- [Home](../Readme.md)
-- [List of parameters](mediafiles_parameters.md)
+- [Home](../README.MD)
+- [List of parameters](mediafiles_parameters_list.md)
 - [Parameters table](mediafiles_parameters_table.md)
 - [Default parameter values](mediafiles_parameters_defaults.md)
 ## Fields

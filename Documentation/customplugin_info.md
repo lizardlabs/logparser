@@ -13,8 +13,8 @@ The <from-entity> specified in queries using the CustomPlugin input format can b
 
 ## Parameters
 
-- [Home](../Readme.md)
-- [List of parameters](customplugin_parameters.md)
+- [Home](../README.MD)
+- [List of parameters](customplugin_parameters_list.md)
 - [Parameters table](customplugin_parameters_table.md)
 - [Default parameter values](customplugin_parameters_defaults.md)
 ## Fields

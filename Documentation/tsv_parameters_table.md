@@ -1,6 +1,6 @@
 # Tab-separated values: -i=TSV
 
-[Home](../Readme.md) | [Information](tsv_info.md) | [List of parameters](tsv_parameters.md) | [Parameters table](tsv_parameters_table.md) |  [Default parameter values](tsv_parameters_defaults.md)
+[Home](../README.MD) | [Information](tsv_info.md) | [List of parameters](tsv_parameters_list.md) | [Parameters table](tsv_parameters_table.md) |  [Default parameter values](tsv_parameters_defaults.md)
 
 ## Parameters:
 Parameters for configuring 'Tab-separated values'. String values must be enclosed by double quotes when they

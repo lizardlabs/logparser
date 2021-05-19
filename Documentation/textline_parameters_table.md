@@ -1,6 +1,6 @@
 # Text line input format: -i=TextLine
 
-[Home](../Readme.md) | [Information](textline_info.md) | [List of parameters](textline_parameters.md) | [Parameters table](textline_parameters_table.md) |  [Default parameter values](textline_parameters_defaults.md)
+[Home](../README.MD) | [Information](textline_info.md) | [List of parameters](textline_parameters_list.md) | [Parameters table](textline_parameters_table.md) |  [Default parameter values](textline_parameters_defaults.md)
 
 ## Parameters:
 Parameters for configuring 'Text line input format'. String values must be enclosed by double quotes when they

@@ -1,6 +1,6 @@
 # Log4j/log4net XML Format: -i=log4jXML
 
-[Home](../Readme.md) | [Information](log4jxml_info.md) | [List of parameters](log4jxml_parameters.md) | [Parameters table](log4jxml_parameters_table.md) |  [Default parameter values](log4jxml_parameters_defaults.md)
+[Home](../README.MD) | [Information](log4jxml_info.md) | [List of parameters](log4jxml_parameters_list.md) | [Parameters table](log4jxml_parameters_table.md) |  [Default parameter values](log4jxml_parameters_defaults.md)
 
 ## Parameters:
 Parameters for configuring 'Log4j/log4net XML Format'. String values must be enclosed by double quotes when

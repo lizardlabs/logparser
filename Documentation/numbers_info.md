@@ -13,8 +13,8 @@ The <from-entity> specified in queries using the Numbers input format can be:
 
 ## Parameters
 
-- [Home](../Readme.md)
-- [List of parameters](numbers_parameters.md)
+- [Home](../README.MD)
+- [List of parameters](numbers_parameters_list.md)
 - [Parameters table](numbers_parameters_table.md)
 - [Default parameter values](numbers_parameters_defaults.md)
 ## Fields

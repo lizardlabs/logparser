@@ -1,6 +1,6 @@
 # Comma-separated values: -i=CSV
 
-[Home](../Readme.md) | [Information](csv_info.md) | [List of parameters](csv_parameters.md) | [Parameters table](csv_parameters_table.md) |  [Default parameter values](csv_parameters_defaults.md)
+[Home](../README.MD) | [Information](csv_info.md) | [List of parameters](csv_parameters_list.md) | [Parameters table](csv_parameters_table.md) |  [Default parameter values](csv_parameters_defaults.md)
 
 ## Default parameter values:
 

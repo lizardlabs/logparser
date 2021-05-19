@@ -1,11 +1,11 @@
-# Log4j/log4net XML Format: -i=log4jXML
+# Text word input format: -i=TextWord
 
-[Home](../Readme.md) | [Information](log4jxml_info.md) | [List of parameters](log4jxml_parameters.md) | [Parameters table](log4jxml_parameters_table.md) |  [Default parameter values](log4jxml_parameters_defaults.md)
+[Home](../README.MD) | [Information](textword_info.md) | [List of parameters](textword_parameters_list.md) | [Parameters table](textword_parameters_table.md) |  [Default parameter values](textword_parameters_defaults.md)
 
 ## Parameters:
-Parameters for configuring 'Log4j/log4net XML Format'. String values must be enclosed by double quotes when
-they contain spaces and special characters can be escaped with the '\' (backslash). Boolean value can be
-True|False or ON|OFF or 1|0. Date-time values are ISO formatted date or date time strings (Ex. 2021-05-16 or
+Parameters for configuring 'Text word input format'. String values must be enclosed by double quotes when they
+contain spaces and special characters can be escaped with the '\' (backslash). Boolean value can be True|False
+or ON|OFF or 1|0. Date-time values are ISO formatted date or date time strings (Ex. 2021-05-16 or
 "2021-015-016 12:40:23"). Integer and decimal numbers are written without quotes. Arrays are comma separated
 values enclosed by double quotes. When there is a list of available values, the parameter can be one of the
 listed options. Some parameters are grouped in separate categories or prefixed with a name for easier reading.
@@ -27,7 +27,7 @@ listed options. Some parameters are grouped in separate categories or prefixed w
 
  - IncludeFullRecord
 
-	* Default value: -IncludeFullRecord=False
+	* Default value: -IncludeFullRecord=True
 	* Description: Adds text field to the output with the full text of the record. Type: boolean
 	value.
 

@@ -13,8 +13,8 @@ The <from-entity> specified in queries using the TextWord input format can be:
 
 ## Parameters
 
-- [Home](../Readme.md)
-- [List of parameters](textword_parameters.md)
+- [Home](../README.MD)
+- [List of parameters](textword_parameters_list.md)
 - [Parameters table](textword_parameters_table.md)
 - [Default parameter values](textword_parameters_defaults.md)
 ## Fields

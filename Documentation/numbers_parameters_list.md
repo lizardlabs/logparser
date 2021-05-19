@@ -1,6 +1,6 @@
 # Numbers table: -i=Numbers
 
-[Home](../Readme.md) | [Information](numbers_info.md) | [List of parameters](numbers_parameters.md) | [Parameters table](numbers_parameters_table.md) |  [Default parameter values](numbers_parameters_defaults.md)
+[Home](../README.MD) | [Information](numbers_info.md) | [List of parameters](numbers_parameters_list.md) | [Parameters table](numbers_parameters_table.md) |  [Default parameter values](numbers_parameters_defaults.md)
 
 ## Parameters:
 Parameters for configuring 'Numbers table'. String values must be enclosed by double quotes when they contain

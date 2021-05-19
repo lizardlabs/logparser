@@ -13,8 +13,8 @@ The <from-entity> specified in queries using the Delimiter input format can be:
 
 ## Parameters
 
-- [Home](../Readme.md)
-- [List of parameters](delimiter_parameters.md)
+- [Home](../README.MD)
+- [List of parameters](delimiter_parameters_list.md)
 - [Parameters table](delimiter_parameters_table.md)
 - [Default parameter values](delimiter_parameters_defaults.md)
 ## Fields

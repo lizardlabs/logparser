@@ -1,6 +1,6 @@
 # Media files information: -i=Dates
 
-[Home](../Readme.md) | [Information](dates_info.md) | [List of parameters](dates_parameters.md) | [Parameters table](dates_parameters_table.md) |  [Default parameter values](dates_parameters_defaults.md)
+[Home](../README.MD) | [Information](dates_info.md) | [List of parameters](dates_parameters_list.md) | [Parameters table](dates_parameters_table.md) |  [Default parameter values](dates_parameters_defaults.md)
 
 ## Default parameter values:
 

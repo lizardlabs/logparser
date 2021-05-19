@@ -13,8 +13,8 @@ The <from-entity> specified in queries using the log4jXML input format can be:
 
 ## Parameters
 
-- [Home](../Readme.md)
-- [List of parameters](log4jxml_parameters.md)
+- [Home](../README.MD)
+- [List of parameters](log4jxml_parameters_list.md)
 - [Parameters table](log4jxml_parameters_table.md)
 - [Default parameter values](log4jxml_parameters_defaults.md)
 ## Fields

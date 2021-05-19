@@ -1,6 +1,6 @@
 # Multiline text parser using regular expressions (also supports Grok syntax): -i=RegEx
 
-[Home](../Readme.md) | [Information](regex_info.md) | [List of parameters](regex_parameters.md) | [Parameters table](regex_parameters_table.md) |  [Default parameter values](regex_parameters_defaults.md)
+[Home](../README.MD) | [Information](regex_info.md) | [List of parameters](regex_parameters_list.md) | [Parameters table](regex_parameters_table.md) |  [Default parameter values](regex_parameters_defaults.md)
 
 ## Default parameter values:
 

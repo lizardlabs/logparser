@@ -13,8 +13,8 @@ The <from-entity> specified in queries using the EVT input format can be:
 
 ## Parameters
 
-- [Home](../Readme.md)
-- [List of parameters](evt_parameters.md)
+- [Home](../README.MD)
+- [List of parameters](evt_parameters_list.md)
 - [Parameters table](evt_parameters_table.md)
 - [Default parameter values](evt_parameters_defaults.md)
 ## Fields

@@ -13,8 +13,8 @@ The <from-entity> specified in queries using the CSV input format can be:
 
 ## Parameters
 
-- [Home](../Readme.md)
-- [List of parameters](csv_parameters.md)
+- [Home](../README.MD)
+- [List of parameters](csv_parameters_list.md)
 - [Parameters table](csv_parameters_table.md)
 - [Default parameter values](csv_parameters_defaults.md)
 ## Fields

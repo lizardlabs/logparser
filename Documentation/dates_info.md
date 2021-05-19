@@ -13,8 +13,8 @@ The <from-entity> specified in queries using the Dates input format can be:
 
 ## Parameters
 
-- [Home](../Readme.md)
-- [List of parameters](dates_parameters.md)
+- [Home](../README.MD)
+- [List of parameters](dates_parameters_list.md)
 - [Parameters table](dates_parameters_table.md)
 - [Default parameter values](dates_parameters_defaults.md)
 ## Fields

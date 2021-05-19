@@ -13,8 +13,8 @@ The <from-entity> specified in queries using the RegEx input format can be:
 
 ## Parameters
 
-- [Home](../Readme.md)
-- [List of parameters](regex_parameters.md)
+- [Home](../README.MD)
+- [List of parameters](regex_parameters_list.md)
 - [Parameters table](regex_parameters_table.md)
 - [Default parameter values](regex_parameters_defaults.md)
 ## Fields

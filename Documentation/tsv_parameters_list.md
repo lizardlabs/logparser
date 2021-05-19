@@ -1,76 +1,56 @@
-# Multiline text parser using regular expressions (also supports Grok syntax): -i=RegEx
+# Tab-separated values: -i=TSV
 
-[Home](../Readme.md) | [Information](regex_info.md) | [List of parameters](regex_parameters.md) | [Parameters table](regex_parameters_table.md) |  [Default parameter values](regex_parameters_defaults.md)
+[Home](../README.MD) | [Information](tsv_info.md) | [List of parameters](tsv_parameters_list.md) | [Parameters table](tsv_parameters_table.md) |  [Default parameter values](tsv_parameters_defaults.md)
 
 ## Parameters:
-Parameters for configuring 'Multiline text parser using regular expressions (also supports Grok syntax)'.
-String values must be enclosed by double quotes when they contain spaces and special characters can be escaped
-with the '\' (backslash). Boolean value can be True|False or ON|OFF or 1|0. Date-time values are ISO formatted
-date or date time strings (Ex. 2021-05-16 or "2021-015-016 12:40:23"). Integer and decimal numbers are written
-without quotes. Arrays are comma separated values enclosed by double quotes. When there is a list of available
-values, the parameter can be one of the listed options. Some parameters are grouped in separate categories or
-prefixed with a name for easier reading.
+Parameters for configuring 'Tab-separated values'. String values must be enclosed by double quotes when they
+contain spaces and special characters can be escaped with the '\' (backslash). Boolean value can be True|False
+or ON|OFF or 1|0. Date-time values are ISO formatted date or date time strings (Ex. 2021-05-16 or
+"2021-015-016 12:40:23"). Integer and decimal numbers are written without quotes. Arrays are comma separated
+values enclosed by double quotes. When there is a list of available values, the parameter can be one of the
+listed options. Some parameters are grouped in separate categories or prefixed with a name for easier reading.
 
-### Category: Regular Expression parsing configuration.
+### Category: Parsing options.
 
 
-#### Prefix: LineRegExConfiguration
-Use this regular expression configuration to extract the fields from each
-record. Supports GROK fields. A record can span trough multiple lines if the
-RegEx does not match the text (like in NLog, lo4net/log4j and similar logs).
-Advanced record options can be set if records need to be extracted different way
-and later parsed with this RegEx/GROK. *Parameters:*
+#### Prefix: DelimiterOptions
+Delimiter settings. Record lines are parsed using these settings. *Parameters:*
 
- - LineRegExConfiguration.CultureInvariant
+ - DelimiterOptions.DelimiterCharacter
 
-	* Default value: -LineRegExConfiguration.CultureInvariant=True
-	* Description: Type: boolean value.
+	* Default value: -DelimiterOptions.DelimiterCharacter="tab"
+	* Description: Field delimiter character. You can use 'tab','space' or any C# string syntax to
+	escape special characters (ex. \t for tabs, \\ for \, \" for ", etc..). Leave
+	empty to read entire line. Type: string value.
 
- - LineRegExConfiguration.ECMAScript
+ - DelimiterOptions.EscapeCharacter
 
-	* Default value: -LineRegExConfiguration.ECMAScript=False
-	* Description: Type: boolean value.
+	* Default value: -DelimiterOptions.EscapeCharacter="\\\\"
+	* Description: Escape the quotation characters with this char. Usual escape char is \. You can
+	use 'tab','space' or any C# string syntax to escape special characters (ex. \t
+	for tabs, \\ for \, \" for ", etc..). Type: string value.
 
- - LineRegExConfiguration.ExplicitCapture
+ - DelimiterOptions.HasHeaderRow
 
-	* Default value: -LineRegExConfiguration.ExplicitCapture=True
-	* Description: Type: boolean value.
+	* Default value: -DelimiterOptions.HasHeaderRow=True
+	* Description: First record is header that contains field names. Type: boolean value.
 
- - LineRegExConfiguration.IgnoreCase
+ - DelimiterOptions.QuoteCharacter
 
-	* Default value: -LineRegExConfiguration.IgnoreCase=True
-	* Description: Type: boolean value.
+	* Default value: -DelimiterOptions.QuoteCharacter="\\\""
+	* Description: If value is wrapped in quotes set the quotation char (usually double quotes). If
+	there is delimiter between the quotes the delimiter will be part of the field.
+	Quotes in the field can be escaped with escape character (ex. \" in the field
+	will be translated to ").  You can use 'tab','space' or any C# string syntax to
+	escape special characters (ex. \t for tabs, \\ for \, \" for ", etc..). Type:
+	string value.
 
- - LineRegExConfiguration.IgnorePatternWhitespace
 
-	* Default value: -LineRegExConfiguration.IgnorePatternWhitespace=True
-	* Description: Type: boolean value.
+ - HeaderFields
 
- - LineRegExConfiguration.Multiline
-
-	* Default value: -LineRegExConfiguration.Multiline=True
-	* Description: Type: boolean value.
-
- - LineRegExConfiguration.RegExPattern
-
-	* Default value: -LineRegExConfiguration.RegExPattern="^%{TIMESTAMP_ISO8601:datetime_TIME}\\s+%{INT:timestamp_INT}\\s+\\[%{INT:thread_INT}\\]\\s+(?<level>\\w+)\\s+(?<logger>\\w+)\\s+(?<ndc>.+?)\\s-\\s(?<Message>.*?)$(?<Data>.*)"
-	* Description: Type: string value.
-
- - LineRegExConfiguration.RightToLeft
-
-	* Default value: -LineRegExConfiguration.RightToLeft=False
-	* Description: Type: boolean value.
-
- - LineRegExConfiguration.Singleline
-
-	* Default value: -LineRegExConfiguration.Singleline=True
-	* Description: Type: boolean value.
-
- - LineRegExConfiguration.UseGrokAliases
-
-	* Default value: -LineRegExConfiguration.UseGrokAliases=True
-	* Description: Type: boolean value.
-
+	* Default value: -HeaderFields=""
+	* Description: Set to empty to automatically try to detect headers from the file. Otherwise set
+	the field names separated by custom delimiter or comma. Type: string value.
 
 ### Category: Record fields.
 

@@ -1,6 +1,6 @@
 # Custom plugin built with Microsoft .Net: -i=CustomPlugin
 
-[Home](../Readme.md) | [Information](customplugin_info.md) | [List of parameters](customplugin_parameters.md) | [Parameters table](customplugin_parameters_table.md) |  [Default parameter values](customplugin_parameters_defaults.md)
+[Home](../README.MD) | [Information](customplugin_info.md) | [List of parameters](customplugin_parameters_list.md) | [Parameters table](customplugin_parameters_table.md) |  [Default parameter values](customplugin_parameters_defaults.md)
 
 ## Default parameter values:
 

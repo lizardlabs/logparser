@@ -13,8 +13,8 @@ The <from-entity> specified in queries using the JsonLog input format can be:
 
 ## Parameters
 
-- [Home](../Readme.md)
-- [List of parameters](jsonlog_parameters.md)
+- [Home](../README.MD)
+- [List of parameters](jsonlog_parameters_list.md)
 - [Parameters table](jsonlog_parameters_table.md)
 - [Default parameter values](jsonlog_parameters_defaults.md)
 ## Fields

@@ -1,14 +1,56 @@
-# Text word input format: -i=TextWord
+# Dates table: -i=Delimiter
 
-[Home](../Readme.md) | [Information](textword_info.md) | [List of parameters](textword_parameters.md) | [Parameters table](textword_parameters_table.md) |  [Default parameter values](textword_parameters_defaults.md)
+[Home](../README.MD) | [Information](delimiter_info.md) | [List of parameters](delimiter_parameters_list.md) | [Parameters table](delimiter_parameters_table.md) |  [Default parameter values](delimiter_parameters_defaults.md)
 
 ## Parameters:
-Parameters for configuring 'Text word input format'. String values must be enclosed by double quotes when they
-contain spaces and special characters can be escaped with the '\' (backslash). Boolean value can be True|False
-or ON|OFF or 1|0. Date-time values are ISO formatted date or date time strings (Ex. 2021-05-16 or
-"2021-015-016 12:40:23"). Integer and decimal numbers are written without quotes. Arrays are comma separated
-values enclosed by double quotes. When there is a list of available values, the parameter can be one of the
-listed options. Some parameters are grouped in separate categories or prefixed with a name for easier reading.
+Parameters for configuring 'Dates table'. String values must be enclosed by double quotes when they contain
+spaces and special characters can be escaped with the '\' (backslash). Boolean value can be True|False or
+ON|OFF or 1|0. Date-time values are ISO formatted date or date time strings (Ex. 2021-05-16 or "2021-015-016
+12:40:23"). Integer and decimal numbers are written without quotes. Arrays are comma separated values enclosed
+by double quotes. When there is a list of available values, the parameter can be one of the listed options.
+Some parameters are grouped in separate categories or prefixed with a name for easier reading.
+
+### Category: Parsing options.
+
+
+#### Prefix: DelimiterOptions
+Delimiter settings. Record lines are parsed using these settings. *Parameters:*
+
+ - DelimiterOptions.DelimiterCharacter
+
+	* Default value: -DelimiterOptions.DelimiterCharacter=","
+	* Description: Field delimiter character. You can use 'tab','space' or any C# string syntax to
+	escape special characters (ex. \t for tabs, \\ for \, \" for ", etc..). Leave
+	empty to read entire line. Type: string value.
+
+ - DelimiterOptions.EscapeCharacter
+
+	* Default value: -DelimiterOptions.EscapeCharacter="\\\\"
+	* Description: Escape the quotation characters with this char. Usual escape char is \. You can
+	use 'tab','space' or any C# string syntax to escape special characters (ex. \t
+	for tabs, \\ for \, \" for ", etc..). Type: string value.
+
+ - DelimiterOptions.HasHeaderRow
+
+	* Default value: -DelimiterOptions.HasHeaderRow=True
+	* Description: First record is header that contains field names. Type: boolean value.
+
+ - DelimiterOptions.QuoteCharacter
+
+	* Default value: -DelimiterOptions.QuoteCharacter="\\\""
+	* Description: If value is wrapped in quotes set the quotation char (usually double quotes). If
+	there is delimiter between the quotes the delimiter will be part of the field.
+	Quotes in the field can be escaped with escape character (ex. \" in the field
+	will be translated to ").  You can use 'tab','space' or any C# string syntax to
+	escape special characters (ex. \t for tabs, \\ for \, \" for ", etc..). Type:
+	string value.
+
+
+ - HeaderFields
+
+	* Default value: -HeaderFields=""
+	* Description: Set to empty to automatically try to detect headers from the file. Otherwise set
+	the field names separated by custom delimiter or comma. Type: string value.
 
 ### Category: Record fields.
 
@@ -27,7 +69,7 @@ listed options. Some parameters are grouped in separate categories or prefixed w
 
  - IncludeFullRecord
 
-	* Default value: -IncludeFullRecord=True
+	* Default value: -IncludeFullRecord=False
 	* Description: Adds text field to the output with the full text of the record. Type: boolean
 	value.
 
