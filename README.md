@@ -148,6 +148,7 @@ This is a list of available input format. Input format is set with ***-i=format*
 - [Media files information: -i=Dates](Documentation/dates_info.md)
 - [Delimiter-separated values: -i=MediaFiles](Documentation/mediafiles_info.md)
 - [Custom plugin built with Microsoft .Net: -i=CustomPlugin](Documentation/customplugin_info.md)
+
 ## Available Output types and formats
 
 - Text based output to the console, file or network stream in any of these formats:
