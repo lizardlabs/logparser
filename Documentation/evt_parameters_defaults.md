@@ -6,9 +6,9 @@
 
 
 -ReverseDirection=True  
--IncludeKeywordsDisplayNames=True  
--IncludeStrings=True  
 -ResolveUserSIDs=True  
+-IncludeStrings=True  
+-IncludeKeywordsDisplayNames=True  
 -AdvancedEventLogQuery=""  
 -ExtendedFileds=True
 

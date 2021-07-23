@@ -1,4 +1,4 @@
-# Dates table: -i=Delimiter
+# Delimiter-separated values: -i=Delimiter
 
 [Home](../README.MD) | [Information](delimiter_info.md) | [List of parameters](delimiter_parameters_list.md) | [Parameters table](delimiter_parameters_table.md) |  [Default parameter values](delimiter_parameters_defaults.md)
 

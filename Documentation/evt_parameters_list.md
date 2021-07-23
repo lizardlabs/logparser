@@ -27,24 +27,6 @@ listed options. Some parameters are grouped in separate categories or prefixed w
 	* Description: If true, ignores some errors while reading the event records. Otherwise throws
 	exception and stop reading data. Type: boolean value.
 
- - IncludeKeywordsDisplayNames
-
-	* Default value: -IncludeKeywordsDisplayNames=True
-	* Description: If true, Keywords field is extracted from event record. Warning: will affect
-	performance when used on a huge data set. Type: boolean value.
-
- - IncludeStrings
-
-	* Default value: -IncludeStrings=True
-	* Description: If true, Strings field is extracted from event record. Warning: will affect
-	performance when used on a huge data set. Type: boolean value.
-
- - ResolveUserSIDs
-
-	* Default value: -ResolveUserSIDs=True
-	* Description: Try to resolve user SID to actual account name in a new field. Warning: will
-	affect performance when used on a huge data set. Type: boolean value.
-
  - ReverseDirection
 
 	* Default value: -ReverseDirection=True
@@ -77,6 +59,26 @@ listed options. Some parameters are grouped in separate categories or prefixed w
 	* Default value: -IgnoreConvertExceptions=False
 	* Description: Ignore the value exceptions and return null. Otherwise string fields will be set
 	to error message for debugging. Type: boolean value.
+
+### Category: Performance.
+
+ - IncludeKeywordsDisplayNames
+
+	* Default value: -IncludeKeywordsDisplayNames=True
+	* Description: If true, Keywords field is extracted from event record. Warning: will affect
+	performance when used on a huge data set. Type: boolean value.
+
+ - IncludeStrings
+
+	* Default value: -IncludeStrings=True
+	* Description: If true, Strings field is extracted from event record. Warning: will affect
+	performance when used on a huge data set. Type: boolean value.
+
+ - ResolveUserSIDs
+
+	* Default value: -ResolveUserSIDs=True
+	* Description: Try to resolve user SID to actual account name in a new field. Warning: will
+	affect performance when used on a huge data set. Type: boolean value.
 
 
 ------------------------------------------------------------
