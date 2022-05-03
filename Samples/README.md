@@ -1,3 +1,3 @@
 # Portable Log Parser
 
-*** this page is under construction ***
+*** Some sample log files and queries ***
