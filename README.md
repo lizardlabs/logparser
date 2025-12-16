@@ -282,6 +282,6 @@ We plan to continue advancing our log parsing tools and ecosystem:
 
 Currently, ULP is developed on Microsoft .NET Framework 4.x for Windows. We plan to migrate to .NET 5+ to support additional platforms.  
 
-We welcome your feedback and ideas. Please share your thoughts with us at https://www.lizrd-labs.com.  
+We welcome your feedback and ideas. Please share your thoughts with us at https://www.lizard-labs.com.
 
 ***Your contributions are appreciated!***
