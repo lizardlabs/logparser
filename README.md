@@ -255,13 +255,13 @@ You can support and improve ULP in many ways:
 - Create tutorials and guides.
 - Write blog posts or tweets about your experience with ULP.
 - Explore our software offerings at [Lizard Labs Software](http://www.lizard-labs.com) — you may find additional tools useful.
-- For a complete log parsing GUI experience, see [Log Parser Lizard](https://lizard-labs.com/log_parser_lizard.aspx).
+- For a complete log parsing GUI experience, see [Log Parser Lizard](https://www.log-parser.com/).
 
 We appreciate your interest in this project.
 
 ## Log Parsing with Desktop GUI
 
-For an enhanced log parsing experience using SQL queries, try [Log Parser Lizard](https://lizard-labs.com/log_parser_lizard.aspx).  
+For an enhanced log parsing experience using SQL queries, try [Log Parser Lizard](https://www.log-parser.com/).  
 Log Parser Lizard provides a powerful desktop GUI that can also manage and execute SQL Server queries across various log formats.  
 
 If you wish to support the development of Universal Log Parser, consider purchasing an LPL license.  
@@ -282,6 +282,6 @@ We plan to continue advancing our log parsing tools and ecosystem:
 
 Currently, ULP is developed on Microsoft .NET Framework 4.x for Windows. We plan to migrate to .NET 5+ to support additional platforms.  
 
-We welcome your feedback and ideas. Please share your thoughts with us at [office@lizard-labs.com](mailto:office@lizard-labs.com).  
+We welcome your feedback and ideas. Please share your thoughts with us at https://www.lizrd-labs.com.  
 
 ***Your contributions are appreciated!***
