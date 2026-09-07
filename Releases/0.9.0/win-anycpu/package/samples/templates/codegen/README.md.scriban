@@ -1,0 +1,10 @@
+---
+output: README.md
+mode: once
+---
+# Generated models
+
+This directory contains {{ row_count }} generated model{{ if row_count != 1 }}s{{ end }}.
+
+{{ for item in rows }}- `Models/{{ item.name }}.cs` from `{{ item.kind }}` data
+{{ end }}

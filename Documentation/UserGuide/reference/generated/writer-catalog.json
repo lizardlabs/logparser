@@ -1,0 +1,95 @@
+{
+  "generation_method": "ulp --docs (runtime output-format catalog)",
+  "writers": [
+    {
+      "name": "CSV",
+      "description": "Comma-separated values for spreadsheets and data interchange",
+      "reference": "writer-CSV.md"
+    },
+    {
+      "name": "Excel",
+      "description": "Microsoft Excel Open XML workbook (.xlsx)",
+      "reference": "writer-Excel.md"
+    },
+    {
+      "name": "HTML",
+      "description": "Standalone HTML table document",
+      "reference": "writer-HTML.md"
+    },
+    {
+      "name": "JSON",
+      "description": "Structured JSON output",
+      "reference": "writer-JSON.md"
+    },
+    {
+      "name": "Markdown",
+      "description": "Markdown tables suitable for documentation and chat",
+      "reference": "writer-Markdown.md"
+    },
+    {
+      "name": "MarkdownChart",
+      "description": "Markdown chart generated from category and numeric value columns",
+      "reference": "writer-MarkdownChart.md"
+    },
+    {
+      "name": "None",
+      "description": "Suppress rendering while still executing the query and collecting metrics",
+      "reference": "writer-None.md"
+    },
+    {
+      "name": "PlainText",
+      "description": "Minimal tab-delimited text with optional column headers",
+      "reference": "writer-PlainText.md"
+    },
+    {
+      "name": "Scriban",
+      "description": "Scriban template rendering and safe multi-file generation",
+      "reference": "writer-Scriban.md"
+    },
+    {
+      "name": "SQLScript",
+      "description": "SQL INSERT script for recreating query results",
+      "reference": "writer-SQLScript.md"
+    },
+    {
+      "name": "Terminal",
+      "description": "Formatted terminal table with colors and borders (default)",
+      "reference": "writer-Terminal.md"
+    },
+    {
+      "name": "TextList",
+      "description": "One labeled field per line, grouped by record",
+      "reference": "writer-TextList.md"
+    },
+    {
+      "name": "TextTable",
+      "description": "Readable tabular text with table and row headings",
+      "reference": "writer-TextTable.md"
+    },
+    {
+      "name": "TOON",
+      "description": "TOON 4.1 token-oriented tabular output for LLM contexts",
+      "reference": "writer-TOON.md"
+    },
+    {
+      "name": "TSV",
+      "description": "Tab-separated values for lossless plain-text interchange",
+      "reference": "writer-TSV.md"
+    },
+    {
+      "name": "TUI",
+      "description": "Text User Interface (TUI) dataset viewer and query editor",
+      "reference": "writer-TUI.md"
+    },
+    {
+      "name": "XML",
+      "description": "Structured XML output",
+      "reference": "writer-XML.md"
+    },
+    {
+      "name": "YAML",
+      "description": "Human-readable YAML output",
+      "reference": "writer-YAML.md"
+    }
+  ]
+}

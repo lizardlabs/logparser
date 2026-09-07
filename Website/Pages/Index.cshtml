@@ -1,0 +1,43 @@
+@page "/"
+@model IndexModel
+
+<section class="hero">
+    <p class="eyebrow">Universal Log Parser manual</p>
+    <h1>Turn files and system data into answers with SQL.</h1>
+    <p class="hero-copy">ULP lets you query logs, CSV, JSON, Windows events, source code, assemblies, databases, and more—then send one result to the terminal, files, workbooks, templates, or several outputs at once.</p>
+    <div class="hero-actions">
+        <a class="button button-primary" href="/docs/tutorials">Choose a practical tutorial</a>
+        <a class="button" href="/docs/getting-started">Run your first query</a>
+    </div>
+    <pre class="hero-command"><code>ulp -i CSV --from .\data.csv --table rows --query "SELECT * FROM rows LIMIT 20"</code></pre>
+</section>
+
+<section aria-labelledby="browse-heading">
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">Browse the manual</p>
+            <h2 id="browse-heading">Choose a topic</h2>
+        </div>
+        <a href="/docs/index">Open the complete manual index →</a>
+    </div>
+    <div class="topic-grid">
+        @foreach (var group in Model.Navigation.Groups)
+        {
+            <article class="topic-card">
+                <h3>@group.Title</h3>
+                <ul>
+                    @foreach (var item in group.Items.Take(4))
+                    {
+                        <li>
+                            <a href="/docs/@item.Slug">@item.Title</a>
+                            @if (!string.IsNullOrWhiteSpace(item.Description))
+                            {
+                                <span>@item.Description</span>
+                            }
+                        </li>
+                    }
+                </ul>
+            </article>
+        }
+    </div>
+</section>

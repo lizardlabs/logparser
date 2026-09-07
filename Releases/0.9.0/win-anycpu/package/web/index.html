@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Universal Log Parser</title>
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/lib/css/dx.common.css">
+    <link rel="stylesheet" href="/lib/css/dx.light.compact.css">
+    <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand-row">
+            <button id="navigationToggle" class="icon-button topbar-button" type="button" aria-label="Toggle Query Library" aria-expanded="true">☰</button>
+            <div class="brand"><strong>Universal Log Parser</strong><span id="serverMode" class="badge">Connecting…</span></div>
+            <button id="topNavigationToggle" class="section-toggle" type="button" aria-controls="primaryNavigation" aria-expanded="true">Hide sections</button>
+        </div>
+        <nav id="primaryNavigation" aria-label="Primary navigation">
+            <button type="button" data-view="library" class="nav-button active">Query Library</button>
+            <button type="button" data-view="adhoc" id="adhocNav" class="nav-button hidden">Ad-hoc Query</button>
+            <button type="button" data-view="shell" id="shellNav" class="nav-button hidden">Shell</button>
+            <button type="button" data-view="ai" id="aiNav" class="nav-button hidden">AI Chat <span class="experimental">Experimental</span></button>
+            <button type="button" data-view="server" class="nav-button">Server</button>
+        </nav>
+    </header>
+
+    <main id="applicationLayout">
+        <aside id="librarySidebar" aria-label="Query Library navigation">
+            <div class="sidebar-heading">
+                <div><span class="eyebrow">Saved queries</span><strong>Query Library</strong></div>
+                <button id="sidebarClose" class="icon-button" type="button" aria-label="Close Query Library">×</button>
+            </div>
+            <label class="sr-only" for="querySearch">Search Query Library</label>
+            <input id="querySearch" type="search" placeholder="Search title, folder, command…" autocomplete="off">
+            <div id="queryList" class="query-list" aria-live="polite"></div>
+        </aside>
+
+        <section class="workspace">
+            <div id="status" class="status" role="status">Connecting to ULP…</div>
+
+            <section id="libraryView" class="view view-stack">
+                <section class="card collapsible" data-panel="query-summary">
+                    <div class="card-heading heading-row">
+                        <button class="collapse-button" type="button" aria-expanded="true" aria-label="Collapse query summary"><span class="chevron">⌄</span></button>
+                        <div class="heading-content"><span class="eyebrow">Selected query <span class="editor-mode">Saved</span></span><h1 id="queryTitle">Choose a saved query</h1><p id="queryDescription">Select a query from the folder tree.</p></div>
+                        <div class="actions"><button id="openQueryWindow" type="button" class="secondary hidden" title="Open this query in a new browser tab">Open in new tab</button><button id="newQuery" type="button" class="secondary hidden">New</button><button id="duplicateQuery" type="button" class="secondary hidden">Duplicate</button><button id="deleteQuery" type="button" class="danger hidden">Delete</button></div>
+                    </div>
+                    <div class="collapsible-content"><div id="queryMetadata" class="metadata"></div></div>
+                </section>
+
+                <section id="savedParametersPanel" class="card collapsible hidden" data-panel="saved-parameters">
+                    <div class="card-heading">
+                        <button class="collapse-button" type="button" aria-expanded="true"><span class="chevron">⌄</span></button>
+                        <div class="heading-content"><span class="eyebrow">Inputs</span><h2>Parameters</h2></div>
+                        <button id="savedParametersAdvanced" type="button" class="text-button">Advanced JSON</button>
+                    </div>
+                    <div class="collapsible-content">
+                        <div id="parameterEditor" class="parameters"></div>
+                        <div id="savedParameterJsonPanel" class="json-panel hidden">
+                            <div class="field-heading"><label for="savedParameterJson">Parameter JSON</label><span id="savedParameterJsonError" class="field-error"></span></div>
+                            <textarea id="savedParameterJson" class="parameter-json" spellcheck="false">{}</textarea>
+                            <button id="applySavedParameterJson" type="button" class="secondary">Apply JSON to fields</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="sourcePanel" class="card collapsible editor-card library-editor hidden" data-panel="query-source">
+                    <div class="card-heading">
+                        <button class="collapse-button" type="button" aria-expanded="true"><span class="chevron">⌄</span></button>
+                        <div class="heading-content"><span class="eyebrow">SQL</span><h2>Query source <span id="queryDirty" class="dirty-indicator hidden">Unsaved changes</span></h2></div>
+                        <div class="actions"><button id="reloadQuery" type="button" class="secondary hidden" title="Reload this query from the Query library">Reload</button><button id="resetQuery" type="button" class="secondary hidden" disabled title="Discard edits made since the last load">Reset edits</button><button id="saveQuery" type="button" class="secondary hidden">Save changes</button></div>
+                    </div>
+                    <div class="collapsible-content editor-content"><textarea id="querySource" class="sql-editor" spellcheck="false" aria-label="Query source"></textarea></div>
+                </section>
+
+                <div class="run-row card-action-row"><button id="runSaved" type="button" class="primary" disabled>Run query <kbd>Ctrl+Enter</kbd></button><button id="stopQuery" type="button" class="danger hidden">Stop</button><span id="resultSummary"></span></div>
+            </section>
+
+            <section id="adhocView" class="view view-stack hidden">
+                <section class="card collapsible editor-card adhoc-editor" data-panel="adhoc-query">
+                    <div class="card-heading">
+                        <button class="collapse-button" type="button" aria-expanded="true"><span class="chevron">⌄</span></button>
+                        <div class="heading-content"><span class="eyebrow">SQLite workspace <span class="editor-mode">Ad-hoc</span></span><h1>Ad-hoc Query</h1><p>Named values are bound safely as SQLite parameters.</p></div>
+                        <button id="resetAdhoc" type="button" class="secondary">Reset</button>
+                    </div>
+                    <div class="collapsible-content editor-content"><label for="adhocSql">SQL</label><textarea id="adhocSql" class="sql-editor" spellcheck="false" placeholder="SELECT sqlite_version() AS sqlite_version;"></textarea></div>
+                </section>
+
+                <section class="card collapsible" data-panel="adhoc-parameters">
+                    <div class="card-heading">
+                        <button class="collapse-button" type="button" aria-expanded="true"><span class="chevron">⌄</span></button>
+                        <div class="heading-content"><span class="eyebrow">Optional</span><h2>Parameters</h2></div>
+                        <div class="actions"><button id="addAdhocParameter" type="button" class="secondary">Add parameter</button><button id="adhocParametersAdvanced" type="button" class="text-button">Advanced JSON</button></div>
+                    </div>
+                    <div class="collapsible-content">
+                        <div id="adhocParameterEditor" class="parameter-rows"></div>
+                        <div id="adhocParameterJsonPanel" class="json-panel hidden">
+                            <div class="field-heading"><label for="adhocParameters">Parameter JSON</label><span id="adhocParameterJsonError" class="field-error"></span></div>
+                            <textarea id="adhocParameters" class="parameter-json" spellcheck="false">{}</textarea>
+                            <button id="applyAdhocParameterJson" type="button" class="secondary">Apply JSON to fields</button>
+                        </div>
+                    </div>
+                </section>
+                <div class="run-row card-action-row"><button id="runAdhoc" type="button" class="primary">Run SQL <kbd>Ctrl+Enter</kbd></button><button id="stopAdhoc" type="button" class="danger hidden">Stop</button></div>
+            </section>
+
+            <section id="shellView" class="view view-stack hidden">
+                <section class="card shell-card">
+                    <div class="card-heading"><div class="heading-content"><span class="eyebrow">Safe web console</span><h1>Shell</h1><p>Run SQL and ULP web-shell commands. Type <code>.help</code> to begin.</p></div><button id="clearShell" type="button" class="secondary">Clear</button></div>
+                    <div id="shellOutput" class="shell-output" aria-live="polite"></div>
+                    <div class="shell-input-row"><span aria-hidden="true">ulp&gt;</span><input id="shellInput" type="text" autocomplete="off" spellcheck="false" placeholder=".help or SELECT sqlite_version();"><button id="runShell" type="button" class="primary">Run</button><button id="stopShell" type="button" class="danger hidden">Stop</button></div>
+                </section>
+            </section>
+
+            <section id="aiView" class="view view-stack hidden">
+                <section class="card ai-card">
+                    <div class="card-heading"><div class="heading-content"><span class="eyebrow experimental-label">Experimental</span><h1>AI SQL Chat</h1><p>Describe the result you need. Review generated SQL before running it.</p></div><button id="clearAi" type="button" class="secondary">New chat</button></div>
+                    <div id="aiMessages" class="ai-messages" aria-live="polite"></div>
+                    <label for="aiPrompt">Request</label><textarea id="aiPrompt" rows="3" placeholder="Show errors from the last 24 hours grouped by provider…"></textarea>
+                    <div class="run-row"><button id="sendAi" type="button" class="primary">Generate SQL</button><span id="aiModel" class="muted"></span></div>
+                </section>
+            </section>
+
+            <section id="serverView" class="view view-stack hidden">
+                <section class="card collapsible" data-panel="server-information">
+                    <div class="card-heading"><button class="collapse-button" type="button" aria-expanded="true"><span class="chevron">⌄</span></button><div class="heading-content"><span class="eyebrow">Current process</span><h1>Server Information</h1><p>Safe runtime details and effective permissions.</p></div></div>
+                    <div class="collapsible-content"><div id="serverInformation" class="information-grid"></div><p class="note">Passwords, connection strings, API keys, and restricted query source are never returned here.</p></div>
+                </section>
+            </section>
+
+            <section id="resultsPanel" class="results-panel hidden" aria-label="Query results">
+                <div class="results-heading">
+                    <button id="collapseResults" class="collapse-button" type="button" aria-expanded="true"><span class="chevron">⌄</span></button>
+                    <div class="heading-content"><span class="eyebrow">Query output</span><h2>Results</h2></div>
+                    <select id="resultTable" aria-label="Result set"></select>
+                    <button id="expandResults" type="button" class="secondary" aria-pressed="false">Expand</button>
+                    <button id="closeResults" type="button" class="icon-button" aria-label="Close results">×</button>
+                </div>
+                <div id="resultsContent" class="results-content"><div id="resultGrid"></div></div>
+            </section>
+        </section>
+    </main>
+
+    <div id="mobileOverlay" class="mobile-overlay hidden"></div>
+    <script src="/lib/js/jquery.min.js"></script>
+    <script src="/lib/js/jszip.min.js"></script>
+    <script src="/lib/js/dx.all.js"></script>
+    <script src="/app.js"></script>
+</body>
+</html>

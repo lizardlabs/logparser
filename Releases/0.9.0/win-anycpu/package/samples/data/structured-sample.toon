@@ -1,0 +1,6 @@
+orders[2]{id,customer{name,country},total}:
+  1,Ada,DK,99.5
+  2,Bob,UK,149
+users[2:|]{age|city}:
+  alice: 30|Berlin
+  bob: 25|Oslo

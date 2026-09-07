@@ -1,0 +1,13 @@
+UNIVERSAL LOG PARSER PRODUCT LICENSE REQUIRED
+=============================================
+
+This file is a release-blocking marker, not a product license and not an EULA.
+
+The repository currently contains a copyright/warranty disclaimer and an EULA
+draft, but no owner-approved substantive license grant for Universal Log Parser.
+An internal review package may contain this marker. It must not be published or
+presented as a production release.
+
+The publisher must supply an approved PRODUCT-LICENSE.txt (or another explicitly
+selected agreement) before the normal release command can complete. Third-party
+licenses remain applicable independently.

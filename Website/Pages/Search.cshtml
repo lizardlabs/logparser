@@ -1,0 +1,36 @@
+@page "/search"
+@model SearchModel
+
+<section class="search-page">
+    <p class="eyebrow">Documentation search</p>
+    <h1>Search the manual</h1>
+    <form class="large-search" method="get" action="/search" role="search">
+        <label class="visually-hidden" for="page-search">Search documentation</label>
+        <input id="page-search" name="q" value="@Model.Query" type="search" minlength="2" placeholder="Try CSV, checkpoints, MCP, joins…" autofocus />
+        <button class="button button-primary" type="submit">Search</button>
+    </form>
+
+    @if (Model.Query.Length > 0 && Model.Query.Length < 2)
+    {
+        <p class="notice">Enter at least two characters.</p>
+    }
+    else if (Model.Query.Length >= 2 && Model.Results.Count == 0)
+    {
+        <div class="empty-state"><h2>No matching pages</h2><p>Try a shorter term or browse the topics in the sidebar.</p></div>
+    }
+    else if (Model.Results.Count > 0)
+    {
+        <p class="result-count">@Model.Results.Count result@(Model.Results.Count == 1 ? string.Empty : "s") for “@Model.Query”</p>
+        <ol class="search-results">
+            @foreach (var result in Model.Results)
+            {
+                <li>
+                    <a href="/docs/@result.Slug"><h2>@result.Title</h2></a>
+                    <p>@result.Snippet</p>
+                    <span>/docs/@result.Slug</span>
+                </li>
+            }
+        </ol>
+    }
+</section>
+

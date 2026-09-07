@@ -1,0 +1,3 @@
+Generated {{ row_count }} record{{ if row_count != 1 }}s{{ end }}:
+{{ for item in rows }}- {{ item.name }} ({{ item.kind }})
+{{ end }}

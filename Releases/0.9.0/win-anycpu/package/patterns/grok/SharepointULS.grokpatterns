@@ -1,0 +1,31 @@
+
+#Microsoft SharePoint ULS Log Pattern formats
+
+#SAMPLE
+#Timestamp              	Process                                 	TID   	Area                          	Category                      	EventID	Level     	Message 	Correlation
+#08/19/2015 13:03:37.80 	OWSTIMER.EXE (0x1248)                   	0x1D5C	SharePoint Foundation         	Monitoring                    	b4ly	Medium  	Leaving Monitored Scope (Timer Job Search Health Monitoring - Trace Events). Execution Time=7.75363907982718	aa19fa2c-c798-433c-a5ff-e9d94cc584ef
+#END SAMPLE
+
+#Pattern
+SP_ULS_FMT1 (?<sptimestamp>%{MONTHNUM}/%{MONTHDAY}/%{YEAR} %{HOUR}:%{MINUTE}:%{SECOND}\*?*)%{SPACE}%{PROG:sp_process} \(%{BASE16NUM:sp_pid}\)%{SPACE}%{BASE16NUM:sp_tid}%{SPACE}\t+%{DATA:sp_area}%{SPACE}\t+%{DATA:sp_category}%{SPACE}\t+%{DATA:sp_eventid}\t+%{SPACE}%{WORD:severity}%{SPACE}%{DATA:sp_eventmessage}%{SPACE}%{UUID:correlationid}%{SPACE}
+SP_ULS_FMT2 (?<sptimestamp>%{MONTHNUM}/%{MONTHDAY}/%{YEAR} %{HOUR}:%{MINUTE}:%{SECOND}\*?*)%{SPACE}%{PROG:sp_process} \(%{BASE16NUM:sp_pid}\)%{SPACE}%{BASE16NUM:sp_tid}%{SPACE}\t+%{DATA:sp_area}%{SPACE}\t+%{DATA:sp_category}%{SPACE}\t+%{DATA:sp_eventid}\t+%{SPACE}%{WORD:severity}%{SPACE}%{DATA:sp_eventmessage}%{SPACE}%{UUID:correlationid}
+SP_ULS_FMT3 (?<sptimestamp>%{MONTHNUM}/%{MONTHDAY}/%{YEAR} %{HOUR}:%{MINUTE}:%{SECOND}\*?*)%{SPACE}%{PROG:sp_process} \(%{BASE16NUM:sp_pid}\)%{SPACE}%{BASE16NUM:sp_tid}%{SPACE}\t+%{DATA:sp_area}%{SPACE}\t+%{DATA:sp_category}%{SPACE}\t+%{DATA:sp_eventid}\t+%{SPACE}%{WORD:severity}%{SPACE}%{DATA:sp_eventmessage}%{SPACE}
+SP_ULS_FMT4 (?<sptimestamp>%{MONTHNUM}/%{MONTHDAY}/%{YEAR} %{HOUR}:%{MINUTE}:%{SECOND}\*?*)%{SPACE}%{PROG:sp_process} \(%{BASE16NUM:sp_pid}\)%{SPACE}%{BASE16NUM:sp_tid}%{SPACE}\t+%{DATA:sp_area}%{SPACE}\t+%{DATA:sp_category}%{SPACE}\t+%{DATA:sp_eventid}\t+%{SPACE}%{WORD:severity}%{SPACE}%{DATA:sp_eventmessage}
+
+SP_ULS_FMT5 (?<sptimestamp>%{MONTHNUM}/%{MONTHDAY}/%{YEAR} %{HOUR}:%{MINUTE}:%{SECOND}\*?*)%{SPACE}%{PROG:sp_process} \(%{BASE16NUM:sp_pid}\)%{SPACE}%{BASE16NUM:sp_tid}%{SPACE}\t+%{DATA:sp_area}%{SPACE}\t+%{DATA:sp_category}%{SPACE}\t+%{DATA:sp_eventid}\t+%{SPACE}%{WORD:severity}%{SPACE}
+SP_ULS_FMT6 (?<sptimestamp>%{MONTHNUM}/%{MONTHDAY}/%{YEAR} %{HOUR}:%{MINUTE}:%{SECOND}\*?*)%{SPACE}%{DATA:sp_process} \(%{BASE16NUM:sp_pid}\)%{SPACE}%{GREEDYDATA:sp_eventmessage}%{SPACE}%{UUID:correlationid}%
+SP_ULS_FMT7 (?<sptimestamp>%{MONTHNUM}/%{MONTHDAY}/%{YEAR} %{HOUR}:%{MINUTE}:%{SECOND}\*?*)%{SPACE}%{GREEDYDATA:sp_eventmessage}%{SPACE}%{UUID:correlationid}%{SPACE}
+SP_ULS_FMT8 (?<sptimestamp>%{MONTHNUM}/%{MONTHDAY}/%{YEAR} %{HOUR}:%{MINUTE}:%{SECOND}\*?*)%{SPACE}%{GREEDYDATA:sp_eventmessage}
+
+
+SP_ULS_FMT %{SP_ULS_FMT1}|%{SP_ULS_FMT2}|%{SP_ULS_FMT3}|%{SP_ULS_FMT4}
+#SP_ULS_FMT %{SP_ULS_FMT1}|%{SP_ULS_FMT2}|%{SP_ULS_FMT3}|%{SP_ULS_FMT4}|%{SP_ULS_FMT5}|%{SP_ULS_FMT6}|%{SP_ULS_FMT7}|%{SP_ULS_FMT8}
+#SP_ULS_FMT %{SP_ULS_FMT1}|%{SP_ULS_FMT2}|%{SP_ULS_FMT3}|%{SP_ULS_FMT4}
+
+
+#Microsoft IIS Log Patterns formats
+#SAMPLE
+#2012-07-02 15:15:37 192.168.101.50 POST /AjaxWebMethods.aspx/TestWebMethod - 443 - 192.168.100.10 Mozilla/5.0+(Windows+NT+5.1;+rv:13.0)+Gecko/20100101+Firefox/13.0.1 405 0 0 218
+#END SAMPLE
+
+IIS_LOG_FMT	"%{TIMESTAMP_ISO8601:log_timestamp} %{IPORHOST:site} %{WORD:method} %{URIPATH:page} %{NOTSPACE:querystring} %{NUMBER:port} %{NOTSPACE:username} %{IPORHOST:clienthost} %{NOTSPACE:useragent} %{NUMBER:response} %{NUMBER:subresponse} %{NUMBER:scstatus} %{NUMBER:time_taken}

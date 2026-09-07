@@ -1,0 +1,9 @@
+employee_id,employee_name,department_id,salary,hired_on,active
+1,Ada,10,118000,2019-04-15,true
+2,Grace,10,126000,2018-09-03,true
+3,Linus,20,99000,2021-01-11,true
+4,Margaret,30,132000,2017-06-20,true
+5,Ken,30,115000,2020-11-02,false
+6,Barbara,40,88000,2022-03-14,true
+7,Alan,10,109000,2023-02-01,true
+8,Edsger,20,105000,2016-08-29,false

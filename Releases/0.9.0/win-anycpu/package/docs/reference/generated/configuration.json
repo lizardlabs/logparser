@@ -1,0 +1,32 @@
+{
+  "generation_method": "ulp --docs (built-in configuration contract)",
+  "precedence": [
+    "command line",
+    "ULP_ARGS and ULP_* environment variables",
+    "explicit --config files",
+    "config/defaults.ulp.config",
+    "factory defaults"
+  ],
+  "property_scopes": [
+    "input-default",
+    "input",
+    "output",
+    "writer",
+    "query"
+  ],
+  "configuration_files": [
+    "config/defaults.ulp.config",
+    "config/defaults.input.<provider>.config",
+    "config/defaults.output.<writer>.config"
+  ],
+  "environment_prefixes": [
+    "ULP_INPUT__",
+    "ULP_OUTPUT__",
+    "ULP_QUERY__"
+  ],
+  "secret_references": [
+    "env:VARIABLE",
+    "file:path",
+    "cred:target"
+  ]
+}

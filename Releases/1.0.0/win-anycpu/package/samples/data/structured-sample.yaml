@@ -1,0 +1,14 @@
+metadata:
+  source: sample
+data:
+  items:
+    - id: 1
+      name: Ada
+      address:
+        country: DK
+      tags: [admin, ops]
+    - id: 2
+      name: Bob
+      address:
+        country: UK
+      tags: [user]

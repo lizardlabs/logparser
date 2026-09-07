@@ -1,0 +1,125 @@
+{
+  "generation_method": "ulp --docs (runtime input-format catalog)",
+  "providers": [
+    {
+      "name": "EVT",
+      "description": "Windows Event Log channels and .evtx files using the modern Windows event API",
+      "reference": "provider-EVT.md"
+    },
+    {
+      "name": "EVTXECMD",
+      "description": "Forensic Windows .evtx parsing with EvtxECmd-compatible fields",
+      "reference": "provider-EVTXECMD.md"
+    },
+    {
+      "name": "RegEx",
+      "description": "Multi-line text records parsed with regular expressions or Grok patterns",
+      "reference": "provider-RegEx.md"
+    },
+    {
+      "name": "CSV",
+      "description": "Comma-separated records with configurable headers, quoting, and escaping",
+      "reference": "provider-CSV.md"
+    },
+    {
+      "name": "TSV",
+      "description": "Tab-separated records with configurable headers, quoting, and escaping",
+      "reference": "provider-TSV.md"
+    },
+    {
+      "name": "W3C",
+      "description": "W3C extended logs such as IIS, FTP, SMTP, Exchange, and Windows Firewall logs",
+      "reference": "provider-W3C.md"
+    },
+    {
+      "name": "TextLine",
+      "description": "Text files and streams exposed as one record per line",
+      "reference": "provider-TextLine.md"
+    },
+    {
+      "name": "TextWord",
+      "description": "Text files and streams tokenized into individual words",
+      "reference": "provider-TextWord.md"
+    },
+    {
+      "name": "log4jXML",
+      "description": "Log4j and log4net XML event records",
+      "reference": "provider-log4jXML.md"
+    },
+    {
+      "name": "JSON",
+      "description": "JSON objects and arrays from files or streams",
+      "reference": "provider-JSON.md"
+    },
+    {
+      "name": "YAML",
+      "description": "YAML documents, mappings, and sequences from files or streams",
+      "reference": "provider-YAML.md"
+    },
+    {
+      "name": "TOON",
+      "description": "TOON 4.1 tabular and keyed-tabular data from files or streams",
+      "reference": "provider-TOON.md"
+    },
+    {
+      "name": "Numbers",
+      "description": "Generated numeric series for joins, ranges, and test data",
+      "reference": "provider-Numbers.md"
+    },
+    {
+      "name": "FileSystem",
+      "description": "Files and directories with paths, sizes, timestamps, and optional media metadata",
+      "reference": "provider-FileSystem.md"
+    },
+    {
+      "name": "Delimiter",
+      "description": "Records separated by a configurable delimiter, quote, and escape syntax",
+      "reference": "provider-Delimiter.md"
+    },
+    {
+      "name": "Dates",
+      "description": "Generated date series for calendar joins, ranges, and test data",
+      "reference": "provider-Dates.md"
+    },
+    {
+      "name": "CustomPlugin",
+      "description": "Records produced by a custom .NET source-code plugin",
+      "reference": "provider-CustomPlugin.md"
+    },
+    {
+      "name": "EVTXP",
+      "description": "Classic Windows Event Log reader using the Win32 API",
+      "reference": "provider-EVTXP.md"
+    },
+    {
+      "name": "SourceCode",
+      "description": "C#, VB.NET, Razor, HTML, JavaScript, TypeScript, and Markdown files parsed into searchable symbols, document structure, comments, diagnostics, and exact source spans",
+      "reference": "provider-SourceCode.md"
+    },
+    {
+      "name": "Excel",
+      "description": "Excel workbooks and worksheets without Office or database drivers",
+      "reference": "provider-Excel.md"
+    },
+    {
+      "name": "ADS",
+      "description": "Active Directory objects and properties with Microsoft Log Parser 2.2-compatible modes",
+      "reference": "provider-ADS.md"
+    },
+    {
+      "name": "Processes",
+      "description": "Point-in-time local process metrics including memory, CPU, handles, threads, and executable details",
+      "reference": "provider-Processes.md"
+    },
+    {
+      "name": "Threads",
+      "description": "Point-in-time operating-system thread state, priority, and CPU metrics for selected processes",
+      "reference": "provider-Threads.md"
+    },
+    {
+      "name": "DotNetAssembly",
+      "description": "Static PE and CLR metadata for managed .NET DLL and EXE files",
+      "reference": "provider-DotNetAssembly.md"
+    }
+  ]
+}

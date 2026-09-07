@@ -1,0 +1,155 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Visual Studio Projects\\lpl6\\PortableLogParserProjects\\docs\\Website\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A213FED3-0F4E-277E-31A6-58C276EAA6C6}|Ulp.Docs.Web.csproj|c:\\visual studio projects\\lpl6\\portablelogparserprojects\\docs\\documentation\\userguide\\ai.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A213FED3-0F4E-277E-31A6-58C276EAA6C6}|Ulp.Docs.Web.csproj|c:\\visual studio projects\\lpl6\\portablelogparserprojects\\docs\\website\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A213FED3-0F4E-277E-31A6-58C276EAA6C6}|Ulp.Docs.Web.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A213FED3-0F4E-277E-31A6-58C276EAA6C6}|Ulp.Docs.Web.csproj|c:\\visual studio projects\\lpl6\\portablelogparserprojects\\docs\\documentation\\userguide\\reference.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A213FED3-0F4E-277E-31A6-58C276EAA6C6}|Ulp.Docs.Web.csproj|c:\\visual studio projects\\lpl6\\portablelogparserprojects\\docs\\documentation\\userguide\\readme.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A213FED3-0F4E-277E-31A6-58C276EAA6C6}|Ulp.Docs.Web.csproj|c:\\visual studio projects\\lpl6\\portablelogparserprojects\\docs\\website\\models\\documentationmodels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A213FED3-0F4E-277E-31A6-58C276EAA6C6}|Ulp.Docs.Web.csproj|solutionrelative:models\\documentationmodels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A213FED3-0F4E-277E-31A6-58C276EAA6C6}|Ulp.Docs.Web.csproj|c:\\visual studio projects\\lpl6\\portablelogparserprojects\\docs\\website\\pages\\docs.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A213FED3-0F4E-277E-31A6-58C276EAA6C6}|Ulp.Docs.Web.csproj|solutionrelative:pages\\docs.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A213FED3-0F4E-277E-31A6-58C276EAA6C6}|Ulp.Docs.Web.csproj|c:\\visual studio projects\\lpl6\\portablelogparserprojects\\docs\\website\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A213FED3-0F4E-277E-31A6-58C276EAA6C6}|Ulp.Docs.Web.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A213FED3-0F4E-277E-31A6-58C276EAA6C6}|Ulp.Docs.Web.csproj|c:\\visual studio projects\\lpl6\\portablelogparserprojects\\docs\\website\\pages\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A213FED3-0F4E-277E-31A6-58C276EAA6C6}|Ulp.Docs.Web.csproj|solutionrelative:pages\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Visual Studio Projects\\lpl6\\PortableLogParserProjects\\docs\\Website\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Visual Studio Projects\\lpl6\\PortableLogParserProjects\\docs\\Website\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAACQAAAAAAAAAAADwvzcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-04T19:07:23.852Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "reference.md",
+              "DocumentMoniker": "C:\\Visual Studio Projects\\lpl6\\PortableLogParserProjects\\docs\\Documentation\\UserGuide\\reference.md",
+              "RelativeDocumentMoniker": "..\\Documentation\\UserGuide\\reference.md",
+              "ToolTip": "C:\\Visual Studio Projects\\lpl6\\PortableLogParserProjects\\docs\\Documentation\\UserGuide\\reference.md",
+              "RelativeToolTip": "..\\Documentation\\UserGuide\\reference.md",
+              "ViewState": "AgIAANoCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-09-04T19:00:05.809Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ai.md",
+              "DocumentMoniker": "C:\\Visual Studio Projects\\lpl6\\PortableLogParserProjects\\docs\\Documentation\\UserGuide\\ai.md",
+              "RelativeDocumentMoniker": "..\\Documentation\\UserGuide\\ai.md",
+              "ToolTip": "C:\\Visual Studio Projects\\lpl6\\PortableLogParserProjects\\docs\\Documentation\\UserGuide\\ai.md",
+              "RelativeToolTip": "..\\Documentation\\UserGuide\\ai.md",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-09-04T19:00:02.604Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "README.md",
+              "DocumentMoniker": "C:\\Visual Studio Projects\\lpl6\\PortableLogParserProjects\\docs\\Documentation\\UserGuide\\README.md",
+              "RelativeDocumentMoniker": "..\\Documentation\\UserGuide\\README.md",
+              "ToolTip": "C:\\Visual Studio Projects\\lpl6\\PortableLogParserProjects\\docs\\Documentation\\UserGuide\\README.md",
+              "RelativeToolTip": "..\\Documentation\\UserGuide\\README.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-09-04T18:59:57.017Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DocumentationModels.cs",
+              "DocumentMoniker": "C:\\Visual Studio Projects\\lpl6\\PortableLogParserProjects\\docs\\Website\\Models\\DocumentationModels.cs",
+              "RelativeDocumentMoniker": "Models\\DocumentationModels.cs",
+              "ToolTip": "C:\\Visual Studio Projects\\lpl6\\PortableLogParserProjects\\docs\\Website\\Models\\DocumentationModels.cs",
+              "RelativeToolTip": "Models\\DocumentationModels.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-04T18:59:51.087Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Docs.cshtml",
+              "DocumentMoniker": "C:\\Visual Studio Projects\\lpl6\\PortableLogParserProjects\\docs\\Website\\Pages\\Docs.cshtml",
+              "RelativeDocumentMoniker": "Pages\\Docs.cshtml",
+              "ToolTip": "C:\\Visual Studio Projects\\lpl6\\PortableLogParserProjects\\docs\\Website\\Pages\\Docs.cshtml",
+              "RelativeToolTip": "Pages\\Docs.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-09-04T18:59:40.389Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Visual Studio Projects\\lpl6\\PortableLogParserProjects\\docs\\Website\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Visual Studio Projects\\lpl6\\PortableLogParserProjects\\docs\\Website\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-09-04T18:59:04.366Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Visual Studio Projects\\lpl6\\PortableLogParserProjects\\docs\\Website\\Pages\\Index.cshtml",
+              "RelativeDocumentMoniker": "Pages\\Index.cshtml",
+              "ToolTip": "C:\\Visual Studio Projects\\lpl6\\PortableLogParserProjects\\docs\\Website\\Pages\\Index.cshtml",
+              "RelativeToolTip": "Pages\\Index.cshtml",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-09-04T18:58:54.272Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

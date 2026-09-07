@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Agent Dashboard</title>
+  <style>
+    .warning { color: red; }
+  </style>
+</head>
+<body>
+  <!-- Searchable HTML fixture. -->
+  <main id="dashboard" class="page shell" aria-label="Agent dashboard">
+    <h1>{{ title }}</h1>
+    <img src="status.png" alt="Current status">
+    <button type="button" data-action="refresh">Refresh</button>
+  </main>
+  <script type="module">
+    async function refresh() {
+      const response = await fetch("/api/status");
+      if (!response.ok) throw new Error("status");
+    }
+    refresh();
+  </script>
+</body>
+</html>

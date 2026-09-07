@@ -1,0 +1,35 @@
+# ULP documentation website
+
+This worklist belongs to the independent documentation website. It is not part of the ULP executable or source projects.
+
+## Foundation
+
+- [x] Create a small ASP.NET Core Razor Pages project targeting the current .NET 10 LTS release.
+- [x] Render the authoritative `Documentation/UserGuide` Markdown files on the server.
+- [x] Copy Markdown content into build and publish output without maintaining a second manual copy.
+- [x] Keep topic grouping in one human-editable navigation file.
+
+## User experience
+
+- [x] Add a responsive, collapsible topic sidebar and mobile navigation.
+- [x] Add light, dark, and system theme modes with persisted user preference.
+- [x] Add readable Markdown tables, code blocks, quotations, headings, and copy buttons.
+- [x] Add page-local heading navigation and server-rendered documentation search.
+- [x] Add a concise footer linking to the product home, Lizard Labs, ideas, and bug reporting.
+
+## Web quality and safety
+
+- [x] Add per-page title, description, canonical URL, Open Graph, and Twitter metadata.
+- [x] Add generated `sitemap.xml` and `robots.txt` endpoints.
+- [x] Disable raw HTML in Markdown and confine document and asset paths to the configured content root.
+- [x] Add CSP, frame, MIME-sniffing, referrer, and permissions security headers.
+- [x] Add friendly not-found and server-error pages.
+
+## Deployment and verification
+
+- [x] Add a repeatable publish command for framework-dependent or self-contained shared-hosting output.
+- [x] Produce and smoke-test clean framework-dependent and Windows self-contained ZIP packages with SHA256 checksums.
+- [x] Document local use, content maintenance, IIS/shared-hosting deployment, configuration, and upgrades.
+- [x] Add a smoke test for the home page, Markdown rendering, search, sitemap, security headers, assets, and path confinement.
+- [ ] Choose the final public documentation URL and set `Site:CanonicalBaseUrl` before publishing.
+- [ ] Add real social-preview artwork when approved; metadata currently uses the site icon and text description.

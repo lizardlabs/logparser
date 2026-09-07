@@ -1,0 +1,2398 @@
+{
+  "_generation": {
+    "sqlite_version": "3.32.1",
+    "method": "ulp --docs using the runtime function catalog reconciled with PRAGMA function_list"
+  },
+  "Table0": {
+    "Metadata": {
+      "name": {
+        "Type": "String",
+        "Position": 0
+      },
+      "narg": {
+        "Type": "Int64",
+        "Position": 1
+      },
+      "type": {
+        "Type": "String",
+        "Position": 2
+      },
+      "compatibility_status": {
+        "Type": "String",
+        "Position": 3
+      }
+    },
+    "Data": [
+      {
+        "name": "__ulp_hashseq",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "__ulp_in_row_number",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "__ulp_out_row_number",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "__ulp_sequence",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "abs",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "acos",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "acosh",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "add",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "asin",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "asinh",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "atan",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "atan2",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "atanh",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "atn2",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "avg",
+        "narg": 1,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "base64_decode",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "base64_encode",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "bit_and",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "bit_not",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "bit_or",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "bit_shl",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "bit_shr",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "bit_xor",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "bm25",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "ceil",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "ceiling",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "changes",
+        "narg": 0,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "char",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "charindex",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "charindex",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "coalesce",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "SQLite equivalent"
+      },
+      {
+        "name": "computer_name",
+        "narg": 0,
+        "type": "s",
+        "compatibility_status": "Compatible (platform-limited)"
+      },
+      {
+        "name": "concat",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "conv",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "cos",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "cosh",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "cot",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "coth",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "count",
+        "narg": 0,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "count",
+        "narg": 1,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "crc32",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "cume_dist",
+        "narg": 0,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "current_date",
+        "narg": 0,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "current_time",
+        "narg": 0,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "current_timestamp",
+        "narg": 0,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "date",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "datetime",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "decimal",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "decimal_add",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "decimal_cmp",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "decimal_mul",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "decimal_sub",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "decimal_sum",
+        "narg": 1,
+        "type": "w",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "decode",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "degrees",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "dehumanize_text",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "dense_rank",
+        "narg": 0,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "difference",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "directory_exists",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "div",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "dt_convert_timezone",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "dt_day_of_week",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "dt_day_of_week",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "dt_from_unix_milliseconds",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "dt_from_unix_seconds",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "dt_from_utc",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "dt_is_weekend",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "dt_iso_week",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "dt_parse",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "dt_parse",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "dt_parseexact",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "dt_parseexact",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "dt_to_unix_milliseconds",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "dt_to_unix_seconds",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "dt_to_utc",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "dt_to_utc",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "dt_tostring",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "dt_tostring",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "dt_tostring",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "editdist3",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "editdist3",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "editdist3",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "eval",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "eval",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "exec",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "exp",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "exp10",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "extract_extension",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "extract_filename",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "extract_path",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "extract_prefix",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "extract_suffix",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "extract_token",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "extract_token",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "extract_value",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "extract_value",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "file_exists",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "file_hash",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "file_hash",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "file_hash_sha256",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "file_size",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "first_value",
+        "narg": 1,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "floor",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "SQLite equivalent"
+      },
+      {
+        "name": "from_camel_case",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "from_pascal_case",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "fts3_tokenizer",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "fts3_tokenizer",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "fts5",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "fts5_decode",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "fts5_decode_none",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "fts5_expr",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "fts5_expr_tcl",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "fts5_fold",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "fts5_isalnum",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "fts5_rowid",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "fts5_source_id",
+        "narg": 0,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "glob",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "grok",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "group_concat",
+        "narg": 1,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "group_concat",
+        "narg": 2,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "hashmd5_file",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible (platform-limited)"
+      },
+      {
+        "name": "HASHSEQ",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Planned (query state)"
+      },
+      {
+        "name": "hex",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "hex_to_asc",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "hex_to_hex16",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "hex_to_hex16",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "hex_to_hex32",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "hex_to_hex32",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "hex_to_hex8",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "hex_to_int",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "hex_to_print",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "highlight",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "humanize_bytes",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "humanize_bytes",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "humanize_number",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "humanize_number",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "humanize_ordinal",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "humanize_ordinal",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "humanize_text",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "humanize_timespan",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "humanize_timespan",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "ieee754",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "ieee754",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "ieee754_exponent",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "ieee754_from_blob",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "ieee754_mantissa",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "ieee754_to_blob",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "ifnull",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "iif",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "IN_ROW_NUMBER",
+        "narg": 0,
+        "type": "s",
+        "compatibility_status": "Planned (query state)"
+      },
+      {
+        "name": "index_of",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "instr",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "int_to_ipv4",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible (platform-limited)"
+      },
+      {
+        "name": "ipv4_to_int",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible (platform-limited)"
+      },
+      {
+        "name": "is_null_or_whitespace",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "json",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "json_array",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "json_array_length",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "json_array_length",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "json_extract",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "json_group_array",
+        "narg": 1,
+        "type": "w",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "json_group_object",
+        "narg": 2,
+        "type": "w",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "json_insert",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "json_object",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "json_patch",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "json_quote",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "json_remove",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "json_replace",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "json_set",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "json_type",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "json_type",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "json_valid",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "julianday",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "lag",
+        "narg": 1,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "lag",
+        "narg": 2,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "lag",
+        "narg": 3,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "last_index_of",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "last_insert_rowid",
+        "narg": 0,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "last_rows_affected",
+        "narg": 0,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "last_value",
+        "narg": 1,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "lead",
+        "narg": 1,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "lead",
+        "narg": 2,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "lead",
+        "narg": 3,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "leftstr",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "length",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "levenshtein",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "like",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "like",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "likelihood",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "likely",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "load_extension",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "load_extension",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "log",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "log10",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "lower",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "lower_quartile",
+        "narg": 1,
+        "type": "a",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "lsmode",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "ltrim",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "SQLite equivalent"
+      },
+      {
+        "name": "ltrim",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "SQLite equivalent"
+      },
+      {
+        "name": "mask_sensitive_information",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "mask_sensitive_information",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "match",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "matchinfo",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "matchinfo",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "max",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "max",
+        "narg": 1,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "md5",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "median",
+        "narg": 1,
+        "type": "a",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "min",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "min",
+        "narg": 1,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "mod",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "mode",
+        "narg": 1,
+        "type": "a",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "mul",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "next_char",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "next_char",
+        "narg": 4,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "next_char",
+        "narg": 5,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "nth_value",
+        "narg": 2,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "ntile",
+        "narg": 1,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "nullif",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "offsets",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "optimize",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "ordinalize",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "ordinalize",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "OUT_ROW_NUMBER",
+        "narg": 0,
+        "type": "s",
+        "compatibility_status": "Planned (query state)"
+      },
+      {
+        "name": "padc",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "padl",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "padr",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "path_change_extension",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "path_combine",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "path_is_rooted",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "percent_rank",
+        "narg": 0,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "percentile",
+        "narg": 2,
+        "type": "a",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "percentile_25",
+        "narg": 1,
+        "type": "a",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "percentile_75",
+        "narg": 1,
+        "type": "a",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "percentile_90",
+        "narg": 1,
+        "type": "a",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "percentile_95",
+        "narg": 1,
+        "type": "a",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "percentile_99",
+        "narg": 1,
+        "type": "a",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "percentile_cont",
+        "narg": 2,
+        "type": "a",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "percentile_disc",
+        "narg": 2,
+        "type": "a",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "pi",
+        "narg": 0,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "pluralize",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "power",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "prefix_length",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "printf",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "proper",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "qntfloor_to_digit",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "qntround_to_digit",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "quantize",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "quote",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "radians",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "random",
+        "narg": 0,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "randomblob",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "rank",
+        "narg": 0,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "read_text_lines",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "readfile",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "regexp",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "regexp_like",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "regexp_replace",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "regexp_substr",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "replace",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "replace_chr",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "replace_if_not_null",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "replace_str",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "replicate",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "resolve_sid",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible (platform-limited)"
+      },
+      {
+        "name": "resolve_sid",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible (platform-limited)"
+      },
+      {
+        "name": "reverse",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "reversedns",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible (platform-limited)"
+      },
+      {
+        "name": "rightstr",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "rot13",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "round",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "SQLite equivalent"
+      },
+      {
+        "name": "round",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "SQLite equivalent"
+      },
+      {
+        "name": "row_number",
+        "narg": 0,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "rownum",
+        "narg": 0,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "rownum",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "rtreecheck",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "rtreedepth",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "rtreenode",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "rtrim",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "SQLite equivalent"
+      },
+      {
+        "name": "rtrim",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "SQLite equivalent"
+      },
+      {
+        "name": "rx_get_group_value",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "rx_grok_to_regex",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "rx_is_match",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "rx_matches_count",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "rx_replace",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "rx_split",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "rx_split",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "SEQUENCE",
+        "narg": 0,
+        "type": "s",
+        "compatibility_status": "Planned (query state)"
+      },
+      {
+        "name": "SEQUENCE",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Planned (query state)"
+      },
+      {
+        "name": "sha1",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "sha256",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "sha384",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "sha512",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "sign",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "sin",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "singularize",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "sinh",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "snippet",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "soundex",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "spellfix1_editdist",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "spellfix1_phonehash",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "spellfix1_scriptcode",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "spellfix1_translit",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "split_part",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "sqlite_compileoption_get",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "sqlite_compileoption_used",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "sqlite_log",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "sqlite_source_id",
+        "narg": 0,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "sqlite_version",
+        "narg": 0,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "sqr",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "sqrroot",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "sqrt",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "square",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "stddev",
+        "narg": 1,
+        "type": "a",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "stddev_pop",
+        "narg": 1,
+        "type": "a",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "stddev_samp",
+        "narg": 1,
+        "type": "a",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "stdev",
+        "narg": 1,
+        "type": "a",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "strcat",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "strcnt",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "strfilter",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "strftime",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "strlen",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "strpart",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "strrepeat",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "strrev",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "sub",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "substr",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "substr",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "sum",
+        "narg": 1,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "system_date",
+        "narg": 0,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "system_time",
+        "narg": 0,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "system_timestamp",
+        "narg": 0,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "system_utcoffset",
+        "narg": 0,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "tan",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "tanh",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "time",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "to_absolute_path",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "to_camel_case",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "to_date",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "to_hex",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "to_int",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "to_kebab_case",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "to_localtime",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "to_lower_case",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "to_lower_case",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "to_lowercase",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "to_pascal_case",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "to_real",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "to_snake_case",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "to_string",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "to_string",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "to_time",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "to_timestamp",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "to_timestamp",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "to_title_case",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "to_upper_case",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "to_upper_case",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "to_uppercase",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "to_utctime",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "tointeger",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "toreal",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "tosize",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "total",
+        "narg": 1,
+        "type": "w",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "total_changes",
+        "narg": 0,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "trim",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "SQLite equivalent"
+      },
+      {
+        "name": "trim",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "SQLite equivalent"
+      },
+      {
+        "name": "typeof",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "unicode",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "unlikely",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "unzorder",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "upper",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "upper_quartile",
+        "narg": 1,
+        "type": "a",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "urlescape",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "urlescape",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "urlunescape",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "urlunescape",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "Compatible"
+      },
+      {
+        "name": "uuid",
+        "narg": 0,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "uuid_blob",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "uuid_str",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "var_pop",
+        "narg": 1,
+        "type": "a",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "var_samp",
+        "narg": 1,
+        "type": "a",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "variance",
+        "narg": 1,
+        "type": "a",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "win32_error_description",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "Compatible (platform-limited)"
+      },
+      {
+        "name": "writefile",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "xml_append",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "xml_append",
+        "narg": 4,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "xml_extract",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "xml_extract",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "xml_remove",
+        "narg": 2,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "xml_update",
+        "narg": 3,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "xml_valid",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "zeroblob",
+        "narg": 1,
+        "type": "s",
+        "compatibility_status": "SQLite built-in"
+      },
+      {
+        "name": "zipfile",
+        "narg": -1,
+        "type": "a",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "zipfile_cds",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      },
+      {
+        "name": "zorder",
+        "narg": -1,
+        "type": "s",
+        "compatibility_status": "ULP extension"
+      }
+    ]
+  }
+}

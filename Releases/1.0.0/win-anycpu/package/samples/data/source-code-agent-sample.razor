@@ -1,0 +1,19 @@
+@page "/orders"
+@namespace ULP.AgentSamples
+@using System.Net.Http.Json
+@inject HttpClient Client
+
+<PageTitle>Orders</PageTitle>
+
+@* Searchable Razor component fixture. *@
+<OrderGrid Items="@orders" />
+<p>Total: @orders.Count</p>
+
+@code {
+    private List<Order> orders = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        orders = await Client.GetFromJsonAsync<List<Order>>("api/orders") ?? new();
+    }
+}

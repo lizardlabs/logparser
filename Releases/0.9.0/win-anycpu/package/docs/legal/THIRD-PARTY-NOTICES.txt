@@ -1,0 +1,81 @@
+UNIVERSAL LOG PARSER THIRD-PARTY NOTICES
+========================================
+
+This file describes material third-party components distributed with Universal
+Log Parser. Third-party terms apply independently from the ULP product license.
+The corresponding license texts, provenance records, and source information are
+stored beside this file under licenses/, provenance/, and source-information/.
+
+OPEN-SOURCE AND PERMISSIVELY LICENSED COMPONENTS
+------------------------------------------------
+
+ULP distributes components under the MIT, BSD-2-Clause, Apache-2.0, MS-PL, and
+Public Domain terms identified in dependency-inventory.csv. The complete common
+license texts are under licenses/. Component names, versions, file paths, and
+copyright holders are listed in dependency-inventory.csv and the detailed
+documentation in docs/legal/THIRD-PARTY-NOTICES.md.
+
+TagLib# 2.2.0
+Copyright by the TagLib# authors and contributors.
+License: GNU Lesser General Public License version 2.1 only.
+Shipped file: runtime/TagLibSharp.dll.
+Purpose: optional media-file metadata reading.
+The DLL is shipped as a separate replaceable dynamic library and is an exact
+byte-for-byte match for lib/net45/TagLibSharp.dll from the official TagLibSharp
+2.2.0 NuGet package. ULP does not modify this DLL. The LGPL-2.1 text is at
+licenses/LGPL-2.1.txt. Exact corresponding source and build files for upstream
+tag TaglibSharp-2.2.0.0 are at source-information/TagLibSharp-2.2.0-source.zip.
+Recipients retain the rights granted by the LGPL, including use of a compatible
+modified replacement library and debugging modifications to that library.
+
+Microsoft System CLR Types for Microsoft SQL Server 2017
+Copyright Microsoft Corporation. All rights reserved.
+Package: Microsoft.SqlServer.Types 14.0.1016.290.
+Shipped file: runtime/Microsoft.SqlServer.Types.dll.
+Purpose: SQL Server spatial type handling.
+The DLL is unmodified and is an exact byte-for-byte match for the net40 DLL in
+Microsoft's signed NuGet package. It is not open-source software. Distribution
+is subject to the Microsoft Software License Terms at
+licenses/Microsoft-SQL-Server-System-CLR-Types-2017.rtf, including its
+distribution requirements and restrictions. See
+provenance/Microsoft.SqlServer.Types.md.
+
+Microsoft Visual C++ runtime files
+The x86 runtime directory may contain Microsoft-signed Visual C++ runtime DLLs.
+They are unmodified Microsoft files. Their exact filenames and versions are in
+dependency-inventory.csv. The applicable redistribution basis and retained-file
+analysis are recorded in provenance/Visual-Cpp-Runtime.md.
+
+System.Data.SQLite
+The managed System.Data.SQLite.dll and x86/x64 SQLite.Interop.dll files are based
+on System.Data.SQLite 1.0.113.0. Upstream System.Data.SQLite and SQLite are Public
+Domain. The shipped managed build is locally modified. Its source revision,
+modification record, build information, and native-binary relationship are
+described in provenance/System.Data.SQLite.md.
+
+DevExtreme 19.1.11
+Copyright Developer Express Inc. All rights reserved.
+The local web interface includes dx.all.js, DevExtreme CSS, and DevExtreme icon
+fonts. These are commercial assets, not MIT assets. Public redistribution remains
+subject to the publisher's applicable DevExpress subscription and redistribution
+terms described in provenance/Web-Assets.md.
+
+jQuery 3.5.1
+Copyright OpenJS Foundation and other contributors.
+License: MIT; see licenses/MIT.txt.
+
+JSZip 3.3.0
+Copyright 2009-2016 Stuart Knightley and contributors.
+ULP elects the MIT option; see licenses/MIT.txt.
+
+Logstash Grok patterns
+Some files under patterns/grok are derived from logstash-patterns-core.
+Copyright 2012-2018 Elasticsearch and contributors.
+License: Apache License 2.0; see licenses/Apache-2.0.txt and
+patterns/grok/notice.txt.
+
+NO TRADEMARK ENDORSEMENT
+------------------------
+
+Third-party names and trademarks belong to their owners. Their inclusion does
+not imply sponsorship or endorsement of Universal Log Parser.

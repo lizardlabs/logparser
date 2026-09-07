@@ -1,0 +1,22 @@
+@page "/docs/{**slug}"
+@model DocsModel
+
+<div class="document-layout">
+    <article class="markdown-body" data-document-title="@Model.Document.Title">
+        @Html.Raw(Model.Document.Html)
+    </article>
+
+    @if (Model.Document.Headings.Count > 1)
+    {
+        <aside class="page-outline" aria-label="On this page">
+            <p>On this page</p>
+            <ol>
+                @foreach (var heading in Model.Document.Headings.Take(24))
+                {
+                    <li class="outline-level-@heading.Level"><a href="#@heading.Id">@heading.Text</a></li>
+                }
+            </ol>
+        </aside>
+    }
+</div>
+

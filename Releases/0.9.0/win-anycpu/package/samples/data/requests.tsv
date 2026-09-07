@@ -1,0 +1,4 @@
+timestamp	method	status	path
+2026-08-19T10:00:00Z	GET	200	/
+2026-08-19T10:01:00Z	POST	500	/api/orders
+2026-08-19T10:02:00Z	GET	404	/missing

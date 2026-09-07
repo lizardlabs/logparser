@@ -1,0 +1,2 @@
+﻿#Your favorite custom GROK patterns
+W3CFIELD %{WORD}|%{QS}

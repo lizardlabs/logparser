@@ -1,0 +1,16 @@
+Universal Log Parser third-party notices
+========================================
+
+The complete maintained notices, generated dependency inventory, and bundled
+license texts are located under:
+
+  docs/Documentation/UserGuide/legal/
+
+Start with:
+
+  docs/Documentation/UserGuide/legal/THIRD-PARTY-NOTICES.md
+  docs/Documentation/UserGuide/legal/dependency-inventory.csv
+  docs/Documentation/UserGuide/legal/licenses/
+
+Third-party terms apply independently of the ULP product license. The product
+license itself has not yet been supplied as an approved root LICENSE file.

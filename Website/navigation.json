@@ -1,0 +1,46 @@
+{
+  "groups": [
+    {
+      "title": "Start here",
+      "items": [
+        { "title": "Manual overview", "slug": "index", "description": "Choose the right path through the documentation." },
+        { "title": "Getting started", "slug": "getting-started", "description": "Run a first query and understand the result." },
+        { "title": "Installation", "slug": "installation", "description": "Install, upgrade, remove, and verify ULP." },
+        { "title": "Use-case tutorials", "slug": "tutorials", "description": "Complete practical jobs with executable examples." }
+      ]
+    },
+    {
+      "title": "Analyze data",
+      "items": [
+        { "title": "How-to recipes", "slug": "how-to", "description": "Find the shortest path to a specific result." },
+        { "title": "Inputs and outputs", "slug": "inputs-and-outputs", "description": "Choose providers, writers, pipelines, and formats." },
+        { "title": "SQLite guide", "slug": "sqlite-guide", "description": "SQL explained through ULP examples." },
+        { "title": "SQL functions", "slug": "functions", "description": "Function descriptions and runnable examples." }
+      ]
+    },
+    {
+      "title": "Work with ULP",
+      "items": [
+        { "title": "User interfaces", "slug": "user-interface", "description": "CLI, menu, TUI, shell, and web workflows." },
+        { "title": "Samples", "slug": "samples", "description": "Queries, inputs, scripts, exports, and templates." },
+        { "title": "AI, agents, and MCP", "slug": "ai", "description": "Integrate ULP safely with AI tools." }
+      ]
+    },
+    {
+      "title": "Reference and support",
+      "items": [
+        { "title": "Reference", "slug": "reference", "description": "Commands, configuration, locations, and defaults." },
+        { "title": "Troubleshooting", "slug": "troubleshooting", "description": "Diagnose common failures and collect evidence." },
+        { "title": "Security", "slug": "security", "description": "Handle downloads, secrets, and untrusted data safely." }
+      ]
+    },
+    {
+      "title": "Product and administration",
+      "items": [
+        { "title": "Deployment", "slug": "deployment", "description": "Deploy and verify the supported portable package." },
+        { "title": "About ULP", "slug": "about", "description": "Purpose, philosophy, goals, and credits." },
+        { "title": "Legal and privacy", "slug": "legal", "description": "Licensing, notices, privacy, and disclaimers." }
+      ]
+    }
+  ]
+}

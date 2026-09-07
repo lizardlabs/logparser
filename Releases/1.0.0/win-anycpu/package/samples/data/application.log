@@ -1,0 +1,5 @@
+2026-08-17T08:00:01Z INFO api request-started id=1001
+2026-08-17T08:00:01Z INFO api request-completed id=1001 duration_ms=18
+2026-08-17T08:01:22Z WARN cache cache-miss key=customer-42
+2026-08-17T08:02:10Z ERROR worker retry-scheduled job=77 attempt=2
+2026-08-17T08:03:44Z INFO worker job-completed job=77 duration_ms=931

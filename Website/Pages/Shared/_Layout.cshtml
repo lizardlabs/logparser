@@ -1,0 +1,96 @@
+@using Microsoft.Extensions.Options
+@using Ulp.Docs.Web.Options
+@using Ulp.Docs.Web.Services
+@inject MarkdownDocumentationService Documentation
+@inject IOptions<SiteOptions> SiteConfiguration
+@{
+    var site = SiteConfiguration.Value;
+    var navigation = Documentation.GetNavigation();
+    var title = ViewData["Title"] as string ?? site.Name;
+    var description = ViewData["Description"] as string ?? "Universal Log Parser user documentation.";
+    var robots = ViewData["Robots"] as string ?? "index, follow, max-image-preview:large";
+    var currentSlug = ViewData["CurrentSlug"] as string ?? string.Empty;
+    var configuredBase = site.CanonicalBaseUrl?.TrimEnd('/');
+    var requestBase = $"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.PathBase}".TrimEnd('/');
+    var baseUrl = string.IsNullOrWhiteSpace(configuredBase) ? requestBase : configuredBase;
+    var canonical = baseUrl + Context.Request.Path;
+    var nonce = Context.Items["CspNonce"] as string;
+}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@title · @site.Name</title>
+    <meta name="description" content="@description" />
+    <meta name="robots" content="@robots" />
+    <link rel="canonical" href="@canonical" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="@site.Name" />
+    <meta property="og:title" content="@title" />
+    <meta property="og:description" content="@description" />
+    <meta property="og:url" content="@canonical" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="@title" />
+    <meta name="twitter:description" content="@description" />
+    <meta name="theme-color" content="#12253f" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/css/site.css" asp-append-version="true" />
+    <script nonce="@nonce">document.documentElement.dataset.theme=localStorage.getItem('ulp-docs-theme')||'system';</script>
+    <script src="/js/site.js" asp-append-version="true" defer></script>
+</head>
+<body data-page-kind="@ViewData["PageKind"]">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="topbar">
+        <a class="brand" href="/" aria-label="ULP documentation home">
+            <span class="brand-mark" aria-hidden="true">ULP</span>
+            <span><strong>Universal Log Parser</strong><small>Documentation</small></span>
+        </a>
+        <form class="top-search" method="get" action="/search" role="search">
+            <label class="visually-hidden" for="top-search">Search documentation</label>
+            <input id="top-search" name="q" type="search" minlength="2" placeholder="Search the manual" />
+            <kbd>/</kbd>
+        </form>
+        <nav class="top-actions" aria-label="Page controls">
+            <a href="@site.HomeUrl">Product home</a>
+            <button id="theme-toggle" class="icon-button" type="button" aria-label="Change color theme" title="Change color theme">◐</button>
+            <button id="navigation-toggle" class="icon-button mobile-only" type="button" aria-controls="documentation-navigation" aria-expanded="false" aria-label="Open topics">☰</button>
+        </nav>
+    </header>
+
+    <div class="site-shell">
+        <aside id="documentation-navigation" class="sidebar" aria-label="Documentation topics">
+            <nav>
+                @foreach (var group in navigation.Groups)
+                {
+                    var containsCurrent = group.Items.Any(item => item.Slug.Equals(currentSlug, StringComparison.OrdinalIgnoreCase));
+                    <details open="@containsCurrent">
+                        <summary>@group.Title</summary>
+                        <ul>
+                            @foreach (var item in group.Items)
+                            {
+                                var active = item.Slug.Equals(currentSlug, StringComparison.OrdinalIgnoreCase);
+                                <li><a class="@(active ? "active" : null)" aria-current="@(active ? "page" : null)" href="/docs/@item.Slug">@item.Title</a></li>
+                            }
+                        </ul>
+                    </details>
+                }
+            </nav>
+        </aside>
+
+        <main id="main-content" tabindex="-1">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div><strong>ULP documentation</strong><span>Query more. Script less.</span></div>
+        <nav aria-label="Project links">
+            <a href="@site.HomeUrl">Home</a>
+            <a href="@site.CompanyUrl">Lizard Labs</a>
+            <a href="@site.IdeasUrl">Suggest an idea</a>
+            <a href="@site.BugsUrl">Report a bug</a>
+        </nav>
+    </footer>
+</body>
+</html>

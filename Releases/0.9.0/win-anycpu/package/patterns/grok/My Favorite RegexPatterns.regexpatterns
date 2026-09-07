@@ -1,0 +1,17 @@
+#RegEx Patterns to show in RegEx Builder form. You can add or remove your own patterns
+#If the file extensions is *.regexpatterns, then these are not read as GROK aliases, but just as a repository of regular expressions  and can be shown in RegEx Builder 
+#if group name ends with _TIMESTAMP, _DATETIME, _TIME, _INTEGER, _INT, _DOUBLE, _FLOAT _REAL (in uppercase) the LPL will try to parse and convert the type to DateTime, Int32 or Double
+
+DATA (?<Data>.*)
+DATE (?<Date_DATETIME>%{YEAR}-%{MONTHNUM}-%{MONTHDAY})
+FIELD_TILL_SPACE (?<Field1>.+?)\s+
+FIELD_TILL_TAB (?<FieldTsv1>.+?)\t+
+LOGGER %{WORD:Logger}
+LOGLEVEL %{LOGLEVEL:LogLevel}
+Log4NetTimestamp %{TIMESTAMP_ISO8601:Timestamp_TIMESTAMP}
+MESSAGE (?<Message>.*?)$
+PROCESSID %{INT:ProcessID_INT}
+SPACE \s+
+STRING (?<String>%{WORD}|%{QUOTEDSTRING})
+THREADID %{INT:ThreadID_INT}
+TIME (?<Time_TIME>%{HOUR}:?%{MINUTE}(?::?%{SECOND})?%{ISO8601_TIMEZONE}?)

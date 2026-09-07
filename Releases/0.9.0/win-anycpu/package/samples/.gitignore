@@ -1,0 +1,8 @@
+# The repository ignores logs and SQL globally. These files are fictional,
+# reviewed sample assets and are intentionally versioned.
+!.gitignore
+!data/application.log
+!sql/
+!sql/*.sql
+!parsingmodule/
+!parsingmodule/*.sql

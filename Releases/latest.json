@@ -1,0 +1,7 @@
+{
+    "version":  "0.9.0",
+    "platform":  "win-anycpu",
+    "archive":  "Releases/0.9.0/win-anycpu/ulp-0.9.0-win-anycpu.zip",
+    "checksum":  "Releases/0.9.0/win-anycpu/ulp-0.9.0-win-anycpu.zip.sha256",
+    "package":  "Releases/0.9.0/win-anycpu/package/"
+}
