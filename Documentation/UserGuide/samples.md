@@ -343,6 +343,31 @@ employee_id,employee_name,department_id
 
 With `--format JSON`, ULP includes a `Metadata` object describing column types/positions and a `Data` array containing the rows. This is the best general default for an agent or script that must preserve column names and result-set boundaries.
 
+### Download the generated output showcase
+
+These are actual ULP exports of the query above, using the bundled fictional employee data:
+
+- [CSV result](assets/outputs/employees.csv)
+- [JSON result with column metadata](assets/outputs/employees.json)
+- [Download all showcase formats](assets/outputs/ulp-output-showcase.zip): CSV, JSON, TOON, Markdown, standalone HTML, the SQL, and a separate two-worksheet Excel example.
+
+Unzip the showcase and open `employees.html` in a browser or `two-sheets.xlsx` in your spreadsheet application. The two-sheet example runs `SELECT 1 AS id, 'first' AS name; SELECT 2 AS id, 'second' AS name;`; each result set has its own worksheet.
+
+For comparison, the actual TOON result is:
+
+```text
+Table0[3]{employee_id,employee_name,department_id}:
+  "1",Ada,"10"
+  "2",Grace,"10"
+  "3",Linus,"20"
+```
+
+The ID values are strings because these CSV columns were read as text. JSON also preserves that distinction; a spreadsheet may infer numbers when opening CSV. Cast columns in SQL if you need a numeric contract.
+
+This small sample produces 75-byte CSV, 101-byte TOON, and 667-byte default pretty-printed JSON files. These are **file sizes, not token counts**. JSON includes metadata that TOON does not, so this is not an equal-content compression benchmark. Model tokenizers, compact JSON settings, row shapes, and repeated names all affect token cost. Prefer JSON for reliable interoperability; measure TOON with the actual agent/model and check that it preserves the required data before switching. See [AI format guidance](ai.md#json-or-toon-for-agent-results).
+
+For a source checkout, regenerate the evidence into an empty directory with `powershell -File PortableLogParser/Tests/Build-ManualShowcase.ps1 -Configuration Release -OutputDirectory C:/Temp/ulp-showcase`. The script refuses to replace existing files. The larger build output gallery additionally exercises other writers and input scenarios.
+
 Writers do not change the SQL or rerun the source. Select a primary writer with `--format`, then add `--also-pipeline FORMAT=PATH` for each additional artifact.
 
 ### CSV

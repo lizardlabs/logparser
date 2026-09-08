@@ -753,7 +753,7 @@
         "name": "HASHSEQ",
         "narg": 1,
         "type": "s",
-        "compatibility_status": "Planned (query state)"
+        "compatibility_status": "Compatible (query state)"
       },
       {
         "name": "hex",
@@ -921,7 +921,7 @@
         "name": "IN_ROW_NUMBER",
         "narg": 0,
         "type": "s",
-        "compatibility_status": "Planned (query state)"
+        "compatibility_status": "Compatible (query state)"
       },
       {
         "name": "index_of",
@@ -1365,7 +1365,7 @@
         "name": "OUT_ROW_NUMBER",
         "narg": 0,
         "type": "s",
-        "compatibility_status": "Planned (query state)"
+        "compatibility_status": "Compatible (query state)"
       },
       {
         "name": "padc",
@@ -1749,13 +1749,13 @@
         "name": "SEQUENCE",
         "narg": 0,
         "type": "s",
-        "compatibility_status": "Planned (query state)"
+        "compatibility_status": "Compatible (query state)"
       },
       {
         "name": "SEQUENCE",
         "narg": 1,
         "type": "s",
-        "compatibility_status": "Planned (query state)"
+        "compatibility_status": "Compatible (query state)"
       },
       {
         "name": "sha1",

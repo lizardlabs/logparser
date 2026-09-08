@@ -6,7 +6,6 @@
     <InvariantGlobalization>false</InvariantGlobalization>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <RootNamespace>Ulp.Docs.Web</RootNamespace>
-    <DefaultItemExcludes>$(DefaultItemExcludes);artifacts\**;bin\**;obj\**</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +15,11 @@
   <ItemGroup>
     <Content Include="..\Documentation\UserGuide\**\*.md"
              Link="Content\%(RecursiveDir)%(Filename)%(Extension)"
+             CopyToOutputDirectory="PreserveNewest"
+             CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="..\Documentation\UserGuide\assets\**\*"
+             Exclude="..\Documentation\UserGuide\assets\**\*.md"
+             Link="Content\assets\%(RecursiveDir)%(Filename)%(Extension)"
              CopyToOutputDirectory="PreserveNewest"
              CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>

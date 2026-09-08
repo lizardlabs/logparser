@@ -15,7 +15,7 @@ Set `CheckpointFile` to process only records appended since the last successful 
 
 Seekable file streams store a byte offset plus a prefix fingerprint. New files are read completely, deleted files are removed after a complete scan, and truncated or replaced files restart from the beginning. If a query stops before a file reaches end-of-stream (for example, an early `LIMIT`), that file is safely replayed on the next run rather than risking skipped records. Compressed/archive and other non-seekable streams currently read normally without advancing a byte checkpoint.
 
-A checkpoint filename without a directory is resolved in the system temporary directory for Microsoft Log Parser compatibility. Prefer an explicit path for services, scheduled tasks, containers, and shared deployments.
+A checkpoint filename without a directory is resolved in the system temporary directory. Prefer an explicit path for services, scheduled tasks, containers, and shared deployments.
 
 Checkpoint state describes input positions, not SQL aggregate state. For example, `COUNT(*)` reports the number of new records in that execution, not the lifetime total.
 

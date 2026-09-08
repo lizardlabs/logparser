@@ -4,6 +4,8 @@ ULP provides several interactive surfaces for different jobs: a guided terminal 
 
 ## Contents
 
+Short introductions: [CLI](interfaces/cli.md), [guided menu](interfaces/menu.md), [TUI editor](interfaces/tui.md), [SQL shell](interfaces/shell.md), [browser](interfaces/web.md), and [agents/MCP](interfaces/mcp.md). Each has a dedicated screenshot placeholder; this chapter remains the detailed manual.
+
 - [Overview](#overview)
 - [Main Window](#main-window)
 - [Opening Input Data](#opening-input-data)
@@ -316,7 +318,7 @@ Use configuration-generation actions to create a starting file. Existing configu
 
 <!-- Screenshot placeholder: experimental web AI Chat with conversation, generated SQL block, and review warning. -->
 
-AI Chat is experimental and disabled by default. It is not a supported command-line or SQL-shell feature.
+AI Chat is experimental and disabled by default. Configure it in the menu's **Options → AI settings**, in a `.config` file, or with explicit startup switches. The same configuration is available to web chat and the SQL shell's `.ai question`, `.ai-run`, and `.ai-clear` commands. See [AI configuration](ai.md#configuration) for secret references and examples.
 
 When explicitly enabled for the web interface, it can:
 
@@ -325,7 +327,7 @@ When explicitly enabled for the web interface, it can:
 - explain or revise a proposed query;
 - display SQL for human review.
 
-It cannot execute its proposal automatically. The API key remains on the server and is not returned to the browser.
+It never executes a proposal automatically. In the web chat, choose **Run here** to review the confirmation and display a bounded plain-table preview in the conversation, or **Open in Ad-hoc editor** for editing and the full grid. Inline result rows are not added to the conversation sent to the provider. The API key remains on the server and is not returned to the browser.
 
 Before enabling AI, confirm authorization to send schema, prompts, and conversation content to the configured provider. Review the provider's privacy, retention, security, and regional-processing terms. Use `--web-no-ai` to forbid the endpoint.
 

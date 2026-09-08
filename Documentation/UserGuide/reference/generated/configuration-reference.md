@@ -145,4 +145,4 @@ Output filenames may contain .NET date/time format tokens, for example `orders-{
 
 Use `--log` for `logs\ulp-{date}.log`, or `--log-file <path>` to choose a date-token filename. `--log-max-size-mb` defaults to 10 and `--log-retain-days` defaults to 14. Logs include lifecycle, SQL, timing, warning, and sanitized error details. `--silent --verbose` keeps the console silent while retaining detailed file diagnostics.
 
-AI-assisted SQL is in development and is not supported by the current release.
+AI Chat is experimental and opt-in. Use `--help-ai` for configuration, secret references, privacy, and review-before-execution guidance.

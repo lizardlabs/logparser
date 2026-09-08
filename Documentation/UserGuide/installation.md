@@ -13,7 +13,6 @@ Project home: [https://log-parser.com](https://log-parser.com)
 - [Portable and Managed Installations](#portable-and-managed-installations)
 - [Upgrade](#upgrade)
 - [Uninstall](#uninstall)
-- [Build in an Authorized Developer Workspace](#build-in-an-authorized-developer-workspace)
 - [Verify a Download](#verify-a-download)
 - [Troubleshooting](#troubleshooting)
 
@@ -171,45 +170,7 @@ Do not mix DLLs or native components from different release folders.
 
 Removing the application folder does not remove data or configuration stored elsewhere.
 
-## Build in an Authorized Developer Workspace
-
-This section is for authorized maintainers with the complete ULP source workspace and required sibling projects. ULP is not presented as an open-source project, and these instructions do not grant access to or rights in the source code.
-
-### Requirements
-
-- Windows with .NET Framework 4.8.1 developer/targeting components;
-- Visual Studio or Build Tools capable of building the solution's C# and VB.NET projects;
-- a compatible .NET SDK/MSBuild installation;
-- restored dependencies;
-- the complete private workspace layout expected by the solution;
-- PowerShell for integration and packaging checks.
-
-From the workspace root:
-
-```powershell
-.\build.ps1 Build -Configuration Debug
-.\build.ps1 Test -Configuration Debug
-```
-
-Verify formatting, build, and tests together:
-
-```powershell
-.\build.ps1 Finish -Configuration Release
-```
-
-Create a release candidate only after legal and dependency review is complete:
-
-```powershell
-.\build.ps1 Release
-```
-
-Release packaging intentionally fails when required product-license or component approvals remain unresolved. The internal review override tests package mechanics only; it does not authorize publication.
-
-See [Deployment and Packaging](deployment.md#building-a-release-candidate) for the artifact layout and release gate.
-
 ## Verify a Download
-
-Verification confirms that the received bytes match publisher-supplied evidence. It does not make an untrusted download source trustworthy.
 
 ### SHA-256
 

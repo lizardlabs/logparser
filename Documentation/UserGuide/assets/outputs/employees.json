@@ -1,0 +1,35 @@
+{
+  "Table0": {
+    "Metadata": {
+      "employee_id": {
+        "Type": "String",
+        "Position": 0
+      },
+      "employee_name": {
+        "Type": "String",
+        "Position": 1
+      },
+      "department_id": {
+        "Type": "String",
+        "Position": 2
+      }
+    },
+    "Data": [
+      {
+        "employee_id": "1",
+        "employee_name": "Ada",
+        "department_id": "10"
+      },
+      {
+        "employee_id": "2",
+        "employee_name": "Grace",
+        "department_id": "10"
+      },
+      {
+        "employee_id": "3",
+        "employee_name": "Linus",
+        "department_id": "20"
+      }
+    ]
+  }
+}

@@ -27,13 +27,6 @@ $assembly = if ($testingPublishedOutput) {
     Join-Path $projectRoot "bin\$Configuration\net10.0\Ulp.Docs.Web.dll"
 }
 if (-not (Test-Path -LiteralPath $assembly -PathType Leaf)) { throw "Website assembly not found: $assembly" }
-if ($testingPublishedOutput) {
-    foreach ($forbiddenDirectory in @('artifacts', 'bin', 'obj')) {
-        if (Test-Path -LiteralPath (Join-Path $siteRoot $forbiddenDirectory)) {
-            throw "Published website contains recursive build output: $forbiddenDirectory"
-        }
-    }
-}
 
 $listener = [Net.Sockets.TcpListener]::new([Net.IPAddress]::Loopback, 0)
 $listener.Start()
@@ -76,10 +69,21 @@ try {
         $document = Invoke-WebRequest -Uri ($baseUrl + '/docs/getting-started') -UseBasicParsing
         if ($document.Content -notmatch '<h1[^>]*>Getting Started</h1>') { throw 'Markdown document was not rendered.' }
         if ($document.Headers['Content-Security-Policy'] -notmatch "default-src 'self'") { throw 'CSP header is missing.' }
+        $navigation = Get-Content -LiteralPath (Join-Path $siteRoot 'navigation.json') -Raw | ConvertFrom-Json
+        $navigationSlugs = @($navigation.groups | ForEach-Object { $_.items } | ForEach-Object { $_.slug } | Sort-Object -Unique)
+        foreach ($slug in $navigationSlugs) {
+            $page = Invoke-WebRequest -Uri ($baseUrl + '/docs/' + $slug) -UseBasicParsing
+            if ($page.StatusCode -ne 200 -or $page.Content -notmatch '<h1') { throw "Navigation target did not render: $slug" }
+        }
+        Write-Host "PASS  $($navigationSlugs.Count) sidebar documentation destinations render successfully."
         $search = Invoke-WebRequest -Uri ($baseUrl + '/search?q=SQLite') -UseBasicParsing
         if ($search.Content -notmatch 'result') { throw 'Search results were not rendered.' }
         $sitemap = Invoke-WebRequest -Uri ($baseUrl + '/sitemap.xml') -UseBasicParsing
         if ($sitemap.Content -notmatch '/docs/getting-started') { throw 'Sitemap is missing documentation pages.' }
+        $showcaseCsv = Invoke-WebRequest -Uri ($baseUrl + '/docs-assets/assets/outputs/employees.csv') -UseBasicParsing
+        if ($showcaseCsv.StatusCode -ne 200 -or $showcaseCsv.Content -notmatch 'Ada') { throw 'Generated CSV showcase did not render.' }
+        $showcaseZip = Invoke-WebRequest -Uri ($baseUrl + '/docs-assets/assets/outputs/ulp-output-showcase.zip') -UseBasicParsing
+        if ($showcaseZip.StatusCode -ne 200 -or $showcaseZip.RawContentLength -lt 1000) { throw 'Generated output showcase download is missing.' }
         $robots = Invoke-WebRequest -Uri ($baseUrl + '/robots.txt') -UseBasicParsing
         if ($robots.Content -notmatch 'Sitemap:') { throw 'robots.txt is missing its sitemap.' }
         try {

@@ -6,24 +6,50 @@
         { "title": "Manual overview", "slug": "index", "description": "Choose the right path through the documentation." },
         { "title": "Getting started", "slug": "getting-started", "description": "Run a first query and understand the result." },
         { "title": "Installation", "slug": "installation", "description": "Install, upgrade, remove, and verify ULP." },
-        { "title": "Use-case tutorials", "slug": "tutorials", "description": "Complete practical jobs with executable examples." }
+        { "title": "Use-case tutorials", "slug": "tutorials", "description": "Investigate logs, report on data, and build a code snapshot." }
       ]
     },
     {
-      "title": "Analyze data",
+      "title": "Quick reference",
       "items": [
-        { "title": "How-to recipes", "slug": "how-to", "description": "Find the shortest path to a specific result." },
-        { "title": "Inputs and outputs", "slug": "inputs-and-outputs", "description": "Choose providers, writers, pipelines, and formats." },
-        { "title": "SQLite guide", "slug": "sqlite-guide", "description": "SQL explained through ULP examples." },
-        { "title": "SQL functions", "slug": "functions", "description": "Function descriptions and runnable examples." }
+        { "title": "Commands and settings", "slug": "reference", "description": "Syntax, configuration, defaults, and diagnostics." },
+        { "title": "All CLI switches", "slug": "reference/generated/cli-reference", "description": "Generated from the running application." },
+        { "title": "Inputs and outputs", "slug": "inputs-and-outputs", "description": "Select a provider or writer and inspect its properties." },
+        { "title": "SQL functions", "slug": "functions", "description": "Find a function by task, with descriptions and examples." }
       ]
     },
     {
-      "title": "Work with ULP",
+      "title": "User interfaces",
       "items": [
+        { "title": "Command line", "slug": "interfaces/cli", "description": "Commands, automation, and pipelines." },
+        { "title": "Guided menu", "slug": "interfaces/menu", "description": "Explore sources, queries, and output choices." },
+        { "title": "Full-screen editor", "slug": "interfaces/tui", "description": "Start with --tui and review SQL before running." },
+        { "title": "SQL shell", "slug": "interfaces/shell", "description": "Keep a connection open for interactive SQL." },
+        { "title": "Browser", "slug": "interfaces/web", "description": "Saved queries, ad-hoc editing, and results." },
+        { "title": "Agents and MCP", "slug": "interfaces/mcp", "description": "Independent agent sessions and CLI discovery." }
+      ]
+    },
+    {
+      "title": "Use ULP",
+      "items": [
+        { "title": "How-to guide", "slug": "how-to", "description": "Short task-oriented recipes." },
         { "title": "User interfaces", "slug": "user-interface", "description": "CLI, menu, TUI, shell, and web workflows." },
-        { "title": "Samples", "slug": "samples", "description": "Queries, inputs, scripts, exports, and templates." },
-        { "title": "AI, agents, and MCP", "slug": "ai", "description": "Integrate ULP safely with AI tools." }
+        { "title": "Samples", "slug": "samples", "description": "Queries, inputs, scripts, exports, and templates." }
+      ]
+    },
+    {
+      "title": "SQL and data",
+      "items": [
+        { "title": "SQLite guide", "slug": "sqlite-guide", "description": "SQL explained through ULP examples." },
+        { "title": "SQL functions", "slug": "functions", "description": "Core, extension, and compatibility functions." },
+        { "title": "Inputs and outputs", "slug": "inputs-and-outputs", "description": "Providers, writers, pipelines, and formats." }
+      ]
+    },
+    {
+      "title": "Advanced features",
+      "items": [
+        { "title": "AI, agents, and MCP", "slug": "ai", "description": "Integrate ULP safely with AI tools." },
+        { "title": "Deployment", "slug": "deployment", "description": "Package, automate, and deploy ULP." }
       ]
     },
     {
@@ -35,11 +61,12 @@
       ]
     },
     {
-      "title": "Product and administration",
+      "title": "Project",
       "items": [
-        { "title": "Deployment", "slug": "deployment", "description": "Deploy and verify the supported portable package." },
+        { "title": "Versions", "slug": "versions", "description": "Release history and compatibility." },
         { "title": "About ULP", "slug": "about", "description": "Purpose, philosophy, goals, and credits." },
-        { "title": "Legal and privacy", "slug": "legal", "description": "Licensing, notices, privacy, and disclaimers." }
+        { "title": "Legal and privacy", "slug": "legal", "description": "Licensing, notices, privacy, and disclaimers." },
+        { "title": "Blog and stories", "slug": "blog/README", "description": "Independent articles and project stories." }
       ]
     }
   ]

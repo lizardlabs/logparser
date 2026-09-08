@@ -123,6 +123,7 @@ Use `--` in `search`, `analyze`, and `ingest` to treat the remaining values as p
 | `--beginner-menu` | Use the focused beginner layout |
 | `--advanced-menu` | Include shell, SQLite internals, jobs, and output fan-out |
 | `--shell` | Open the SQLite SQL shell directly |
+| `--tui` | Open the full-screen query editor without executing; optionally preload `--query`, `--query-file`, or `--command` |
 | `--pager[=auto\|always\|never]` | Configure long terminal output paging |
 | `--no-pager` | Disable paging for this run |
 | `--verbose`, `-v` | Write additional sanitized diagnostics to stderr |
@@ -150,7 +151,22 @@ Use `--` in `search`, `analyze`, and `ingest` to treat the remaining values as p
 | `--about` | Show product information and website |
 | `--version` | Show the ULP version |
 
-Help topics include `general`, `providers`, `writers`, `sqlite`, `query-builder`, `mcp`, `ado`, `scriban`, `jobs`, `output`, `configuration`, `examples`, and `advanced`.
+Help topics include `general`, `providers`, `writers`, `sqlite`, `query-builder`, `mcp`, `ai`, `ado`, `scriban`, `jobs`, `output`, `configuration`, `examples`, and `advanced`.
+
+### Experimental AI configuration
+
+| Option | Meaning |
+| --- | --- |
+| `--ai` / `--no-ai` | Explicitly enable or disable the shared chat configuration |
+| `--ai-base-url <url>` | Compatible Chat Completions API base; remote URLs require HTTPS |
+| `--ai-model <name>` | Model supported by the selected provider |
+| `--ai-key <reference>` | Prefer `@env:NAME`, `@file:PATH`, or `@wincred:TARGET` |
+| `--ai-timeout <seconds>` | Request timeout, 1–600 seconds; default 60 |
+| `--help-ai` | Configuration, secret handling, privacy, and review workflow |
+
+Use the same switches in an explicit `.config` file, or configure **Options → AI settings** in the menu. Saved menu settings accept key references only, not literal keys. SQL shell commands are `.ai question`, `.ai-run`, `.ai-clear`, and `.ai-config`. AI remains opt-in and never executes a proposal automatically. See [AI configuration and safety](ai.md) before enabling a provider.
+
+For external agents, `ulp --mcp` exposes `CreateSession`, `ListSessions`, `CloseSession`, and `GetRuntimeInfo`. Pass `sessionId` on each stateful tool call for independent work. These sessions isolate SQLite state, not account/file permissions. See [MCP session guidance](ai.md#independent-agent-sessions).
 
 ## Commands
 

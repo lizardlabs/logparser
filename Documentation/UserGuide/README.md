@@ -23,7 +23,7 @@ Project home: [log-parser.com](https://log-parser.com)
 
 ## Ten-minute learning path
 
-1. [Install and verify ULP](installation.md#download-and-unzip).
+1. [Install and verify ULP](installation.md#install-from-the-release-zip).
 2. Run the [first query](getting-started.md#your-first-query).
 3. Inspect a real input schema before writing a larger query.
 4. Complete one [tutorial](tutorials.md) that resembles your job.
@@ -57,7 +57,7 @@ ulp --input TextLine --from '.\logs\*.log' --table logs `
 
 ### Work with structured data
 
-- [CSV and delimited text](inputs-and-outputs.md#csv)
+- [CSV and delimited text](inputs-and-outputs.md#csv-tsv-and-delimited-text)
 - [JSON](inputs-and-outputs.md#json)
 - [YAML and TOON](inputs-and-outputs.md)
 - [Excel workbooks](inputs-and-outputs.md#excel)

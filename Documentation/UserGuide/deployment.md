@@ -11,7 +11,8 @@ This chapter explains how to deploy the supported portable ULP package, automate
 - [Automation](#automation)
 - [Deploying the Web Server](#deploying-the-web-server)
 - [Building a Release Candidate](#building-a-release-candidate)
-- [Release Artifact Layout](#release-artifact-layout)
+- [Release Artifacts](#release-artifacts)
+- [MCP Deployment](#mcp-deployment)
 - [Compliance and Publication Gate](#compliance-and-publication-gate)
 - [Package Verification](#package-verification)
 - [CI/CD Integration](#cicd-integration)
@@ -157,7 +158,13 @@ For local interactive use, keep the default localhost and HTTPS behavior. For a 
 - keep query, configuration, input, and output directories explicitly mounted or assigned;
 - stop the listener when it is no longer needed.
 
-Plain HTTP is an explicit opt-in for controlled scenarios and should not carry credentials or sensitive results over an untrusted network. See [Web Interface Security](security.md#web-interface-security) and the [Web interface guide](web-interface.md).
+Plain HTTP is an explicit opt-in for controlled scenarios and should not carry credentials or sensitive results over an untrusted network. See [Web Interface Security](security.md#web-interface-security) and the [Web interface guide](interfaces/web.md).
+
+## MCP Deployment
+
+Configure the client with an absolute path to `ulp.exe` and the argument `--mcp`. The client starts and owns the stdio process; do not run it as an HTTP service. Set explicit Query library and configuration directories for managed installations, and restrict the operating-system account to the data it should access.
+
+One process can host several independent tasks. Call `CreateSession` per task and pass its `sessionId` to every data tool. Omitting the ID uses the default session, whose persistent database can be selected with `--database`. Named sessions are in-memory and are discarded when closed. These are state-isolation conveniences, not separate user accounts or permission boundaries. See the [MCP reference](reference/generated/mcp-reference.md).
 
 ## Building a Release Candidate
 
@@ -198,7 +205,7 @@ The release command:
 
 The packager does not commit or push either repository.
 
-## Release Artifact Layout
+## Release Artifacts
 
 The local build writes the candidate under the workspace `artifacts` directory. The ZIP contains the versioned staging directory itself:
 

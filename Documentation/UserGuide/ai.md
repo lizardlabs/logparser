@@ -1,8 +1,8 @@
 # AI Features
 
-ULP includes an **experimental AI SQL Chat** in the optional local web interface. It can turn a natural-language request into a reviewable SQLite query using the schemas available to that web-server run.
+ULP includes **experimental AI Chat** in the browser, guided menu, and SQL shell. It can explain a request, ask for missing information, or propose SQLite SQL using the actual schemas and function names available to that session.
 
-AI is disabled by default. It requires an explicitly configured external OpenAI-compatible API, and generated SQL is never executed automatically. AI commands for the ordinary command line, guided menu, TUI, and SQL shell are not supported in the current release.
+AI is disabled by default. It requires an explicitly configured OpenAI-compatible API, and generated SQL is never executed automatically. Configure it with CLI flags, a `.config` file, or **Options > Configure AI (experimental)**. The TUI editor does not have an embedded AI chat.
 
 ## Contents
 
@@ -10,6 +10,8 @@ AI is disabled by default. It requires an explicitly configured external OpenAI-
 - [Choose an AI or Agent Integration](#choose-an-ai-or-agent-integration)
 - [Packaged Agent Skills](#packaged-agent-skills)
 - [Connect an Agent Through MCP](#connect-an-agent-through-mcp)
+- [Independent agent sessions](#independent-agent-sessions)
+- [JSON or TOON for agent results](#json-or-toon-for-agent-results)
 - [Use ULP Directly From an Agent](#use-ulp-directly-from-an-agent)
 - [What AI Can Do](#what-ai-can-do)
 - [Getting Started](#getting-started)
@@ -37,7 +39,7 @@ The experimental feature follows a review-first workflow:
 2. You describe the result you want in AI SQL Chat.
 3. ULP sends the request, recent chat context, and schema description to the configured API.
 4. The provider returns proposed SQLite SQL.
-5. ULP displays the SQL and offers **Open in Ad-hoc editor**.
+5. ULP displays an explanation, clarification, or SQL proposal. In the browser it offers **Open in Ad-hoc editor** and **Run here** when SQL is available and permitted.
 6. You inspect and, if necessary, edit the query.
 7. You choose whether to execute it through the normal query interface.
 
@@ -48,9 +50,9 @@ The proposal and execution are deliberately separate. Treat generated SQL like S
 | Surface | AI SQL status |
 | --- | --- |
 | Optional web interface | Experimental; available when explicitly configured |
-| Normal CLI query execution | Not supported |
-| Guided console menu | Not supported |
-| SQL shell | Not supported |
+| Normal CLI query execution | Configuration flags; use `--shell` or `--menu` for chat |
+| Guided console menu | Options: configure AI and open experimental chat |
+| SQL shell | `.ai`, `.ai-run`, `.ai-clear`, `.ai-config` |
 | TUI query editor | Not supported |
 | MCP server | No AI-generation tool provided by ULP |
 
@@ -189,7 +191,64 @@ For a saved recipe, use `ListSavedQueries`, `GetSavedQuery`, `LoadSavedQuery`, r
 
 Client schemas and configuration locations evolve independently of ULP. The generated reference records the values ULP needs, while the linked client documentation is authoritative for the surrounding file shape.
 
+## Independent agent sessions
+
+Call `GetRuntimeInfo` to discover the installed CLI path instead of searching the disk or guessing a release folder. The response also identifies the working directory and Query library. It does not expose API keys or connection strings.
+
+For parallel tasks, call `CreateSession` once per task and pass the returned `sessionId` on every data tool call. This includes virtual-table creation, table inspection, query and saved-query execution, exports, materialization, dropping tables, and history. Help and recipe discovery remain shared. Calls that omit the ID use the existing default database.
+
+Named sessions each have their own in-memory tables and history. One busy session does not hold the database lock for another. There are at most 32 named sessions; close unused ones with `CloseSession`. A busy-session error means an operation already owns that session; wait or use another task session, not repeated identical submissions. The five-second contention limit is not a query runtime limit.
+
+Before closing, export anything worth keeping. A separate CLI process cannot see in-memory or TEMP tables from an MCP session. For cross-process reuse, explicitly materialize to a file-backed SQLite database and report its path. A snapshot also needs a refresh policy: changed source files do not update previously materialized rows automatically.
+
+Session IDs are not credentials or authorization boundaries. All tasks share the process's operating-system account and file permissions. See the [MCP reference](reference/generated/mcp-reference.md) for examples and client setup.
+
+## JSON or TOON for agent results
+
+Keep JSON as the default for MCP interoperability. `ExecuteQuery` returns JSON; use `ExportQuery` with `writer: "TOON"` when a consuming agent explicitly supports TOON. This changes result representation, not the MCP protocol envelope or tool arguments.
+
+TOON can avoid repeating column names for uniform rows. It is not automatically smaller for nested, irregular, or very small results, and a smaller byte count does not prove fewer model tokens or more accurate answers. Do not promise a fixed saving or assume a model understands unfamiliar syntax correctly.
+
+For your actual workload, compare the **same selected columns and rows** in both formats, include metadata and tool-envelope overhead, count tokens with the target model's tokenizer, and check that the agent recovers every value, NULL, type, newline, and delimiter correctly. Keep JSON when the consumer expects structured JSON. Use TOON only when the measured saving is worthwhile and round-trip interpretation remains reliable.
+
+The most dependable reduction comes before formatting: filter rows, project only needed fields, aggregate, return source spans instead of entire files, and materialize once for repeated analysis. A 30-row evidence table in JSON usually serves an investigation better than an entire repository dumped in any compact format.
+
 ## Use ULP Directly From an Agent
+
+### Make ULP the first choice for code investigation
+
+Place a short policy in your repository's agent-instruction file so you do not need to repeat it in every prompt. Adapt the scope and installation path to your workspace:
+
+```text
+For code inventory and repeated code analysis, prefer ULP over repeated shell
+file scans. Discover ULP's executable via MCP GetRuntimeInfo when available.
+Inspect SourceCode help, schema, and Code library recipes before writing SQL.
+Start with a bounded subtree and exclude dependencies and generated output.
+Use a separate MCP session for this task and pass its sessionId consistently.
+For many questions, materialize once into a task-local SQLite snapshot and reuse it.
+Select only fields needed for the question; return paths and exact source spans.
+Use TextLine for literal phrases or bounded context that structural parsing misses.
+Verify important findings against source. Text matches and parser hints do not
+prove runtime dispatch or semantic call relationships. Report parser diagnostics.
+Do not modify source code or remove a persistent snapshot without task authority.
+Report the snapshot path and refresh it deliberately after source changes.
+```
+
+Useful investigation recipes:
+
+| Question | ULP approach | Evidence to return |
+| --- | --- | --- |
+| Which declarations implement parsing? | Filter `SourceCode` by kind/name; inspect signatures and bodies only for candidates. | Full name, language, file, start/end line |
+| What is the public surface of this component? | Query declaration/accessibility fields from the actual schema. | Types, public members, signatures, spans |
+| Where might a changed method be called? | Use the Code call recipes, then verify candidates in source. | Caller/callee hints, source text, uncertainty |
+| Which methods deserve review first? | Rank available complexity/size metrics and inspect parser diagnostics. | Metric, declaration, span; no unsupported quality verdict |
+| Which files contain a phrase? | Use `TextLine` or the saved text-search recipe before structural parsing. | Matching path, line number, bounded context |
+| What is between these two lines? | Inspect `TextLine` fields and filter the recorded line-number column to the requested range. | Exact text with line numbers |
+| Are comments misleading a structural search? | Disable comments in `SourceCode`; use text search separately when comments are relevant. | Search scope and parser options |
+| Do many questions need the same repository? | Materialize rows once, index repeatedly filtered columns, then reuse ordinary SQLite tables. | Snapshot path, source scope, creation/refresh state |
+| Did the source change? | Rebuild a deliberate snapshot; compare stable paths, names, spans, and available hashes. | Added/removed/changed candidates, verified examples |
+
+Start with the [code-snapshot tutorial](tutorials.md#build-a-searchable-code-snapshot). The Code library also includes language-specific queries for C#, VB.NET, Razor, HTML, JavaScript, TypeScript, and Markdown. Read the recipe's description and parameters before using it; do not assume every language provides identical fields or compiler-level semantic resolution.
 
 MCP is optional. Any agent allowed to run commands can use ULP as a deterministic local tool. Prefer machine-readable, bounded output:
 
@@ -308,14 +367,32 @@ Non-secret AI options may be placed in a ULP `.config` file:
 --web-ai-key="@env:ULP_AI_API_KEY"
 ```
 
-Store only the reference, not the key. ULP does not persist API keys to its normal interactive settings file.
+Store only the reference, not the key. ULP does not persist literal API keys to its normal interactive settings file. `--ai`, `--ai-base-url`, `--ai-model`, `--ai-timeout`, and `--ai-key` are shared names for the same settings; the `--web-ai*` names remain accepted aliases. Use `--no-ai` to disable saved AI settings for one invocation.
+
+### Configure from the menu
+
+Run `ulp --menu`, open **Options > Configure AI (experimental)**, and choose the endpoint, model, timeout, and key method. Prefer **Use a secret reference**. You can save the enabled state and non-secret settings plus that reference in `<config-dir>/settings.config`. A literal key entered through the masked prompt is kept for this process only. Saving does not test the provider or send a request.
+
+### Chat in the SQL shell
+
+```powershell
+ulp --config ai.config --shell --input TextLine --from samples/data/application.log --table logs
+```
+
+Enter `.ai Find error messages and explain the query`. The response is a proposal, not an execution. Ask follow-ups with `.ai ...`; use `.ai-run` only after reviewing the SQL. `.ai-clear` removes the in-memory conversation and last proposal. `.ai-config` opens settings when the shell has an interactive terminal. Ctrl+C cancels a pending AI request.
+
+### Keep results inside browser chat
+
+Choose **Run here** beneath a SQL proposal and confirm that you reviewed it. A simple table appears in the same message; the app does not navigate to the Query library or Ad-hoc editor. The inline preview displays at most 100 rows and 30 columns per result set, truncating very long cells. The normal server result limit also applies. Use the Ad-hoc grid or export for complete interactive results.
+
+Inline results are not added to the model's conversation or sent back to the provider automatically. Browser chat history retains the conversation and SQL locally, not these inline result tables. **New chat** clears that history. Query permissions still apply; disabling ad-hoc execution also disables inline execution.
 
 ## Providers
 
 ULP uses an OpenAI-compatible Chat Completions request. A compatible service must:
 
 - accept an HTTP `POST` at a `/chat/completions` endpoint;
-- accept a JSON request containing `model`, `messages`, and `temperature`;
+- accept a JSON request containing `model` and `messages` (ULP does not force optional sampling parameters);
 - accept bearer-token authentication;
 - return generated text in `choices[0].message.content`;
 - return SQLite SQL as text.
@@ -334,7 +411,7 @@ Choose a model that:
 
 - is available to the configured API key;
 - supports the Chat Completions-compatible endpoint;
-- reliably follows instructions to return SQL only;
+- follows the requested `message` and optional `sql` response format, or returns clearly fenced SQL;
 - has enough context for the schema and request;
 - meets the organization's privacy, residency, latency, and cost requirements.
 
@@ -415,7 +492,7 @@ descending. Preserve the 7-day filter:
 
 SELECT ProviderName, COUNT(*) AS ErrorCount
 FROM tEvt1
-WHERE LevelDisplayName = 'Error'
+WHERE EventTypeName = 'Error'
   AND TimeCreated >= datetime('now', '-7 days');
 ```
 
@@ -484,7 +561,7 @@ Show the top event providers by error count during the last 24 hours.
 SELECT ProviderName,
        COUNT(*) AS ErrorCount
 FROM tEvt1
-WHERE LevelDisplayName = 'Error'
+WHERE EventTypeName = 'Error'
   AND TimeCreated >= datetime('now', '-24 hours')
 GROUP BY ProviderName
 ORDER BY ErrorCount DESC
@@ -621,7 +698,7 @@ Confirm all three requirements:
 --web-ai-model <provider-model>
 ```
 
-The base URL must also be a valid absolute HTTP or HTTPS URL. Restart the web server after changing startup options.
+The base URL must be an absolute HTTPS URL for remote services. Plain HTTP is accepted only for a loopback service on your computer. Do not embed credentials or query parameters in the URL. Restart the web server after changing startup options.
 
 ### `Web AI requires --web-ai-key`
 
@@ -629,7 +706,7 @@ The reference resolved to no value or the option was omitted. Verify the environ
 
 ### Provider request failed with 401 or 403
 
-Check the key, account permissions, provider base URL, and model access. Rotate the key if it may have been exposed. ULP deliberately keeps the provider response detail out of the browser; inspect the sanitized ULP log when more information is needed.
+Check the key, account permissions, provider base URL, and model access. Rotate the key if it may have been exposed. ULP reports the HTTP status but deliberately omits the provider response body, which might contain sensitive information. Check the provider's account dashboard for access or quota problems.
 
 ### Provider request failed with 404
 
@@ -639,13 +716,13 @@ Verify the base URL. Supply either the API base ending before `/chat/completions
 
 Increase `--web-ai-timeout` within the accepted 1–600 second range, choose a faster model, reduce a very large schema, or diagnose network/provider latency. A longer timeout does not fix an unavailable endpoint.
 
-### The provider returned no SQL
+### The provider returned an explanation without SQL
 
-The response did not contain usable message text. Confirm API compatibility and try a direct, concrete SQL request. A general chat response format is not sufficient.
+A clarification or explanation is a valid chat response; it does not need SQL. Answer the question or ask for a concrete query against a named table. Execution buttons appear only when there is a SQL proposal. If the provider returns no message at all, verify that it supports Chat Completions text responses.
 
 ### ULP rejected the returned text
 
-ULP accepts a proposed statement only when it begins with an allowed read-oriented SQLite form. Ask the model to return one SQLite `SELECT`, `WITH`, `PRAGMA`, or `EXPLAIN` statement with no Markdown fence or explanation.
+ULP accepts a SQL proposal only when it begins with a read-oriented SQLite form. Ask the model to return a JSON object with `message` and `sql` fields; `sql` can be null when clarification is needed. SQL-only and fenced SQL replies from compatible providers are also accepted. Prefix validation is not a security sandbox: review the complete SQL before executing it.
 
 ### The generated query reports `no such table` or `no such column`
 
@@ -664,7 +741,7 @@ The server reports AI availability to the browser. If it was started without com
 - [User Interface](user-interface.md)
 - [SQLite Guide](sqlite-guide.md)
 - [SQL Function Reference](functions.md)
-- [ULP Tutorials — AI-Assisted Querying](tutorials.md#tutorial-12--ai-assisted-querying)
+- [Tutorial: review an AI-assisted investigation](tutorials.md#review-an-ai-assisted-investigation)
 - [Configuration](reference.md#configuration)
 - [Optional local web server](user-interface.md#work-in-the-browser)
 - Consolidated security chapter — planned; current web and AI security guidance is included above

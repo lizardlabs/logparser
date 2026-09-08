@@ -10,12 +10,35 @@ ulp --mcp --database agent-session.sqlite
 ulp --mcp --queries-dir C:\Data\ulp-queries
 ```
 
-The server uses one shared SQLite connection. It supports multiple provider types simultaneously and exposes these tools:
+The server supports multiple provider types and independent task sessions. Existing clients can omit `sessionId` to use the default database selected by `--database`. New named sessions use separate in-memory databases.
+
+## Independent task sessions and CLI discovery
+
+Call `GetRuntimeInfo` to find the actual CLI executable, working directory, and Query library. Do not guess an installation path. In a release package this identifies the root launcher, not just the application in `runtime`.
+
+```text
+CreateSession(sessionId: "code-review")
+CreateVirtualTable(recordProviderType: "SourceCode", recordProvider: "C:\Repo\*.cs", name: "code", sessionId: "code-review")
+DescribeTable(tbl: "code", sessionId: "code-review")
+ExecuteQuery(query: "SELECT Kind, Name, SourcePath, StartLine FROM code LIMIT 20", sessionId: "code-review")
+CloseSession(sessionId: "code-review")
+```
+
+Pass the same `sessionId` on **every** data operation: create/describe/list tables, execute/export/saved-query execution, materialize/drop, and query history. Library discovery and help are shared and need no session ID. `ListSessions` returns active IDs without waiting for their queries. IDs are case-sensitive; unknown IDs fail instead of silently creating a new database. Existing IDs cannot be reset by creating them again.
+
+Up to 32 named sessions can exist. Each keeps its own tables, history (latest 1,000 statements), and operation lock. A second operation on a busy session returns a helpful error after five seconds; other sessions remain usable. This wait limit does **not** impose a query execution time limit. Keep queries bounded and avoid concurrent operations on the same session. Closing a named session discards its data; the default session closes with the server.
+
+Sessions isolate SQLite state, **not permissions or users**. Every client has the server account's filesystem privileges. A separate CLI process cannot see an MCP in-memory database or its TEMP tables. To reuse materialized data across processes, explicitly write it to a file-backed SQLite database and finish the write before reading it from another process. Never put secrets into a session ID.
+
+## Available tools
+
+- `GetRuntimeInfo`: discover the CLI and local directories without exposing connection strings or secrets.
+- `CreateSession`, `ListSessions`, `CloseSession`: manage independent task databases.
 
 - `ListDataProviders`: discover provider keys.
 - `GetRecordProviderHelp`: obtain generated provider/property help.
 - `CreateVirtualTable`: create or replace a ParsingModule virtual table; omitted names identify their provider, such as `tEvt1` or `tCsv1`.
-- `ListTables`: inspect the shared SQLite catalog.
+- `ListTables`: inspect the selected session's SQLite catalog.
 - `DescribeTable`: inspect columns before composing SQL.
 - `ExecuteQuery`: execute SQLite and return all result sets as JSON with metadata.
 - `ListSavedQueries`: discover recursive Query-library recipes, stable IDs, commands, descriptions, source properties, output defaults, and declared parameters.
@@ -23,7 +46,7 @@ The server uses one shared SQLite connection. It supports multiple provider type
 - `LoadSavedQuery`: validate overrides and return the complete ParsingModule + query SQL and native SQLite bindings without executing it.
 - `ExecuteSavedQuery`: repeat validation, create the declared source when needed, bind parameters natively, and return JSON results.
 - `ListResultWriters` and `GetResultWriterHelp`: discover reusable export formats and properties.
-- `ExportQuery`: render a query as JSON, XML, CSV, TSV, Markdown, HTML, YAML, SQL, Excel, or another Common writer; return it inline or save it to an explicit path.
+- `ExportQuery`: render a query as JSON, XML, CSV, TSV, Markdown, HTML, YAML, SQL, Excel, or another supported writer; return it inline or save it to an explicit path.
 - `MaterializeTable`: copy a streaming ParsingModule table into a TEMP table before joins or window queries.
 - `DropTable`: remove a session table.
 - `ClearQueryHistory`: clear session history without changing data.

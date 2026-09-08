@@ -46,6 +46,7 @@ Basic query and output options:
 
 Interactive menu:
   --menu                       Open the guided interactive menu
+  --tui                        Open the full-screen SQL editor (optional --query/--query-file)
   --no-menu                    Show help instead of a configured default menu
   --startup-mode <mode>        No-command behavior: help (default) or menu; saveable
   --beginner-menu              Use the guided menu layout (default)
@@ -125,6 +126,7 @@ Output and diagnostics:
   --stats                      Emit a JSON execution summary on stderr
   --max-background-jobs <n>   Interactive scheduler concurrency, 1-16 (default: 2)
   --menu / --no-menu / --startup-mode <help|menu>
+  --tui                        Open the full-screen editor; SQL runs only after Run
   --beginner-menu / --advanced-menu
   --pager[=auto|always|never] / --no-pager
   --log [file]                 Enable a rolling file log; default: logs/ulp-{date}.log
@@ -162,6 +164,12 @@ Web server:
   --web-no-edit                Disable Query library create/edit/delete
   --web-no-shell               Disable the safe SQL/Query library web shell
   --web-no-ai                  Disable the experimental AI Chat endpoint
+  --help-ai                    Experimental AI configuration, privacy, and chat help
+  --ai / --no-ai               Enable/disable shared experimental AI settings
+  --ai-base-url / --ai-model   Compatible endpoint and configured model name
+  --ai-key <reference>         Prefer @env:, @file:, or @wincred: secret references
+  --ai-timeout <seconds>       Request timeout (1-600, default 60)
+  --ai-header NAME=VALUE       Optional provider header; never saved by the menu
   --web-ai                     Enable experimental OpenAI-compatible AI Chat
   --web-ai-base-url <url>      Chat Completions-compatible API base URL
   --web-ai-key <secret>        API key; prefer @env:, @file:, or @wincred:

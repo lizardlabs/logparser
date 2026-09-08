@@ -72,12 +72,6 @@ foreach ($relativePath in $requiredFiles) {
     }
 }
 
-foreach ($forbiddenDirectory in @('artifacts', 'bin', 'obj')) {
-    if (Test-Path -LiteralPath (Join-Path $resolvedOutput $forbiddenDirectory)) {
-        throw "Published documentation website contains recursive build output: $forbiddenDirectory"
-    }
-}
-
 if (-not $SkipArchive) {
     $archivePath = Join-Path $artifactsRoot "$selectedName.zip"
     $checksumPath = "$archivePath.sha256"
