@@ -38,6 +38,7 @@ ULP supports a SQLite-first query form, direct utility commands, interactive int
 ulp [global-options] [source-blocks] [query-actions] [output-options]
 ulp <command> [command-options]
 ulp --menu
+ulp --tour[=auto|list|chapter]
 ulp --shell
 ulp --web [web-options]
 ulp --mcp
@@ -97,8 +98,9 @@ Use `--` in `search`, `analyze`, and `ingest` to treat the remaining values as p
 
 | Option | Meaning |
 | --- | --- |
-| `--input`, `-i <provider>` | Begin a provider source block; default provider is `TextLine` |
+| `--input`, `-i <provider>` | Begin a provider source block; use `Auto` for bounded detection |
 | `--from`, `--source <value>` | Select file/glob, URL, archive entry, channel, or provider-specific source |
+| `--detect-format <source>` | Report the detected provider, confidence, and evidence without querying |
 | `--table <name>` | Set the SQLite virtual-table name |
 | `--query`, `-q <sql>` | Execute SQL after source tables are created |
 | `--query-file`, `-f <file>` | Read and execute SQL from a file; wildcards are accepted |
@@ -118,6 +120,7 @@ Use `--` in `search`, `analyze`, and `ingest` to treat the remaining values as p
 | Option | Meaning |
 | --- | --- |
 | `--menu` | Open the guided menu |
+| `--tour[=mode]`, `--showcase[=mode]` | Open the product tour; mode can be `auto`, `list`, or a named chapter |
 | `--no-menu` | Override a saved menu startup and show normal help |
 | `--startup-mode help\|menu` | Select no-command behavior |
 | `--beginner-menu` | Use the focused beginner layout |
@@ -640,6 +643,25 @@ Execution order:
 
 All lifecycle options are repeatable. Named SQL parameters are available to hooks. Failures fail the affected query/session; cleanup is still followed by deterministic connection disposal.
 
+### Recurring queries and live tail
+
+| Option | Behavior |
+| --- | --- |
+| `--every <duration>` | Repeat while the foreground process remains attached; accepts values such as `500ms`, `30s`, `5m`, or `2h` |
+| `--interval <duration>` | Alias for `--every` |
+| `--cron <expression>` | Repeat on a five-field calendar schedule: minute, hour, day of month, month, day of week |
+| `--cron-time-zone <id>` | Evaluate cron in this timezone; default is local, and `UTC` is accepted explicitly |
+| `--run-now` | Run once immediately before waiting for the first cron occurrence |
+| `--runs <number>` | Stop after this many attempted runs; omit to continue until Ctrl+C |
+| `--wait-first` | Wait one interval before the first run |
+| `--continue-on-error` | Continue with the next interval after a failed run |
+| `--tail` | Poll one local TextLine file and query only newly completed lines; default interval is one second |
+| `--tail-existing` | Include current complete lines on the first tail run |
+
+Recurring output paths support `{RunNumber}`, starting at 1. `--cron` supports wildcards, lists, increasing ranges, steps, numeric fields, and English three-letter month/day names. When day-of-month and day-of-week are both restricted, either may match. A nonexistent spring-forward local minute is skipped; both UTC instants represented by a repeated fall-back local minute can match. The advanced interactive menu manages application-scoped fixed-interval schedules with status, pause, resume, cancellation, and optional run limits. A running schedule completes its current query before pausing; a cancelled schedule propagates cancellation to it. Waiting and paused schedules consume no query worker, and one schedule never overlaps itself.
+
+Tail mode uses a private in-memory checkpoint, skips existing lines unless requested, and withholds an unfinished trailing line. It is limited to one seekable local TextLine file. Interval, cron, and tail runs all end when the process exits and are not durable service schedulers.
+
 ### Post-actions
 
 `--after <executable>` starts a program directly after the selected condition. It does not invoke an implicit shell. Add arguments with repeated `--after-arg`; select `success`, `rows`, `empty`, `file`, or `condition` through `--after-when`. Default timeout is 300 seconds and is configurable with `--after-timeout`.
@@ -721,7 +743,7 @@ Copy the complete selected folder from the installed `skills` directory into the
 | No-command startup | Basic help |
 | Menu layout | Beginner |
 | Pager | Auto in an interactive terminal; never prompts for redirected streams |
-| Input provider | TextLine when a provider is omitted |
+| Input provider | TextLine when a provider is omitted; each row is one line chunk by default |
 | Omitted table name | Provider-aware generated name |
 | Automatic query limit | 100 |
 | SQLite database | In-memory |
@@ -837,8 +859,10 @@ The [SQL Function Reference](functions.md) records the ULP/SQLite version and ge
 Machine-generated material belongs under [`docs/reference/generated`](reference/generated/README.md). The current function inventory is:
 
 - [`sqlite-functions.json`](reference/generated/sqlite-functions.json) — exact runtime signatures used to generate [SQL Function Reference](functions.md).
+- [`configuration-objects.json`](reference/generated/configuration-objects.json) — complete machine-readable application, Query Builder, preprocessing, and execution property/default catalog.
+- [`provider-catalog.json`](reference/generated/provider-catalog.json) and [`writer-catalog.json`](reference/generated/writer-catalog.json) — indexes for the generated input and output/formatting references.
 
-Provider/writer detail pages remain in their existing location until the generator, CLI links, tests, and inbound documentation links can move together without breaking users. The readable manual intentionally summarizes formats rather than copying every generated property.
+Each input and output/formatting overview links to its exhaustive parameter table and copyable defaults. General setting roots likewise have separate parameter and default snapshots. Nested settings link to their public configuration references. Every file in this directory is replaced by `ulp --docs`; do not hand-edit generated pages. See the [format guide](inputs-and-outputs.md#nested-text-and-record-settings) and [complete SQL function catalog](reference/generated/sqlite-functions.md).
 
 ## Related Documentation
 

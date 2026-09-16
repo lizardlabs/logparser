@@ -2,6 +2,8 @@
 
 This worklist belongs to the independent documentation website. It is not part of the ULP executable or source projects.
 
+Current status (2026-09-11): local publish output at `artifacts/workflow-tutorial-docs-site` passes all 28 navigation checks and downloadable tutorial-bundle checks. This does not imply hosting or publication approval. The manual's approval/acceptance checklist is Phase 14 of `PortableLogParser/_TODO.DOCS.txt` in the source workspace; retain internal review notes outside public content.
+
 ## Foundation
 
 - [x] Create a small ASP.NET Core Razor Pages project targeting the current .NET 10 LTS release.
@@ -28,15 +30,36 @@ This worklist belongs to the independent documentation website. It is not part o
 ## Deployment and verification
 
 - [x] Add a repeatable publish command for framework-dependent or self-contained shared-hosting output.
-- [x] Produce and smoke-test clean framework-dependent and Windows self-contained ZIP packages with SHA256 checksums.
+- [x] Implement and previously smoke-test framework-dependent and Windows self-contained ZIP packaging with SHA256 checksums. Those historical ZIPs are not the current refreshed site's release artifacts; rebuilding the chosen package is still required before deployment.
 - [x] Document local use, content maintenance, IIS/shared-hosting deployment, configuration, and upgrades.
 - [x] Add a smoke test for the home page, Markdown rendering, search, sitemap, security headers, assets, and path confinement.
 - [ ] Choose the final public documentation URL and set `Site:CanonicalBaseUrl` before publishing.
+- [ ] Confirm the hosting destination/runtime, HTTPS/proxy configuration, footer/download URLs, and explicit owner approval to deploy.
+- [ ] Complete human desktop/mobile, keyboard, contrast, long-table/code, and print-layout review; automated HTTP tests do not replace visual acceptance.
+- [ ] After final content/approval changes, rebuild the chosen publish folder/site ZIP and checksum and re-run `Test-Site.ps1` against that exact output. Do not upload an older ZIP.
 - [ ] Add real social-preview artwork when approved; metadata currently uses the site icon and text description.
 
 ## Manual navigation and generated evidence
 
 - [x] Add prominent Quick reference and User interfaces groups, including six short interface introductions.
-- [x] Verify every unique sidebar destination, including restored tutorials and functions chapters (26 destinations).
+- [x] Verify every unique sidebar destination, including restored tutorials, functions, the KQL translation tutorial, and the complete runtime function catalog (28 destinations verified on 2026-09-09).
 - [x] Include public manual assets in build and publish output; validate generated CSV and ZIP showcase downloads as part of the site smoke test.
 - [ ] Replace the six interface screenshot placeholders after owner review.
+
+## Reference-generation release hardening
+
+- [x] Include generated JSON reference downloads in build/publish output and verify them over HTTP.
+- [x] Exclude private maintainer documents from the public content tree; reject them during build/publish and block stale copies through page/search/sitemap/asset routes.
+- [x] Rebuild and verify the refreshed manual in `artifacts/generator-repair-docs-site` (workspace-relative), including all 28 sidebar destinations and downloadable example outputs. Nothing was deployed publicly.
+
+## XML and encoding writing batch — 2026-09-10
+
+- [x] Refresh the existing function/how-to/troubleshooting chapters and generated references in the local site after adding XML, Base64, and URL examples; no additional small topic pages were created.
+- [x] Verify all 28 navigation destinations and downloads against `artifacts/documentation-encoding-docs-site` (workspace-relative). This is the historical writing-batch publish folder; older ZIPs were not rebuilt or deployed.
+
+## Visualization and development tutorials — 2026-09-11
+
+- [x] Extend the existing tutorial chapter with indexed SQLite dashboard snapshots and development/CI evidence workflows, including commands, expected results, safety limits, and links from the sample catalog.
+- [x] Serve the reproducible SQL/data/PowerShell tutorial bundle as a downloadable asset and verify it over HTTP; sample hashes match the tested source files.
+- [x] Publish locally to `artifacts/workflow-tutorial-docs-site` and pass all 28 navigation destinations and smoke tests (`artifacts/workflow-tutorial-site-tests.log`). No public deployment or replacement site release ZIP was made.
+- [ ] If claiming verified Power BI/Tableau/cloud interoperability for a release, perform owner-approved acceptance with the actual driver, product version, tenant, and refresh configuration. Current tutorial guidance is researched, not live connector acceptance.

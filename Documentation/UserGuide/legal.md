@@ -20,11 +20,11 @@ This chapter is a plain-language summary for users and release reviewers. It is 
 
 ## Current Product-License Status
 
-ULP is a proprietary product and is **not offered as open-source software**. Access to source files in an authorized development workspace does not grant permission to copy, modify, publish, redistribute, host, resell, or embed ULP.
+ULP is a proprietary product and is **not offered as open-source software**. This manual does not grant permission to copy, modify, publish, redistribute, host, resell, or embed ULP.
 
-The current repository contains copyright/disclaimer text and an unapproved license template, but it does not contain a final approved product-license grant. A publishable release must therefore include an owner/counsel-approved `PRODUCT-LICENSE.txt` before distribution.
+The current candidate does not contain a final approved product-license grant. A publishable release must therefore include an owner/counsel-approved `PRODUCT-LICENSE.txt` before distribution.
 
-Until that license is approved and packaged, no right to use or distribute a release candidate should be inferred from this manual, the presence of binaries, or the presence of source code.
+Until that license is approved and packaged, no right to use or distribute a release candidate should be inferred from this manual, the presence of binaries.
 
 Third-party components retain their own license terms independently of the ULP product license.
 
@@ -74,7 +74,7 @@ Users are responsible for provider selection, authorization to transmit prompts/
 
 ## Privacy and Data Processing
 
-No owner/counsel-approved privacy policy is currently included in the repository. The behavior described below is technical documentation, not a contractual privacy statement.
+No owner/counsel-approved privacy policy has yet been supplied for this candidate. The behavior described below is technical documentation, not a contractual privacy statement.
 
 A final privacy statement should identify the responsible business, contact details, processing purposes, retention, recipients/processors, international transfers, data-subject rights, browser storage, diagnostics, and telemetry behavior relevant to the released product.
 

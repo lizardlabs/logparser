@@ -15,6 +15,10 @@ Configuration is applied in this order:
 
 Configuration filenames distinguish object types: use names such as `defaults.input.EVT.config` and `defaults.output.JSON.config`.
 
+## Generated property catalogs
+
+Run `ulp --docs <folder>` to replace the generated reference from the current executable. `reference/generated/README.md` indexes every input provider, output writer/formatter, and general configuration root. Each format has a separate overview, exhaustive property table, and default-value snapshot. `configuration-objects.json`, `provider-catalog.json`, and `writer-catalog.json` are the machine-readable equivalents. Files in that generated directory carry a do-not-edit header and should be regenerated rather than manually corrected.
+
 Input/output configuration files are already scoped by their filename, so their properties remain unprefixed. Provider defaults are loaded automatically; generated `CREATE VIRTUAL TABLE` SQL therefore stays portable and does not contain a config-file path.
 
 Application configs and CLI arguments can use explicit namespaces:
@@ -139,7 +143,7 @@ Use `--session-init-sql` / `--session-init-file`, `--before-query-sql` / `--befo
 
 Use repeatable `--param NAME=VALUE` options with SQLite placeholders `@NAME`, `:NAME`, or `$NAME`. ULP binds values safely; it does not perform SQL string replacement.
 
-Output filenames may contain .NET date/time format tokens, for example `orders-{yyyy-MM-dd}.csv` or `orders-{yyyy-MM-dd-HHmmss}.csv`. The aliases `{date}` and `{datetime}` expand to those two common forms. `{n}` selects the first available positive integer without overwriting a file. Background outputs additionally support `{JobId}`. Use `--also-pipeline FORMAT=FILE` repeatedly to send one query result to multiple non-interactive files.
+Output filenames may contain .NET date/time format tokens, for example `orders-{yyyy-MM-dd}.csv` or `orders-{yyyy-MM-dd-HHmmss}.csv`. The aliases `{date}` and `{datetime}` expand to those two common forms. `{n}` selects the first available positive integer without overwriting a file. Background outputs additionally support `{JobId}`, and recurring outputs support `{RunNumber}`. Use `--also-pipeline FORMAT=FILE` repeatedly to send one query result to multiple non-interactive files.
 
 ## File logging
 

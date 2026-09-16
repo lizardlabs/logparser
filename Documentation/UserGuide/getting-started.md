@@ -1,5 +1,7 @@
 # Getting Started
 
+If you prefer to watch ULP work before entering any paths or SQL, run `ulp --tour`. The guided product tour explains and previews bounded examples for generated data, directory statistics, text filtering, output formats, multiple result sets, and optional Windows events. See [Take the product tour](tutorials.md#take-the-product-tour).
+
 Universal Log Parser (ULP) turns files, logs, Windows events, structured data, system information, and other record sources into tables that you can query with SQLite SQL. The same result can be reviewed in a terminal or user interface, saved in several formats, reused by automation, or exposed to an MCP client.
 
 Project home: [https://log-parser.com](https://log-parser.com)
@@ -151,7 +153,7 @@ Useful discovery commands include:
 
 ## Your First Query
 
-The repository and release package include fictional sample data. From the ULP directory, query the employee CSV sample:
+The release package includes fictional sample data. From the ULP directory, query the employee CSV sample:
 
 ```powershell
 .\ulp.exe --input CSV `

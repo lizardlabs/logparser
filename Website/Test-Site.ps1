@@ -8,6 +8,12 @@ param(
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
+function Get-HttpErrorStatusCode {
+    param([Exception]$Exception)
+    if ($null -eq $Exception -or $null -eq $Exception.Response) { return $null }
+    return [int]$Exception.Response.StatusCode
+}
+
 $projectRoot = $PSScriptRoot
 $project = Join-Path $projectRoot 'Ulp.Docs.Web.csproj'
 $testingPublishedOutput = -not [string]::IsNullOrWhiteSpace($PublishedDirectory)
@@ -76,30 +82,48 @@ try {
             if ($page.StatusCode -ne 200 -or $page.Content -notmatch '<h1') { throw "Navigation target did not render: $slug" }
         }
         Write-Host "PASS  $($navigationSlugs.Count) sidebar documentation destinations render successfully."
+        $functionJson = Invoke-WebRequest -Uri ($baseUrl + '/docs-assets/reference/generated/sqlite-functions.json') -UseBasicParsing
+        $functionCatalog = $functionJson.Content | ConvertFrom-Json
+        if (@($functionCatalog.Table0.Data).Count -lt 100) { throw 'Published runtime function inventory is missing or incomplete.' }
         $search = Invoke-WebRequest -Uri ($baseUrl + '/search?q=SQLite') -UseBasicParsing
         if ($search.Content -notmatch 'result') { throw 'Search results were not rendered.' }
         $sitemap = Invoke-WebRequest -Uri ($baseUrl + '/sitemap.xml') -UseBasicParsing
         if ($sitemap.Content -notmatch '/docs/getting-started') { throw 'Sitemap is missing documentation pages.' }
+        if ($sitemap.Content -match '/docs/developer/|COMPLIANCE-REVIEW|PRODUCT-LEGAL|EULA-TEMPLATE') { throw 'Private documentation leaked into sitemap.' }
+        foreach ($privateSlug in @('developer/ARCHITECTURE', 'legal/COMPLIANCE-REVIEW', 'legal/PRODUCT-LEGAL', 'legal/EULA-TEMPLATE')) {
+            try {
+                Invoke-WebRequest -Uri ($baseUrl + '/docs/' + $privateSlug) -UseBasicParsing -ErrorAction Stop | Out-Null
+                throw "Private documentation was served: $privateSlug"
+            } catch {
+                if ((Get-HttpErrorStatusCode $_.Exception) -ne 404) { throw }
+            }
+        }
         $showcaseCsv = Invoke-WebRequest -Uri ($baseUrl + '/docs-assets/assets/outputs/employees.csv') -UseBasicParsing
         if ($showcaseCsv.StatusCode -ne 200 -or $showcaseCsv.Content -notmatch 'Ada') { throw 'Generated CSV showcase did not render.' }
         $showcaseZip = Invoke-WebRequest -Uri ($baseUrl + '/docs-assets/assets/outputs/ulp-output-showcase.zip') -UseBasicParsing
         if ($showcaseZip.StatusCode -ne 200 -or $showcaseZip.RawContentLength -lt 1000) { throw 'Generated output showcase download is missing.' }
+        $workflowZip = Invoke-WebRequest -Uri ($baseUrl + '/docs-assets/assets/outputs/workflow-tutorials.zip') -UseBasicParsing
+        if ($workflowZip.StatusCode -ne 200 -or $workflowZip.RawContentLength -lt 1000) { throw 'Workflow tutorial download is missing.' }
         $robots = Invoke-WebRequest -Uri ($baseUrl + '/robots.txt') -UseBasicParsing
         if ($robots.Content -notmatch 'Sitemap:') { throw 'robots.txt is missing its sitemap.' }
+        $httpClient = [Net.Http.HttpClient]::new()
+        $notFoundResponse = $null
         try {
-            Invoke-WebRequest -Uri ($baseUrl + '/docs/does-not-exist') -UseBasicParsing -ErrorAction Stop | Out-Null
-            throw 'Missing documentation page unexpectedly succeeded.'
-        } catch {
-            if ($_.Exception.Response.StatusCode.value__ -ne 404) { throw }
-            $notFoundBody = [IO.StreamReader]::new($_.Exception.Response.GetResponseStream()).ReadToEnd()
+            $notFoundResponse = $httpClient.GetAsync($baseUrl + '/docs/does-not-exist').GetAwaiter().GetResult()
+            $notFoundBody = $notFoundResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult()
+            if ([int]$notFoundResponse.StatusCode -ne 404) { throw 'Missing documentation page unexpectedly succeeded.' }
             if ($notFoundBody -notmatch 'That documentation page is not here') { throw 'Friendly not-found page was not rendered.' }
+        }
+        finally {
+            if ($null -ne $notFoundResponse) { $notFoundResponse.Dispose() }
+            $httpClient.Dispose()
         }
 
         try {
             Invoke-WebRequest -Uri ($baseUrl + '/docs-assets/%2e%2e/navigation.json') -UseBasicParsing -ErrorAction Stop | Out-Null
             throw 'Traversal request unexpectedly succeeded.'
         } catch {
-            if ($_.Exception.Response.StatusCode.value__ -notin @(400, 404)) { throw }
+            if ((Get-HttpErrorStatusCode $_.Exception) -notin @(400, 404)) { throw }
         }
         Write-Host 'Documentation website smoke tests passed.' -ForegroundColor Green
     }

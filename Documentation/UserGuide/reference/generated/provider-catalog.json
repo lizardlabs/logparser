@@ -33,13 +33,18 @@
     },
     {
       "name": "TextLine",
-      "description": "Text files and streams exposed as one record per line",
+      "description": "Text files and streams exposed as ordered chunks (one line per chunk by default)",
       "reference": "provider-TextLine.md"
     },
     {
       "name": "TextWord",
       "description": "Text files and streams tokenized into individual words",
       "reference": "provider-TextWord.md"
+    },
+    {
+      "name": "Text",
+      "description": "Text files and streams exposed as one record per source or as optional streaming chunks",
+      "reference": "provider-Text.md"
     },
     {
       "name": "log4jXML",
@@ -93,7 +98,7 @@
     },
     {
       "name": "SourceCode",
-      "description": "C#, VB.NET, Razor, HTML, JavaScript, TypeScript, and Markdown files parsed into searchable symbols, document structure, comments, diagnostics, and exact source spans",
+      "description": "C#, VB.NET, Razor, HTML, JavaScript, TypeScript, Python, Java, and Markdown files parsed into searchable symbols, document structure, comments, diagnostics, and exact source spans",
       "reference": "provider-SourceCode.md"
     },
     {

@@ -41,6 +41,8 @@
       "title": "SQL and data",
       "items": [
         { "title": "SQLite guide", "slug": "sqlite-guide", "description": "SQL explained through ULP examples." },
+        { "title": "From KQL to SQLite", "slug": "kql-vs-ulp-sqlite-tutorial", "description": "Translate investigations and validate schema differences." },
+        { "title": "All available functions", "slug": "reference/generated/sqlite-functions", "description": "Every registered name and arity in the packaged runtime." },
         { "title": "SQL functions", "slug": "functions", "description": "Core, extension, and compatibility functions." },
         { "title": "Inputs and outputs", "slug": "inputs-and-outputs", "description": "Providers, writers, pipelines, and formats." }
       ]

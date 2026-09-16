@@ -8,6 +8,7 @@ Project home: [log-parser.com](https://log-parser.com)
 
 | I want to... | Read this |
 | --- | --- |
+| See a safe guided demonstration before configuring anything | [Product tour](tutorials.md#take-the-product-tour) |
 | Install the portable ZIP and run my first command | [Getting Started](getting-started.md) |
 | Learn by completing realistic jobs | [Use-case tutorials](tutorials.md) |
 | Find a short command for a specific task | [How-To Guide](how-to.md) |
@@ -24,7 +25,7 @@ Project home: [log-parser.com](https://log-parser.com)
 ## Ten-minute learning path
 
 1. [Install and verify ULP](installation.md#install-from-the-release-zip).
-2. Run the [first query](getting-started.md#your-first-query).
+2. Run the [guided product tour](tutorials.md#take-the-product-tour), or go directly to the [first query](getting-started.md#your-first-query).
 3. Inspect a real input schema before writing a larger query.
 4. Complete one [tutorial](tutorials.md) that resembles your job.
 5. Save a useful query in the Query library and give it parameters.
@@ -53,6 +54,7 @@ ulp --input TextLine --from '.\logs\*.log' --table logs `
 - [Query a recursive file set](how-to.md#how-to-query-multiple-files)
 - [Exclude files with negative wildcards](how-to.md#how-to-use-wildcards)
 - [Read only newly appended records with checkpoints](how-to.md#how-to-read-appended-records-only)
+- [Follow a growing log with a filtered live query](how-to.md#how-to-follow-a-growing-log)
 - [Analyze Windows events](tutorials.md)
 
 ### Work with structured data
@@ -68,6 +70,8 @@ ulp --input TextLine --from '.\logs\*.log' --table logs `
 - [Filter and search records](how-to.md#filtering-and-searching)
 - [Group, count, and calculate statistics](how-to.md#analysis)
 - [Join or combine tables](sqlite-guide.md#joins)
+- [Translate a KQL investigation](kql-vs-ulp-sqlite-tutorial.md)
+- [Find every available SQL function](reference/generated/sqlite-functions.md)
 - [Export or fan out one result to several outputs](inputs-and-outputs.md#multiple-output-pipelines)
 - [Generate files with Scriban](inputs-and-outputs.md#scriban)
 

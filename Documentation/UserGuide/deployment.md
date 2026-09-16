@@ -10,7 +10,6 @@ This chapter explains how to deploy the supported portable ULP package, automate
 - [Configuration and Data Locations](#configuration-and-data-locations)
 - [Automation](#automation)
 - [Deploying the Web Server](#deploying-the-web-server)
-- [Building a Release Candidate](#building-a-release-candidate)
 - [Release Artifacts](#release-artifacts)
 - [MCP Deployment](#mcp-deployment)
 - [Compliance and Publication Gate](#compliance-and-publication-gate)
@@ -166,48 +165,9 @@ Configure the client with an absolute path to `ulp.exe` and the argument `--mcp`
 
 One process can host several independent tasks. Call `CreateSession` per task and pass its `sessionId` to every data tool. Omitting the ID uses the default session, whose persistent database can be selected with `--database`. Named sessions are in-memory and are discarded when closed. These are state-isolation conveniences, not separate user accounts or permission boundaries. See the [MCP reference](reference/generated/mcp-reference.md).
 
-## Building a Release Candidate
-
-These commands are for authorized maintainers in the complete ULP workspace.
-
-From the repository root, verify formatting, build, and tests:
-
-```powershell
-.\build.ps1 FormatCheck
-.\build.ps1 Build -Configuration Release
-.\build.ps1 Test -Configuration Release
-```
-
-The combined quality command formats changed C#/VB files, builds, and runs the test suite:
-
-```powershell
-.\build.ps1 Finish -Configuration Release
-```
-
-Create and validate the portable release candidate:
-
-```powershell
-.\build.ps1 Release
-```
-
-The release command:
-
-1. builds the main application and release launcher;
-2. reads the version from the built executable;
-3. refreshes runtime-generated documentation;
-4. stages the organized package tree;
-5. copies the external user manual and legal material;
-6. regenerates the dependency and material-asset inventory;
-7. creates the package file manifest;
-8. runs a packaged smoke query and structural checks;
-9. creates the ZIP and checksum;
-10. stages a review copy in the separate user-guide repository.
-
-The packager does not commit or push either repository.
-
 ## Release Artifacts
 
-The local build writes the candidate under the workspace `artifacts` directory. The ZIP contains the versioned staging directory itself:
+The downloadable ZIP contains a versioned directory so extracting it does not scatter application files in the current folder:
 
 ```text
 ulp-<version>-win-anycpu.zip
@@ -239,21 +199,12 @@ Important release evidence includes:
 | `legal/provenance/` | Component provenance and review records |
 | ZIP-adjacent `.sha256` | Hash of the downloadable archive |
 
-The separate user-guide repository receives an expanded review copy, ZIP, and checksum under `Releases/<version>/win-anycpu/`.
 
 ## Compliance and Publication Gate
 
 Packaging fails closed when an approved ULP product license is missing or the dependency inventory contains unresolved `review` or `unmapped` items.
 
-An internal mechanics-only candidate can be produced with:
-
-```powershell
-.\build.ps1 Release -AllowUnreviewedLicenses
-```
-
-That switch does **not** approve the license, third-party redistribution, provenance, or publication. Such a package must be marked **INTERNAL REVIEW ONLY - DO NOT PUBLISH**.
-
-Before publication, an owner or qualified reviewer must resolve the exact blockers listed in [Legal, Licensing, Privacy, and Disclaimers](legal.md#release-approval-blockers) and the internal compliance record.
+Only publisher-approved artifacts may be distributed. A candidate marked **INTERNAL REVIEW ONLY - DO NOT PUBLISH** is not an approved release. See the [license and release prerequisites](legal.md#release-approval-blockers).
 
 ## Package Verification
 
@@ -275,31 +226,9 @@ After validation, test the archive on a clean supported machine or VM using the 
 
 ## CI/CD Integration
 
-A release pipeline should keep validation and publication as separate stages.
+For your own automated analysis pipelines, install an approved portable package in a fixed location, verify its checksum, run under a restricted account, and pass explicit input/output/configuration paths. Preserve SQL and exported results as job artifacts. Check ULP's exit code before running a dependent step; keep credentials outside job logs.
 
-### Validation stage
-
-1. restore from approved dependency sources;
-2. run formatting verification;
-3. build Release;
-4. run all automated tests;
-5. generate and validate documentation;
-6. build the package without the internal legal override;
-7. scan the exact staged package;
-8. verify manifest, inventory, license, and archive structure;
-9. run clean-machine smoke tests.
-
-### Approval and publication stage
-
-1. record the source revision and dependency lock state;
-2. complete owner/legal/security approval;
-3. apply any required signing;
-4. regenerate final hashes after signing;
-5. publish the ZIP, checksum, release notes, and legal material together;
-6. verify the public download independently;
-7. preserve immutable release evidence.
-
-Never make an internal-review override part of an automatic public publication job.
+Promote a new ULP package only after representative queries pass in a staging environment. Keep the previous package and configuration available for rollback.
 
 ## Future Web-Server Container
 

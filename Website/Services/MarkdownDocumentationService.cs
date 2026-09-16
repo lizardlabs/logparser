@@ -98,6 +98,7 @@ public sealed partial class MarkdownDocumentationService
         var results = new List<SearchResult>();
         foreach (var file in Directory.EnumerateFiles(_contentRoot, "*.md", SearchOption.AllDirectories))
         {
+            if (IsPrivateDocumentation(file)) continue;
             var markdown = File.ReadAllText(file);
             var slug = ToSlug(file);
             var title = ExtractTitle(markdown, slug);
@@ -126,6 +127,7 @@ public sealed partial class MarkdownDocumentationService
 
     public IReadOnlyList<string> GetAllSlugs() => Directory
         .EnumerateFiles(_contentRoot, "*.md", SearchOption.AllDirectories)
+        .Where(file => !IsPrivateDocumentation(file))
         .Select(ToSlug)
         .OrderBy(slug => slug, StringComparer.OrdinalIgnoreCase)
         .ToArray();
@@ -139,7 +141,7 @@ public sealed partial class MarkdownDocumentationService
 
         var relative = Uri.UnescapeDataString(requestedPath).Replace('/', Path.DirectorySeparatorChar);
         var candidate = Path.GetFullPath(Path.Combine(_contentRoot, relative));
-        if (!IsWithinContentRoot(candidate) || !File.Exists(candidate))
+        if (!IsWithinContentRoot(candidate) || IsPrivateDocumentation(candidate) || !File.Exists(candidate))
         {
             return null;
         }
@@ -170,7 +172,17 @@ public sealed partial class MarkdownDocumentationService
     {
         var relative = slug.Equals("index", StringComparison.OrdinalIgnoreCase) ? "README" : slug;
         var candidate = Path.GetFullPath(Path.Combine(_contentRoot, relative.Replace('/', Path.DirectorySeparatorChar) + ".md"));
-        return IsWithinContentRoot(candidate) ? candidate : null;
+        return IsWithinContentRoot(candidate) && !IsPrivateDocumentation(candidate) ? candidate : null;
+    }
+
+    private bool IsPrivateDocumentation(string path)
+    {
+        // Old deployment folders may retain files removed from a newer package.
+        // Never expose maintainer-only records through pages, search or downloads.
+        var relative = Path.GetRelativePath(_contentRoot, path).Replace('\\', '/');
+        return relative.StartsWith("developer/", StringComparison.OrdinalIgnoreCase)
+            || new[] { "legal/COMPLIANCE-REVIEW.md", "legal/PRODUCT-LEGAL.md", "legal/EULA-TEMPLATE.md" }
+                .Contains(relative, StringComparer.OrdinalIgnoreCase);
     }
 
     private bool IsWithinContentRoot(string path) =>

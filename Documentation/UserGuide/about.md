@@ -75,7 +75,7 @@ ULP is not Microsoft Log Parser and is not affiliated with or endorsed by Micros
 
 Repository evidence shows an evolving Log Parser-inspired .NET codebase now named Universal Log Parser, with [log-parser.com](https://log-parser.com) as its home URL.
 
-The repository does not contain an approved author biography, founding date, milestone timeline, or public release chronology.
+An approved author biography, founding date, milestone timeline, and public release chronology have not yet been supplied.
 
 **Owner input required:** origin story, author/team attribution, dates, important milestones, prior product names, and any organizations/communities that should be credited.
 
@@ -94,7 +94,7 @@ The repository does not contain an approved author biography, founding date, mil
 
 ## Roadmap
 
-The current repository TODO files contain working implementation ideas. They are not release commitments, schedules, or guarantees.
+Current planning notes contain working ideas. They are not release commitments, schedules, or guarantees.
 
 At a high level, continuing goals include:
 
@@ -118,11 +118,9 @@ Microsoft Log Parser is acknowledged as design inspiration. SQLite provides the 
 
 ## Contributing
 
-The repository does not yet contain an approved root `CONTRIBUTING.md`. Until one is supplied, do not assume contribution acceptance, CLA/DCO requirements, coding ownership, review SLA, or support commitments.
+ULP is a proprietary product. You can help by reporting reproducible problems, suggesting useful queries and formats, and sharing sanitized examples through the [product website](https://log-parser.com). Do not send confidential data or assume that source-code contributions are accepted.
 
-Development conventions currently documented in-repository include the unified `build.ps1` format/build/test/release entry point and developer guides under `docs/developer`.
-
-**Owner input required:** contribution channel, code of conduct, issue/PR process, license/CLA terms, coding/testing requirements, and maintainer contacts.
+**Owner input required:** approved community contact and contribution terms.
 
 ## Project Information
 
@@ -138,4 +136,3 @@ Development conventions currently documented in-repository include the unified `
 - [Getting Started](getting-started.md)
 - [Versions and Release History](versions.md)
 - [Deployment and Packaging](deployment.md)
-- [Developer documentation](developer/README.md)

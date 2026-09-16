@@ -16,6 +16,14 @@ Use this page to choose a function by task. Examples use SQLite expressions: pre
 - [NULL and conditional functions](#null-and-conditional-functions)
 - [Pattern matching](#pattern-matching)
 - [Blob and binary functions](#blob-and-binary-functions)
+  - [Decode Base64 text and binary data safely](#decode-base64-text-and-binary-data-safely)
+  - [Calculate checksums and cryptographic digests](#calculate-checksums-and-cryptographic-digests)
+- [XML payloads](#xml-payloads)
+  - [Validate and extract event fields](#validate-and-extract-event-fields)
+  - [Handle XML namespaces explicitly](#handle-xml-namespaces-explicitly)
+- [URL text](#url-text)
+  - [Decode an encoded log value](#decode-an-encoded-log-value)
+  - [Encode a URL component safely while preserving compatibility behavior](#encode-a-url-component-safely-while-preserving-compatibility-behavior)
 - [File and system functions](#file-and-system-functions)
 - [Query counters and compatibility names](#query-counters-and-compatibility-names)
 - [Extension functions and runtime discovery](#extension-functions-and-runtime-discovery)
@@ -28,6 +36,8 @@ Use this page to choose a function by task. Examples use SQLite expressions: pre
 - [Detailed examples](#detailed-examples)
 
 ## About this reference
+
+The [complete available-function reference](reference/generated/sqlite-functions.md) lists every runtime-discovered name and arity, with signatures and descriptions where documented. Use this chapter for choosing functions and understanding examples; use the generated reference for exhaustive discovery.
 
 The executable is authoritative. Find its version with `ulp --version`, its SQLite version with `SELECT sqlite_version()`, and its installed function names and arities with `ulp --list-functions`. The [generated inventory](reference/generated/sqlite-functions.json) records the SQLite version and generation method for the accompanying package. It is derived from the running ULP catalog and `PRAGMA function_list`, not from a newer SQLite website.
 
@@ -51,6 +61,8 @@ Examples containing `value`, `text`, or `path` as unquoted identifiers refer to 
 | Extract JSON properties | `json_extract`, `json_type`, `json_valid` |
 | Handle absent values | `coalesce`, `ifnull`, `nullif`, `CASE` |
 | Check files | `FILE_EXISTS`, `FILE_SIZE`, `FILE_HASH_SHA256` |
+| Extract fields from an XML payload | `xml_valid`, `xml_extract` |
+| Inspect encoded log values | `URLUNESCAPE`, `base64_decode`; review the limitations below |
 | Discover installed functionality | `pragma_function_list`, `pragma_module_list` |
 
 ## Core and scalar functions
@@ -243,10 +255,175 @@ The RegEx/Grok **input formats** create columns from named captures. They are of
 | --- | --- | --- |
 | `zeroblob(n)` | Allocate a zero-filled BLOB of n bytes. | `length(zeroblob(8))` → `8` |
 | `randomblob(n)` | Generate n pseudorandom bytes. | `hex(randomblob(4))` |
-| `base64_encode(value)` | Encode bytes as Base64 text. | `base64_encode(X'4142')` |
-| `base64_decode(text)` | Decode Base64; examine type/output before treating bytes as text. | `hex(base64_decode('QUI='))` |
+| `base64_encode(value)` | Encode text as UTF-8 or encode a BLOB byte-for-byte as Base64 text. Embedded NUL bytes are preserved. SQL NULL stays NULL. | `base64_encode(X'4142')` → `QUI=` |
+| `base64_decode(text)` | Decode Base64 into a binary-safe SQL BLOB. Invalid Base64 and SQL NULL return NULL. | `hex(base64_decode('QUI='))` → `4142` |
 
 Hash and encoding helpers are not interchangeable. Encoding is reversible; a cryptographic hash is a digest, and older hashes are not suitable for new security designs. For file duplicate checks use a modern hash such as SHA-256.
+
+### Decode Base64 text and binary data safely
+
+The decoder returns a BLOB so every byte survives, including embedded NUL bytes. When the payload is known UTF-8 text, cast the result to `TEXT`; keep it as a BLOB for attachments, hashes, compressed data, and other binary content.
+
+<!-- example: base64-text -->
+```sql
+SELECT base64_encode('error') AS encoded,
+       CAST(base64_decode('ZXJyb3I=') AS TEXT) AS decoded,
+       typeof(base64_decode('ZXJyb3I=')) AS storage_type,
+       hex(base64_decode('QUI=')) AS ascii_hex,
+       base64_decode(NULL) AS absent;
+```
+
+| encoded | decoded | storage_type | ascii_hex | absent |
+| --- | --- | --- | --- | --- |
+| ZXJyb3I= | error | blob | 4142 | NULL |
+
+`AAEC` represents bytes `00 01 02`. This example verifies leading and embedded NUL bytes, a complete round trip, and predictable malformed-input handling:
+
+<!-- example: base64-binary-roundtrip -->
+```sql
+SELECT base64_encode(X'000102') AS encoded,
+       typeof(base64_decode('AAEC')) AS storage_type,
+       hex(base64_decode('AAEC')) AS decoded_hex,
+       hex(base64_decode(base64_encode(X'41004200'))) AS roundtrip_hex,
+       base64_decode('%%%') AS malformed;
+```
+
+| encoded | storage_type | decoded_hex | roundtrip_hex | malformed |
+| --- | --- | --- | --- | --- |
+| AAEC | blob | 000102 | 41004200 | NULL |
+
+Malformed Base64 returns NULL rather than partial data. Empty Base64 is valid and decodes to a zero-length BLOB. If NULL and malformed input must be distinguished, validate the source string before decoding. Do not cast arbitrary binary bytes to text; only cast when the payload's character encoding is known.
+
+### Calculate checksums and cryptographic digests
+
+`CRC32(value)` returns an integer checksum. `MD5`, `SHA1`, `SHA256`, `SHA384`, and `SHA512` return binary digest BLOBs; wrap them in `hex(...)` or `base64_encode(...)` when a textual digest is needed. Text is hashed as UTF-8, while BLOB values are hashed byte-for-byte.
+
+<!-- example: hash-digests -->
+```sql
+SELECT CRC32('abc') AS crc32_value,
+       hex(MD5('abc')) AS md5_hex,
+       hex(SHA256(X'610062')) AS sha256_hex,
+       typeof(SHA256('abc')) AS sha256_type,
+       SHA256('a', 'b') AS invalid_arity,
+       SHA256(NULL) AS absent;
+```
+
+| crc32_value | md5_hex | sha256_hex | sha256_type | invalid_arity | absent |
+| ---: | --- | --- | --- | --- | --- |
+| 891568578 | 900150983CD24FB0D6963F7D28E17F72 | 59B271AE1BBCB1D31D41929817F4B16FB439EB4F31520B5AD1D5CE98920A7138 | blob | NULL | NULL |
+
+SHA-256, SHA-384, and SHA-512 require exactly one argument; zero or multiple arguments return NULL. SQL NULL also returns NULL. CRC-32 is for accidental-change detection, not security. MD5 and SHA-1 remain useful for matching legacy identifiers but are unsafe for signatures, passwords, certificates, or adversarial integrity checks; use SHA-256 or stronger for new integrity reports.
+
+## XML payloads
+
+Use XML functions when a row already contains an XML string: an event payload, a configuration fragment, or a field from a CSV/JSON export. They do not choose an input format or turn a whole file into rows. Inspect your input's schema first and replace the sample `body` column with the column that actually holds XML.
+
+| Function | Result in the current runtime | Example |
+| --- | --- | --- |
+| `xml_valid(xml)` | `1` for accepted XML, `0` for malformed text, NULL for SQL NULL; not a schema/business-rule validator. | `xml_valid('<event/>')` → `1` |
+| `xml_extract(xml, xpath [, delimiter])` | Text from matching nodes/attributes; multiple matches concatenate with the delimiter, which defaults to empty text. | `xml_extract('<event code="500"/>', '/event/@code')` → `500` |
+
+Paths use XPath, not JSON-path syntax. Select `@name` for an attribute or `text()` for element text. Selecting the element itself can return markup. The [XML extension reference](https://github.com/little-brother/sqlite-extensions/blob/main/xml/README.md) describes the XPath 1.0 API and optional delimiter; the recipes here verify the installed ULP behavior.
+
+### Validate and extract event fields
+
+This example distinguishes a valid event, valid XML without the requested fields, malformed text, and SQL NULL. Save it as `xml-report.sql` and run `ulp --query-file xml-report.sql --format TextTable`, or paste it into the query editor.
+
+<!-- example: xml-payload -->
+```sql
+WITH payloads(id, body) AS (
+  VALUES
+    (1, '<event code="500"><tag>net</tag><tag>retry</tag></event>'),
+    (2, '<event/>'),
+    (3, 'not XML'),
+    (4, NULL)
+)
+SELECT id, xml_valid(body) AS valid_xml,
+       CASE WHEN xml_valid(body) = 1
+            THEN nullif(xml_extract(body, '/event/@code'), '')
+       END AS code,
+       CASE WHEN xml_valid(body) = 1
+            THEN nullif(xml_extract(body, '/event/tag/text()', ', '), '')
+       END AS tags
+FROM payloads
+ORDER BY id;
+```
+
+| id | valid_xml | code | tags |
+| --- | --- | --- | --- |
+| 1 | 1 | 500 | net, retry |
+| 2 | 1 | NULL | NULL |
+| 3 | 0 | NULL | NULL |
+| 4 | NULL | NULL | NULL |
+
+The extracted `code` is text, even though it looks numeric. Validate values before casting for numeric comparisons. `xml_extract` returns **empty text** for a missing match; `nullif(..., '')` intentionally normalizes it to SQL NULL. This also collapses genuinely empty values, so omit that normalization when the distinction matters. Without the delimiter, the two tag values become `netretry`.
+
+Keep validation in `CASE` when malformed rows must not reach extraction. Do not assume the order of separate WHERE conditions determines evaluation order. Validation does not make a malformed XPath valid. Start with bounded samples; repeated extraction can repeatedly parse each payload, so materialize extracted columns when several later reports reuse them. Bound untrusted payload sizes and use only the fields needed for a report.
+
+### Handle XML namespaces explicitly
+
+A prefixed or default namespace is part of an XML name. This synthetic event demonstrates extraction without depending on a particular namespace prefix:
+
+<!-- example: xml-namespaces -->
+```sql
+WITH payload(body) AS (
+  VALUES ('<Event xmlns="urn:sample"><EventData><Data Name="Code">500</Data></EventData></Event>')
+)
+SELECT xml_extract(body,
+  '/*[local-name()="Event" and namespace-uri()="urn:sample"]'
+  || '/*[local-name()="EventData" and namespace-uri()="urn:sample"]'
+  || '/*[local-name()="Data" and namespace-uri()="urn:sample"]'
+  || '[@Name="Code"]/text()'
+) AS code
+FROM payload;
+```
+
+Result: one text column `code`, containing `500`. Replace the sample URI with the exact namespace in your payload. Checking only `local-name()` can accidentally select elements from a different namespace; this example checks both. For Windows event data, inspect the actual exposed payload column and its XML before adapting the query; the sample does not assume every provider exposes the same schema or field names.
+
+## URL text
+
+Use these helpers for inspecting encoded text in logs. They are not a complete URL parser or a guarantee that a value is safe to place in HTML, a link, or an HTTP request.
+
+| Function | Arguments and behavior |
+| --- | --- |
+| `URLUNESCAPE(text [, code_page])` | Decode percent-encoded bytes with the selected encoding. Use `65001` explicitly for UTF-8. A literal `+` remains a plus, not a space. |
+| `URLESCAPE(text [, code_page])` | Escape selected bytes, preserving several URL punctuation characters; the current compatibility behavior appends a NUL character. Inspect before exporting. |
+| `URL_COMPONENT_ENCODE(value)` | Encode one URL path segment, query key, or query value using UTF-8 and RFC 3986 unreserved characters. BLOBs are encoded byte-for-byte. No trailing NUL is added. |
+
+Without a code page, encoding depends on the host's default code page. Both functions propagate SQL NULL; an invalid code-page number returns NULL. Use explicit encoding for reproducible non-ASCII reports.
+
+### Decode an encoded log value
+
+<!-- example: url-decode -->
+```sql
+SELECT URLUNESCAPE('caf%C3%A9', 65001) AS decoded,
+       URLUNESCAPE('a+b%2Bc', 65001) AS plus_handling,
+       URLUNESCAPE('%ZZ%00', 65001) AS unconverted,
+       URLUNESCAPE('x', -1) AS invalid_code_page,
+       URLUNESCAPE(NULL, 65001) AS absent;
+```
+
+| decoded | plus_handling | unconverted | invalid_code_page | absent |
+| --- | --- | --- | --- | --- |
+| café | a+b+c | %ZZ%00 | NULL | NULL |
+
+The malformed escape `%ZZ` and encoded zero byte `%00` are preserved in this implementation; this is not a strict percent-encoding validator. If your data is specifically form-encoded, a space represented by `+` needs separate handling. Replace raw plus characters **before** decoding so an encoded literal plus (`%2B`) is not converted to a space accidentally. Keep the original value alongside the interpreted value when investigating logs.
+
+### Encode a URL component safely while preserving compatibility behavior
+
+<!-- example: url-escape -->
+```sql
+SELECT URL_COMPONENT_ENCODE('a b+café/?#&=%') AS component,
+       hex(URL_COMPONENT_ENCODE('a b')) AS component_hex,
+       hex(URLESCAPE('a b', 65001)) AS compatibility_hex,
+       URL_COMPONENT_ENCODE(NULL) AS absent;
+```
+
+| component | component_hex | compatibility_hex | absent |
+| --- | --- | --- | --- |
+| a%20b%2Bcaf%C3%A9%2F%3F%23%26%3D%25 | 6125323062 | 612532306200 | NULL |
+
+Use `URL_COMPONENT_ENCODE` for one component, not for a complete URL: applying it to a whole URL intentionally escapes separators such as `/`, `?`, `&`, and `=`. The byte comparison also records the older `URLESCAPE` behavior: its value is `a%20b` followed by `00`. Keep `URLESCAPE` only where that compatibility contract is required. Encoding is not redaction; exclude credentials and private values before sharing query results.
 
 ## File and system functions
 
@@ -258,6 +435,9 @@ These functions access the host. Run only against paths the user has placed in s
 | `DIRECTORY_EXISTS(path)` | Integer | Check for an existing directory. | `DIRECTORY_EXISTS('samples/data')` |
 | `FILE_SIZE(path)` | Integer/NULL | File length in bytes, not formatted text. | `FILE_SIZE('samples/data/application.log')` |
 | `FILE_HASH_SHA256(path)` | Text/NULL | SHA-256 digest of file contents. | `FILE_HASH_SHA256('samples/data/application.log')` |
+| `READTEXT(path[, options])` | Text/NULL | Read bounded text through the same source and document extraction path as the `Text` input provider. Supports text, PDF, DOCX, ODT, and explicit binary projection. | `READTEXT('report.pdf', 'maxChars=200000;pdfMaximumPages=25')` |
+| `READ_TEXT(path[, options])` | Text/NULL | Alias for `READTEXT`. | `READ_TEXT('notes.txt')` |
+| `READ_TEXT_LINES(path[, maxLines])` | Text/NULL | Read ordinary text lines with an optional line limit. Use `READTEXT` for document extraction. | `READ_TEXT_LINES('application.log', 100)` |
 | `EXTRACT_FILENAME(path)` | Text | File portion of a path. | `EXTRACT_FILENAME('C:/Logs/service.log')` |
 | `EXTRACT_EXTENSION(path)` | Text | Extension portion using the compatibility extraction rules. | `EXTRACT_EXTENSION('service.log')` |
 | `EXTRACT_PATH(path)` | Text | Directory portion of a path. | `EXTRACT_PATH('C:/Logs/service.log')` |
@@ -267,6 +447,8 @@ These functions access the host. Run only against paths the user has placed in s
 | `WIN32_ERROR_DESCRIPTION(code)` | Text | Windows error message; platform-dependent. | `WIN32_ERROR_DESCRIPTION(2)` |
 | `REVERSEDNS(address)` | Text | Reverse DNS lookup; can perform network activity. | `REVERSEDNS('127.0.0.1')` |
 | `RESOLVE_SID(sid)` | Text | Resolve a Windows security identifier when permitted. | `RESOLVE_SID('S-1-5-18')` |
+
+`READTEXT` options are a semicolon-separated list. Available keys are `format`, `nonText`, `replacement`, `preserveLineBreaks`, `maxChars`, `documentMaximumBytes`, and `pdfMaximumPages`. `format` accepts `Auto`, `Text`, `Binary`, `Docx`, `Odt`, or `Pdf`. The default `maxChars` is 16 Mi characters; exceeding a configured limit is an error rather than silent truncation. PDF extraction reads embedded text only—scanned-image OCR is not included. Only use file-reading functions with trusted paths and SQL.
 
 ## Query counters and compatibility names
 
@@ -283,7 +465,8 @@ ULP supports selected familiar function names for existing query workflows. Simi
 | `TO_DATE`, `TO_TIME`, `TO_TIMESTAMP` | Compatibility date/time conversions. | `TO_TIMESTAMP('2026-08-17', 'yyyy-MM-dd')` |
 | `TO_LOCALTIME`, `TO_UTCTIME` | Convert through the host's local timezone. | `TO_UTCTIME(SYSTEM_TIMESTAMP())` |
 | `SYSTEM_DATE`, `SYSTEM_TIME`, `SYSTEM_TIMESTAMP`, `SYSTEM_UTCOFFSET` | Host clock and offset values. | `SYSTEM_DATE()` |
-| `URLESCAPE`, `URLUNESCAPE` | Encode/decode URL text. | `URLESCAPE('a b')` |
+| `URL_COMPONENT_ENCODE` | Encode one URL component safely as UTF-8. | `URL_COMPONENT_ENCODE('a b+c')` |
+| `URLESCAPE`, `URLUNESCAPE` | Compatibility URL text encoding/decoding. | `URLUNESCAPE('a%20b', 65001)` |
 | `IN_ROW_NUMBER()` | Input-phase row numbering for supported ULP query shapes. | `SELECT IN_ROW_NUMBER(), Text FROM logs;` |
 | `OUT_ROW_NUMBER()` | Output-phase row numbering. | `SELECT OUT_ROW_NUMBER(), Text FROM logs LIMIT 5;` |
 | `SEQUENCE([start])` | Per-query sequence with optional starting value. | `SELECT SEQUENCE(10) FROM (VALUES(1),(2));` |

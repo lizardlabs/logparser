@@ -1,0 +1,3 @@
+# CustomPlugin provider reference
+
+> This generated reference moved to [the generated reference catalog](../reference/generated/provider-CustomPlugin.md). This compatibility page preserves existing links.

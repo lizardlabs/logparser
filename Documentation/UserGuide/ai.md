@@ -248,7 +248,7 @@ Useful investigation recipes:
 | Do many questions need the same repository? | Materialize rows once, index repeatedly filtered columns, then reuse ordinary SQLite tables. | Snapshot path, source scope, creation/refresh state |
 | Did the source change? | Rebuild a deliberate snapshot; compare stable paths, names, spans, and available hashes. | Added/removed/changed candidates, verified examples |
 
-Start with the [code-snapshot tutorial](tutorials.md#build-a-searchable-code-snapshot). The Code library also includes language-specific queries for C#, VB.NET, Razor, HTML, JavaScript, TypeScript, and Markdown. Read the recipe's description and parameters before using it; do not assume every language provides identical fields or compiler-level semantic resolution.
+Start with the [code-snapshot tutorial](tutorials.md#build-a-searchable-code-snapshot). The Code library also includes language-specific queries for C#, VB.NET, Razor, HTML, JavaScript, TypeScript, Python, Java, and Markdown. Read the recipe's description and parameters before using it; do not assume every language provides identical fields or compiler-level semantic resolution.
 
 MCP is optional. Any agent allowed to run commands can use ULP as a deterministic local tool. Prefer machine-readable, bounded output:
 

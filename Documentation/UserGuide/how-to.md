@@ -95,6 +95,13 @@ ulp --input TextLine --from .\notes.txt --table lines `
     --query "SELECT Text FROM lines LIMIT 100"
 ```
 
+`TextLine` always returns `Text` plus compact JSON `Metadata`. By default each logical line is one chunk. Extract optional location details only when needed:
+
+```powershell
+ulp --input TextLine --from .\notes.txt --table lines `
+    --query "SELECT json_extract(Metadata, '$.startLine') AS line, Text FROM lines ORDER BY json_extract(Metadata, '$.chunkNumber')"
+```
+
 Tokenize text into words with `TextWord`:
 
 ```powershell
@@ -107,6 +114,33 @@ Check the generated provider page if the actual field names or tokenization opti
 ```powershell
 ulp --help-provider TextWord
 ```
+
+Read an entire normal file, a DOCX/ODT document, or each PDF page with `Text`:
+
+```powershell
+ulp --input Text --from .\manual.pdf --table pages `
+    --query "SELECT PageNumber, Text FROM pages WHERE Text LIKE '%configuration%'"
+```
+
+Create overlapping chunks for search or later retrieval workflows without adding an AI dependency:
+
+```powershell
+ulp --input Text --from .\logs\large.log --table chunks `
+    --input.ChunkMode Lines --input.ChunkSize 100 --input.ChunkOverlap 10 `
+    --query "SELECT ChunkNumber, ChunkStartLine, ChunkEndLine, Text FROM chunks WHERE Text LIKE '%timeout%'"
+```
+
+The same extractor is available inside SQLite through `READTEXT` (alias `READ_TEXT`). The optional second argument is a semicolon-separated list. Scalar reads default to a 16 Mi-character safety limit:
+
+```sql
+SELECT READTEXT('manual.pdf');
+SELECT READ_TEXT(
+  'unknown.bin',
+  'format=binary;nonText=ignore;preserveLineBreaks=false;maxChars=1048576'
+);
+```
+
+Supported scalar options are `format`, `nonText`, `replacement`, `preserveLineBreaks`, `maxChars`, `documentMaximumBytes`, and `pdfMaximumPages`. Use a table input when you need chunks rather than one combined scalar value. `Text` exposes separate chunk/page fields; `TextLine` keeps its stable `Text, Metadata` schema and stores optional page/range details in JSON.
 
 ### How to Query Multiple Files
 
@@ -171,6 +205,16 @@ ulp --input TextLine --from "C:\Logs\*.log" --table logs `
 Checkpoint changes are committed only after query execution, output, and the after-query hook succeed. See [incremental input](inputs-and-outputs.md#incremental-input-and-checkpoints) for truncation, replacement, new/deleted file, and early-limit behavior.
 
 ## Filtering and Searching
+
+### Extract fields from an XML payload
+
+If a row contains XML, select attributes with XPath `@name` and element text with `text()`. First inspect the input schema: XML function names do not imply a generic XML input format or a particular event payload column. Follow the [complete XML extraction recipe](functions.md#validate-and-extract-event-fields) for a runnable sample, malformed-row handling, and expected output; see [namespace handling](functions.md#handle-xml-namespaces-explicitly) when your payload uses namespaces.
+
+### Inspect encoded log fields
+
+For percent-encoded UTF-8 text, use `URLUNESCAPE(value, 65001)` and retain the original value as evidence. It preserves literal plus signs, so it is not automatically a form decoder. To generate a path segment, query key, or query value, use `URL_COMPONENT_ENCODE(value)`; do not apply it to a complete URL. The [URL recipes](functions.md#url-text) show both contracts.
+
+For Base64 text and binary payloads, see the [binary-safe Base64 recipe](functions.md#decode-base64-text-and-binary-data-safely). Decoding returns a BLOB; cast it to `TEXT` only when the decoded character encoding is known. These helpers do not redact secrets, so exclude sensitive fields before exporting or sharing results.
 
 ### How to Filter Records
 
@@ -608,6 +652,41 @@ A scheduled script should:
 8. define whether an empty result is success or failure.
 
 Use Windows Task Scheduler or the organization's automation platform to run that script. Scheduler account, credential, retention, and failure-notification policy are deployment decisions outside ULP.
+
+For a fixed interval while the current terminal remains attached, ULP can repeat the query itself:
+
+```powershell
+ulp --query "SELECT datetime('now') AS checked_at" `
+    --every 30s --runs 10 `
+    --output file --format JSON --output-file '.\status-{RunNumber}.json'
+```
+
+The first run is immediate. Add `--wait-first` to wait one interval before it. Omit `--runs` to continue until Ctrl+C, and add `--continue-on-error` only when a later poll should still run after a failed one. This is an attached, process-scoped schedule—not a durable service. In the advanced interactive menu, **Recurring queries** can create, inspect, pause, resume, and cancel fixed-interval schedules; pausing lets an active query finish and prevents its next run.
+
+For a calendar schedule, use a five-field cron expression:
+
+```powershell
+ulp --query "SELECT datetime('now') AS checked_at" `
+    --cron "0 2 * * MON-FRI" --cron-time-zone UTC `
+    --output file --format JSON --output-file '.\daily-{yyyy-MM-dd}.json'
+```
+
+The fields are minute, hour, day of month, month, and day of week. ULP supports `*`, comma-separated lists, increasing ranges, `/` steps, numeric values, and English three-letter month/day names. Day-of-month and day-of-week use standard cron OR behavior when both are restricted. The default timezone is the computer's local timezone; use `UTC` for deterministic automation or a Windows timezone ID such as `Eastern Standard Time`. Cron waits for the first match; add `--run-now` to run once immediately. A nonexistent spring-forward local minute is skipped, while a repeated autumn minute can run twice because it represents two UTC instants.
+
+### How to Follow a Growing Log
+
+Use `--tail` with one local `TextLine` file. ULP keeps an in-memory checkpoint, waits for complete lines, and applies the SQL filter only to each newly available group:
+
+```powershell
+ulp --input TextLine --from 'C:\Logs\application.log' --table logs `
+    --query "SELECT Text FROM logs WHERE Text LIKE '%ERROR%'" `
+    --tail --every 500ms `
+    --output console --format Terminal
+```
+
+Existing complete lines are skipped by default. Add `--tail-existing` to include them on the first run. An unfinished final line is retained and appears only after its newline is written. Ctrl+C stops both the current query and future polling.
+
+Tail mode polls rather than subscribing to filesystem notifications. It currently supports exactly one seekable local TextLine file, not globs, URLs, or archive members. Checkpoint state exists only for that ULP process. Successful query and output completion advances it; a failed run is retried from the previous safe position. This gives useful at-least-once behavior, not a durable exactly-once guarantee. For file output, include `{RunNumber}` in the path to avoid replacing the preceding poll.
 
 ### How to Run a Post-Action
 

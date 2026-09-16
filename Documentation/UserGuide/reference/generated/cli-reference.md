@@ -15,6 +15,8 @@ Usage:
   ulp ingest <path> --parser CSV --db investigation.db --table records
   ulp db info investigation.db            Inspect or upgrade an analysis database
   ulp ado --provider SqlServer --connection <string> --query <sql>
+  ulp --tour                               Open the guided, read-only product tour
+  ulp --tour=auto                          Run every tour chapter without prompts
   ulp --menu                               Open the guided interactive menu
   ulp --menu --advanced-menu               Open the complete advanced menu
   ulp --shell                              Open the SQL shell directly
@@ -24,9 +26,10 @@ Usage:
   ulp -i EVT --table events --from System --query <sql> --output console --format JSON
 
 Basic source options:
-  --input, -i <provider>       Starts a new provider block (default: TextLine)
+  --input, -i <provider>       Starts a provider block; use Auto to detect its format
   --from, --source <value>     File/glob list, URL, archive|entry-glob, or provider source
   --table <name>               SQLite table name (provider-aware, e.g. tEvt1/tCsv1, if omitted)
+  --detect-format <source>     Detect and explain the provider without running a query
 
 Basic query and output options:
   --query, -q <sql>            Execute SQL after all virtual tables are created
@@ -43,6 +46,9 @@ Basic query and output options:
   --memory                     Use an in-memory SQLite database (default)
   --temp-db                    Use a temporary SQLite file deleted on exit
   --database, --db <value>     Use a persistent SQLite file or connection string
+  --every <duration>           Repeat the query while this CLI process remains attached
+  --runs <number>              Optional recurring-query run limit
+  --tail                       Poll one TextLine file and query only newly completed lines
 
 Interactive menu:
   --menu                       Open the guided interactive menu
@@ -68,6 +74,7 @@ Help topics:
   --help output                Output formats and destinations
   --help configuration         Configuration and settings
   --help examples              SQL and automation examples
+  --help tour                  Product-tour chapters and unattended forms
   --help advanced              Automation and expert switches
   --help-providers / --help-writers / --help-sqlite / --help-checkpoints / --help-mcp
 
@@ -114,6 +121,12 @@ Queries and automation:
   --after-query-file <file>    Load after-query SQL from a file
   --session-cleanup-sql <sql>  Run once before each SQLite connection closes
   --session-cleanup-file <f>   Load session cleanup SQL from a file
+  --every <duration>           Repeat at 500ms/30s/5m/2h or TimeSpan intervals
+  --runs <number>              Stop after this many attempted runs; omitted means Ctrl+C
+  --wait-first                 Wait one interval before the first recurring run
+  --continue-on-error          Keep a recurring CLI query running after a failed run
+  --tail                       Follow one local TextLine file (default interval: 1s)
+  --tail-existing              Include existing complete lines before following appends
 
 Output and diagnostics:
   --also-pipeline FORMAT=FILE  Send the same result to another file pipeline; repeatable

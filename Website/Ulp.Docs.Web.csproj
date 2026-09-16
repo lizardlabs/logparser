@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <Content Include="..\Documentation\UserGuide\**\*.md"
+             Exclude="..\Documentation\UserGuide\developer\**\*;..\Documentation\UserGuide\legal\COMPLIANCE-REVIEW.md;..\Documentation\UserGuide\legal\PRODUCT-LEGAL.md;..\Documentation\UserGuide\legal\EULA-TEMPLATE.md"
              Link="Content\%(RecursiveDir)%(Filename)%(Extension)"
              CopyToOutputDirectory="PreserveNewest"
              CopyToPublishDirectory="PreserveNewest" />
@@ -22,5 +23,13 @@
              Link="Content\assets\%(RecursiveDir)%(Filename)%(Extension)"
              CopyToOutputDirectory="PreserveNewest"
              CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="..\Documentation\UserGuide\reference\generated\*.json"
+             Link="Content\reference\generated\%(Filename)%(Extension)"
+             CopyToOutputDirectory="PreserveNewest"
+             CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
+  <Target Name="RejectPrivateDocumentation" BeforeTargets="Build;Publish">
+    <Error Condition="Exists('..\Documentation\UserGuide\developer') Or Exists('..\Documentation\UserGuide\legal\COMPLIANCE-REVIEW.md') Or Exists('..\Documentation\UserGuide\legal\PRODUCT-LEGAL.md') Or Exists('..\Documentation\UserGuide\legal\EULA-TEMPLATE.md')"
+           Text="Private maintainer material must be moved out of the public manual before building the documentation website." />
+  </Target>
 </Project>

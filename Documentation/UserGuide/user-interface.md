@@ -26,6 +26,7 @@ Short introductions: [CLI](interfaces/cli.md), [guided menu](interfaces/menu.md)
 
 | Interface | Start command | Best for |
 | --- | --- | --- |
+| Product tour | `ulp --tour` | Explained, bounded demonstrations before configuring your own data |
 | Guided menu | `ulp --menu` | Beginner-friendly source, query, output, settings, and help workflows |
 | Advanced menu | `ulp --menu --advanced-menu` | SQL shell, SQLite internals, background jobs, and output fan-out |
 | SQL shell | `ulp --shell` | Repeated SQL in one terminal session |
@@ -35,6 +36,8 @@ Short introductions: [CLI](interfaces/cli.md), [guided menu](interfaces/menu.md)
 Run `ulp` without arguments for concise command help. The default no-command behavior can be changed from help to the guided menu in **Options**, or with `--startup-mode menu`.
 
 The beginner menu is intentionally smaller. It keeps guided sources and tables, output selection, the Query library, Query Builder, TUI, Options, and Help. The advanced menu adds operational features that new users do not need for a first query.
+
+For a safe introduction, choose **LEARN · Product tour** from either main menu. The tour previews each query, explains what it demonstrates, and lets you run, skip, repeat, or stop. It uses an isolated in-memory database and does not replace the sources, database, output destination, or writer defaults already configured in the menu.
 
 ## Main Window
 
@@ -75,10 +78,10 @@ Interactive menus include **Clear screen** alongside terminal navigation command
 The guided source workflow is:
 
 1. choose **Add data source**;
-2. select a data provider or cancel;
-3. choose or enter the source;
+2. select a data provider, choose automatic detection, or cancel;
+3. enter the source or use the full-screen file/directory picker;
 4. accept or edit the provider-aware table name;
-5. set common properties, open the complete property editor, or retain factory/config defaults;
+5. edit properties in the full-screen TUI editor or retain factory/config defaults;
 6. review the complete `CREATE VIRTUAL TABLE ... USING ParsingModule(...)` SQL;
 7. edit, copy, run, or cancel.
 
@@ -97,7 +100,7 @@ If an operation asks you to choose a table and only one suitable table exists, U
 - Active Directory, processes, threads, source code, and managed assemblies;
 - existing SQLite tables or another configured ADO.NET data source.
 
-Use provider Help before selecting an unfamiliar source. Provider properties shown in the UI are configuration settings; parsed row fields are displayed as table schema, not mixed into the property editor.
+Use provider Help before selecting an unfamiliar source. The TUI property editor groups settings by category, shows the description/type/current value beside the list, offers direct Boolean and enum choices, opens nested settings in another TUI page, and masks secret-like values. Provider properties shown in the UI are configuration settings; parsed row fields are displayed as table schema, not mixed into the property editor.
 
 ## Query Editor
 
@@ -235,7 +238,7 @@ The web grid includes its built-in spreadsheet export. ULP's output pipeline sup
 
 ## File and Input Selection
 
-The terminal file dialog supports:
+The Add data source workflow uses a full-screen TUI picker for files and directories. It supports keyboard directory navigation, typed location entry, and explicit selection or cancellation. The smaller terminal file dialog remains available to non-menu workflows and supports:
 
 - current-directory display;
 - directory navigation;
@@ -247,7 +250,7 @@ The terminal file dialog supports:
 
 Selection dialogs are visually distinct from action menus. **Clear screen** is not inserted into lists where it would be mistaken for a provider, table, output format, or file.
 
-The TUI uses native terminal open/save dialogs for `.sql` query files. The web UI accesses only saved queries inside the configured Query library; it does not expose an unrestricted browser-side server filesystem picker.
+The TUI also uses native terminal open/save dialogs for `.sql` query files. The web UI accesses only saved queries inside the configured Query library; it does not expose an unrestricted browser-side server filesystem picker.
 
 ## Saved Queries
 
@@ -268,6 +271,10 @@ ulp -c.dir --from ".\samples\data\*" --p.extension .cs
 The web UI displays the complete folder hierarchy. Select a query to see its description and parameters. Saved and ad-hoc modes are labelled explicitly. A saved query can be reloaded from disk or reset to its last loaded SQL; overwriting or deleting it requires confirmation. **Open in new tab** opens a URL containing the query ID and selects that query in another tab without running it.
 
 SQL files remain authoritative. Changes made through an allowed web edit are visible to the CLI because both use the configured library directory. Rooted paths and traversal outside that directory are rejected.
+
+### Web query sessions
+
+Each browser tab receives an isolated ULP Web session. Query-library runs, unsaved Query-library edits, the ad-hoc editor, the safe shell, schema browsing, AI schema context, and inline query execution share that session's SQLite connection. A temporary or virtual table created in one of those surfaces is therefore immediately available in the others, and AI suggestions see the same table definitions without receiving table rows. A different browser tab or session does not inherit connection-local tables. Operations within one session are serialized so two requests cannot use the same SQLite connection concurrently. Leaving or closing the browser page asks the server to dispose that tab's session; stopping the ULP Web server disposes any sessions that remain.
 
 ## Query Builder
 

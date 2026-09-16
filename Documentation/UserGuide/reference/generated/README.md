@@ -5,6 +5,8 @@
 - [CLI reference](cli-reference.md)
 - [Configuration reference](configuration-reference.md)
 - [Configuration schema](configuration.json)
+- [Complete configuration-object catalog](configuration-objects.json)
+- [Complete SQL function reference](sqlite-functions.md)
 - [SQLite function inventory](sqlite-functions.json)
 - [Automation reference](automation-reference.md)
 - [Background Jobs reference](background-jobs-reference.md)
@@ -16,6 +18,13 @@
 - [Provider catalog](provider-catalog.json)
 - [Writer catalog](writer-catalog.json)
 
+## Configuration objects
+
+- [Application options](settings-application.md)
+- [Query Builder options](settings-query-builder.md)
+- [Query preprocessing options](settings-query-preprocessing.md)
+- [Query execution options](settings-query-execution.md)
+
 ## Data providers
 
 - [EVT - Windows Event Log channels and .evtx files using the modern Windows event API](provider-EVT.md)
@@ -24,8 +33,9 @@
 - [CSV - Comma-separated records with configurable headers, quoting, and escaping](provider-CSV.md)
 - [TSV - Tab-separated records with configurable headers, quoting, and escaping](provider-TSV.md)
 - [W3C - W3C extended logs such as IIS, FTP, SMTP, Exchange, and Windows Firewall logs](provider-W3C.md)
-- [TextLine - Text files and streams exposed as one record per line](provider-TextLine.md)
+- [TextLine - Text files and streams exposed as ordered chunks (one line per chunk by default)](provider-TextLine.md)
 - [TextWord - Text files and streams tokenized into individual words](provider-TextWord.md)
+- [Text - Text files and streams exposed as one record per source or as optional streaming chunks](provider-Text.md)
 - [log4jXML - Log4j and log4net XML event records](provider-log4jXML.md)
 - [JSON - JSON objects and arrays from files or streams](provider-JSON.md)
 - [YAML - YAML documents, mappings, and sequences from files or streams](provider-YAML.md)
@@ -36,7 +46,7 @@
 - [Dates - Generated date series for calendar joins, ranges, and test data](provider-Dates.md)
 - [CustomPlugin - Records produced by a custom .NET source-code plugin](provider-CustomPlugin.md)
 - [EVTXP - Classic Windows Event Log reader using the Win32 API](provider-EVTXP.md)
-- [SourceCode - C#, VB.NET, Razor, HTML, JavaScript, TypeScript, and Markdown files parsed into searchable symbols, document structure, comments, diagnostics, and exact source spans](provider-SourceCode.md)
+- [SourceCode - C#, VB.NET, Razor, HTML, JavaScript, TypeScript, Python, Java, and Markdown files parsed into searchable symbols, document structure, comments, diagnostics, and exact source spans](provider-SourceCode.md)
 - [Excel - Excel workbooks and worksheets without Office or database drivers](provider-Excel.md)
 - [ADS - Active Directory objects and properties with Microsoft Log Parser 2.2-compatible modes](provider-ADS.md)
 - [Processes - Point-in-time local process metrics including memory, CPU, handles, threads, and executable details](provider-Processes.md)

@@ -1,0 +1,3 @@
+# None writer reference
+
+> This generated reference moved to [the generated reference catalog](../reference/generated/writer-None.md). This compatibility page preserves existing links.

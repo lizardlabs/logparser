@@ -100,7 +100,7 @@ A useful release note should state:
 - supported platform/runtime changes;
 - the immutable release artifact and checksum.
 
-The concise developer change record remains in the repository `CHANGELOG.md`. This chapter should summarize only verified user-visible releases.
+This chapter summarizes verified user-visible release changes.
 
 ## Release History
 
@@ -118,7 +118,7 @@ No verified public release chronology is recorded in this manual yet. Add an ent
 
 ## Planned Work
 
-Repository TODO files are implementation planning records, not release commitments. Planned work can move, change, or be removed as testing and product decisions evolve.
+Planning notes are not release commitments. Planned work can move, change, or be removed as testing and product decisions evolve.
 
 Before every future publication:
 

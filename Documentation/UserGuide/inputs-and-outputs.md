@@ -12,10 +12,12 @@ This chapter is the readable format manual. Exact provider fields and configurab
 
 - [Input Formats](#input-formats)
 - [Choosing an Input Provider](#choosing-an-input-provider)
+- [Automatic Input Detection](#automatic-input-detection)
 - [File and Stream Source Syntax](#file-and-stream-source-syntax)
 - [CSV, TSV, and Delimited Text](#csv-tsv-and-delimited-text)
 - [JSON, YAML, and TOON](#json-yaml-and-toon)
 - [Text and Log Inputs](#text-and-log-inputs)
+- [Nested text and record settings](#nested-text-and-record-settings)
 - [Windows and System Inputs](#windows-and-system-inputs)
 - [File, Source Code, Assembly, and Excel Inputs](#file-source-code-assembly-and-excel-inputs)
 - [Generated and Extensible Inputs](#generated-and-extensible-inputs)
@@ -75,6 +77,7 @@ The following providers are registered in the documented ULP runtime:
 | `JSON` | — | Structured data | JSON objects and arrays |
 | `YAML` | `YML` | Structured data | YAML documents, mappings, and sequences |
 | `TOON` | — | Structured data | TOON 4.1 tabular/keyed-tabular input |
+| `Text` | `TextRead` | Text/documents | One row per source, PDF page, or requested chunk |
 | `TextLine` | `Lines` | Text | One record per line |
 | `TextWord` | `Words` | Text | Tokenized words |
 | `RegEx` | `Grok` | Text parsing | Multiline regular-expression or Grok records |
@@ -82,7 +85,7 @@ The following providers are registered in the documented ULP runtime:
 | `log4jXML` | — | Application logs | Log4j/log4net XML events |
 | `Excel` | `XLSX`, `XLS` | Workbook | `.xlsx`, `.xlsm`, and `.xls` without Office/ACE drivers |
 | `FileSystem` | `FS` | File system | Files/directories, sizes, timestamps, and optional media metadata |
-| `SourceCode` | `CSharp`, `CS` | Code | C#, VB.NET, Razor, HTML, JavaScript, TypeScript, and Markdown structure |
+| `SourceCode` | `CSharp`, `CS` | Code | C#, VB.NET, Razor, HTML, JavaScript, TypeScript, Python, Java, and Markdown structure |
 | `DotNetAssembly` | `Assembly`, `DotNet` | Managed binaries | Static metadata from managed `.dll` and `.exe` files |
 | `ADS` | `ActiveDirectory`, `LDAP` | Directory services | Active Directory objects/properties and Log Parser-compatible modes |
 | `Processes` | `Process`, `PROC` | System snapshot | Local process memory, CPU, handles, threads, and executable details |
@@ -92,6 +95,28 @@ The following providers are registered in the documented ULP runtime:
 | `CustomPlugin` | `DotNetPlugin` | Extension | Records from an explicitly selected custom .NET source plugin |
 
 Do not choose a provider by filename alone when several interpretations are possible. A `.txt` file might be lines, words, delimited fields, regular-expression records, W3C data, or another log grammar.
+
+## Automatic Input Detection
+
+When `--from` is supplied without `--input`, ULP chooses a provider from the source extension and a bounded content sample. `--input Auto` makes the same choice explicit:
+
+```powershell
+ulp --from .\samples\data\employees.csv `
+    --query "SELECT * FROM tCsv1 LIMIT 20"
+
+ulp --input Auto --from .\samples\data\application.log `
+    --query "SELECT * FROM tText1 LIMIT 20"
+```
+
+Inspect the decision without opening a query session:
+
+```powershell
+ulp --detect-format .\samples\data\employees.csv
+```
+
+The command prints the selected provider, confidence, and evidence. Detection reads at most a small prefix from up to four lazily discovered files; it does not enumerate or load an entire recursive source. Strong signatures identify W3C, log4j/log4net XML, JSON, YAML, TOON, CSV, and TSV. Known extensions cover event logs, workbooks, documents, source code, and other unambiguous sources.
+
+An explicit provider always wins. Use one for short or ambiguous data, generic binary files, provider-specific interpretations such as `TextWord` or `RegEx`, and mixed-format globs. Automatic detection rejects a sampled glob when its files require different providers; split that source into separate provider blocks instead.
 
 ## File and Stream Source Syntax
 
@@ -217,14 +242,82 @@ TOON can be compact for language-model contexts, but JSON is more widely interop
 
 ## Text and Log Inputs
 
+### Text and documents
+
+`Text` (alias `TextRead`) returns one `Text` row for a normal source. PDF input returns one row per page so page boundaries remain queryable. `TextLine` returns ordered chunks—one line per chunk by default—and `TextWord` returns words from the same extraction path.
+
+The shared readers accept ordinary text plus PDF, DOCX, and ODT. `Auto` uses the extension and conservative PDF/Office-package signatures. Use `TextFormat` to force `Text`, `Binary`, `Pdf`, `Docx`, or `Odt` when a source has an unusual name. RTF and legacy `.doc` are not currently extracted; RTF is left unsupported rather than shipping an unreliable markup stripper.
+
+```powershell
+ulp --input Text --from .\manual.pdf --table pages `
+    --query "SELECT PageNumber, PageCount, Text FROM pages"
+
+ulp --input TextLine --from .\report.docx --table lines `
+    --query "SELECT Text FROM lines WHERE Text LIKE '%invoice%'"
+```
+
+PDF extraction reads the document's existing text layer; it does not perform OCR. Scanned image-only PDFs may therefore return empty text. `PdfMaximumPages` bounds accepted PDF page counts. DOCX/ODT extraction preserves paragraph boundaries and represents simple table rows with tab-separated cells; `DocumentMaximumBytes` limits the expanded main XML entry.
+
+For arbitrary binary data, explicitly select printable-byte projection:
+
+```powershell
+ulp --input TextLine --from .\unknown.bin --table strings `
+    --input.TextFormat Binary `
+    --input.BinaryNonText Replace `
+    --input.BinaryReplacement . `
+    --input.BinaryPreserveLineBreaks false `
+    --query "SELECT Text FROM strings WHERE length(Text) >= 6"
+```
+
+`BinaryNonText=Ignore` removes non-printable bytes instead. Binary mode is deliberately byte-oriented and conservative; use normal `Text` mode for UTF-8/UTF-16 and other decoded text.
+
+### Chunking large text
+
+Set `ChunkMode` to `Lines`, `Paragraphs`, `Characters`, or `Words`, then configure `ChunkSize` and a smaller `ChunkOverlap`. Normal text is chunked incrementally, and overlap retains only the preceding window rather than the whole document.
+
+```powershell
+ulp --input Text --from .\large.log --table chunks `
+    --input.ChunkMode Lines --input.ChunkSize 100 --input.ChunkOverlap 10 `
+    --query "SELECT ChunkNumber, ChunkStartLine, ChunkEndLine, Text FROM chunks"
+
+ulp --input TextLine --from .\manual.docx --table lines `
+    --input.ChunkMode Paragraphs --input.ChunkSize 3 --input.ChunkOverlap 1 `
+    --query "SELECT json_extract(Metadata, '$.chunkNumber') AS chunk, Text FROM lines"
+```
+
+The `Text` and `TextWord` providers expose separate chunk fields when chunking is enabled:
+
+| Field | Convention |
+| --- | --- |
+| `ChunkNumber` | 1-based sequence within the source |
+| `ChunkStart`, `ChunkEnd` | zero-based character offsets; end is exclusive |
+| `ChunkStartLine`, `ChunkEndLine` | inclusive 1-based logical line numbers |
+| `ChunkLength` | characters in the emitted chunk text |
+| `PageNumber`, `PageCount` | 1-based PDF page and total pages; exposed for an explicit or `.pdf` source |
+
+`TextLine` instead has a stable two-column schema: `Text` is the complete chunk and `Metadata` is compact valid JSON. This avoids changing column order when page or range details become available.
+
+| TextLine metadata key | Included when | Convention |
+| --- | --- | --- |
+| `chunkNumber` | Always | 1-based sequence within the current source |
+| `length` | Always | Characters in `Text` |
+| `startOffset`, `endOffset` | A configured chunk mode supplies trustworthy offsets | Zero-based; end is exclusive |
+| `startLine`, `endLine` | Logical line positions are available | Inclusive, 1-based |
+| `source` | The stream has a source name | File, URL, or archive-entry identity reported by the stream layer |
+| `pageNumber`, `pageCount` | PDF extraction supplies page identity | 1-based page and total page count |
+
+Query metadata with SQLite JSON functions, for example `json_extract(Metadata, '$.pageNumber')`. PDF character/line offsets are page-local extraction coordinates and are not visual PDF coordinates. Overlap intentionally repeats boundary content between complete chunk rows.
+
 ### TextLine
 
-Exposes one `Text` value per line by default:
+Exposes one `Text` chunk per logical record (normally one physical line) by default. `Metadata` always remains the second column:
 
 ```powershell
 ulp --input TextLine --from .\samples\data\application.log --table logs `
-    --query "SELECT Text FROM logs WHERE Text LIKE '%ERROR%'"
+    --query "SELECT Text, json_extract(Metadata, '$.startLine') AS line FROM logs WHERE Text LIKE '%ERROR%'"
 ```
+
+With `ChunkMode=Lines`, `Paragraphs`, `Characters`, or `Words`, each row is one complete configured chunk; ULP never expands that chunk back into several line rows. Results follow source enumeration order, PDF page order, and then text order within the source.
 
 Use direct `search` when SQL is unnecessary.
 
@@ -297,7 +390,7 @@ Recursive enumeration and content hashing can be expensive. Filter with metadata
 
 Parses supported languages into searchable symbols, document structure, comments, diagnostics, and exact source spans. Generated files and kinds/languages can be filtered. It is intended for code investigation and coding-agent workflows, not compilation or semantic proof.
 
-C#, VB.NET, Razor, HTML, JavaScript, TypeScript, and Markdown share a common row shape. Location and declaration fields include `Language`, `Kind`, `Name`, `FullName`, `ParentName`, `Namespace`, `SourcePath`, `StartLine`, `EndLine`, `Column`, signatures, modifiers, inheritance, documentation, and exact `FullRecord` source. Search/triage fields include `CalledMethods`, `UsedTypes`, statement/complexity counts, and `HasAwait`/`HasThrow`/`HasYield`/`HasLinq`/`HasSqlString`/`HasHttpCall`/`HasFileAccess`. These latter fields are parser hints, not compiler binding, runtime proof, or security findings.
+C#, VB.NET, Razor, HTML, JavaScript, TypeScript, Python, Java, and Markdown share a common row shape. Location and declaration fields include `Language`, `Kind`, `Name`, `FullName`, `ParentName`, `Namespace`, `SourcePath`, `StartLine`, `EndLine`, `Column`, signatures, modifiers, inheritance, documentation, and exact `FullRecord` source. Python adds structural imports, classes and bases, functions/methods, decorators, variables, docstrings, comments, and recoverable syntax diagnostics. Java adds packages, imports, types and inheritance, methods, fields, annotations, Javadoc, brace-aware spans, and recoverable diagnostics. Search/triage fields include `CalledMethods`, `UsedTypes`, statement/complexity counts, and `HasAwait`/`HasThrow`/`HasYield`/`HasLinq`/`HasSqlString`/`HasHttpCall`/`HasFileAccess`. These fields are lightweight parser hints, not compiler binding, runtime proof, or security findings.
 
 The bundled Query library provides focused, bounded commands:
 
@@ -353,6 +446,16 @@ ulp --input TextLine --from "C:\Logs\*.log" --table logs `
 ULP commits staged positions only after query, output, and after-query success. Errors/cancellation keep the previous safe position. New files are read completely; deleted-file entries are removed after a complete scan; truncated/replaced files restart. An early `LIMIT` can intentionally cause safe replay rather than skipped records.
 
 Checkpoints track input positions, not aggregate history. `COUNT(*)` on a checkpointed source counts rows in that execution.
+
+Text inputs also expose `CheckpointCompleteLinesOnly`. When enabled, ULP stops at the last newline and leaves an unfinished final line for the next successful read. `CheckpointStartAtEnd` skips existing complete records when a checkpoint has no saved position. The attached `--tail` command configures both properties automatically with a process-memory checkpoint:
+
+```powershell
+ulp --input TextLine --from 'C:\Logs\application.log' --table logs `
+    --query "SELECT Text FROM logs WHERE Text LIKE '%ERROR%'" `
+    --tail --every 1s
+```
+
+Unlike a checkpoint file, a `memory:<name>` checkpoint is shared only inside the current ULP process and disappears at exit. It is intended for live polling, not durable scheduled imports. See [How to follow a growing log](how-to.md#how-to-follow-a-growing-log).
 
 # Output Formats
 
@@ -555,6 +658,44 @@ This matrix lists actual registered formats. “Streaming” describes the norma
 | TUI | No | Yes | Materialized interactive display | Dataset viewer/editor |
 | None | No | Suppresses content | N/A | Query still executes |
 
+## Nested text and record settings
+
+Text-based formats can share settings for reading physical lines and assembling those lines into logical records. CSV quoting is handled by the CSV reader; advanced record grouping is for cases such as a stack trace that belongs to the preceding log entry.
+
+There are two separate questions: **where does a record begin/end?** and **which fields should be extracted from it?** In RegEx input, `TextRecordConfiguration` answers the first question; `LineRegExConfiguration` controls field extraction from the resulting record. Do not put a field-extraction expression in a record-header setting by accident.
+
+| Path component | Meaning |
+| --- | --- |
+| `TextRecordConfiguration` | The record grouping settings; controlled by `EnableAdvancedRecordConfiguration` |
+| `RecordHeader` | The condition identifying a record's first line |
+| `RecordHeader.MatchingType` | How to interpret the condition, such as text matching or a regular expression |
+| `RecordHeader.RegExConfiguration` | Pattern and matching flags used when the condition uses RegEx |
+| `RecordHeader.RegExConfiguration.CultureInvariant` | Whether culture-independent rules are used, including case comparison |
+
+The complete last path is `TextRecordConfiguration.RecordHeader.RegExConfiguration.CultureInvariant`. It is a Boolean, not a top-level option. The [RegEx parameter table](reference/generated/provider-RegEx-parameters.md) records its current factory value alongside every other supported path. The same settings group can be reused in other input formats; always check the selected format's defaults.
+
+For example, set one nested option on an existing RegEx input block:
+
+```powershell
+ulp --input RegEx --from application.log --table logs `
+    --input.TextRecordConfiguration.RecordHeader.RegExConfiguration.CultureInvariant=True `
+    --query "SELECT * FROM logs LIMIT 10"
+```
+
+This demonstrates the option path only: it does not enable multiline grouping or define a header expression. For a complete grouping setup, choose a record type, enable advanced record configuration, select the header's matching type and pattern, and decide whether to retain the header/footer lines. The RegEx input's auto-detection options can help suggest a start expression; review the suggestion against real records.
+
+In a ParsingModule options string, use the same path without `input.`: `-TextRecordConfiguration.RecordHeader.RegExConfiguration.CultureInvariant:True`. In an application `.config` file, use the `--input.` form shown above. An input-format defaults file instead uses format-local paths; do not paste application switches into a different configuration scope.
+
+Reference navigation:
+
+- [RegEx format and output fields](reference/generated/provider-RegEx.md), [all parameters](reference/generated/provider-RegEx-parameters.md), and [copyable defaults](reference/generated/provider-RegEx-defaults.md)
+- [Record grouping settings](reference/generated/configuration-RecordTextReaderOptions.md)
+- [Header/footer matching settings](reference/generated/configuration-StringMatchingConfiguration.md)
+- [RegEx pattern and flags](reference/generated/configuration-GrokRegExConfiguration.md)
+- [CSV format](reference/generated/provider-CSV.md), [all parameters](reference/generated/provider-CSV-parameters.md), and [defaults](reference/generated/provider-CSV-defaults.md)
+
+Inherited settings are usable options, not extra nesting levels. Optional output fields such as stream names and record indexes appear separately under **Output Fields**, with the switch required to enable them. Configuration groups themselves are never extra result columns. Source-dependent columns must be inspected after opening the actual input.
+
 ## Generated Format References
 
 Exact fields, properties, aliases, categories, and defaults are generated from the registered runtime:
@@ -564,7 +705,7 @@ Exact fields, properties, aliases, categories, and defaults are generated from t
 - run `ulp --list-providers` and `ulp --list-writers` for machine-friendly discovery;
 - run `ulp --help-provider <name>` or `ulp --help-writer <name>` for one generated reference.
 
-These pages are produced from the registered runtime by `ulp --docs` and carry their ULP version and generation method. Do not manually duplicate every property in this chapter.
+Each format overview links to a complete parameter table and a compact defaults page. Settings-group links explain the relative members, while the format table supplies their full paths and actual defaults. Unset or unavailable values are identified rather than guessed; passwords and other secrets are not published. Use the grouped explanations in this chapter to choose a format, then follow the reference links for exact configuration.
 
 ## Related Documentation
 

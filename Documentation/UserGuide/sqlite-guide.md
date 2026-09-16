@@ -31,6 +31,8 @@ ULP uses SQLite to query provider records. This chapter teaches the SQLite featu
 
 ## Introduction
 
+Coming from KQL? Use the [KQL-to-ULP query translation tutorial](kql-vs-ulp-sqlite-tutorial.md). For exact availability and overloads, see the [complete SQL function catalog](reference/generated/sqlite-functions.md); the [function guide](functions.md) adds worked examples.
+
 SQLite is an embedded relational database engine. In ULP it has two roles:
 
 1. it provides the SQL language and query planner;

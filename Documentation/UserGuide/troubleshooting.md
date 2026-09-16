@@ -291,6 +291,12 @@ Use the `Excel` writer and `.xlsx` extension. Do not rename CSV or HTML output t
 
 Choose the writer's Clean or BuiltIn style mode, or configure controlled custom CSS. Tailwind mode may be inappropriate for offline/self-contained output.
 
+### Base64 input is invalid, or escaped URLs contain an invisible character
+
+Inspect the expression's `typeof(...)` and `hex(...)` before blaming the output writer. `base64_decode` returns a BLOB, preserves embedded NUL bytes, and returns NULL for malformed Base64. Cast it to `TEXT` only when the decoded character encoding is known. See the [binary-safe Base64 recipe](functions.md#decode-base64-text-and-binary-data-safely).
+
+`URLESCAPE` appends a NUL character and preserves some punctuation for compatibility. Use `URL_COMPONENT_ENCODE` for a UTF-8 path segment, query key, or query value without that trailing byte. The [side-by-side URL encoding recipe](functions.md#encode-a-url-component-safely-while-preserving-compatibility-behavior) shows the exact bytes.
+
 ## Performance Problems
 
 First determine whether time is spent discovering input, reading/parsing, SQL, output, or display. Use `--stats`, `--verbose`, and a bounded query.
@@ -394,7 +400,7 @@ Never attach real credentials, API keys, checkpoint secrets, customer logs, pers
 
 ## Reporting a Bug
 
-The repository does not currently contain a verified public issue-tracker URL or approved private support address. Use the contact/reporting path published on [log-parser.com](https://log-parser.com) for the release you are using.
+Use the contact/reporting path published on [log-parser.com](https://log-parser.com) for the release you are using. A verified public issue-tracker URL or private support address has not yet been supplied for this manual.
 
 A useful report includes a minimal reproducible example built from fictional data, exact version, command, exit code, expected/actual result, and sanitized diagnostics. For a suspected vulnerability, follow the root `SECURITY.md` policy once the publisher supplies/approves it; do not disclose exploitable details in a public issue.
 

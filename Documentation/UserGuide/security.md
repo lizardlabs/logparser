@@ -43,13 +43,13 @@ Use least privilege:
 
 Start with the project home: [https://log-parser.com](https://log-parser.com). Follow the current publisher-provided download path for the exact release.
 
-Do not trust a package only because its filename, registry ID, or search-result title contains “ULP” or “Universal Log Parser.” The current repository does not identify approved Chocolatey, WinGet, Windows Installer, or public NuGet package IDs.
+Do not trust a package only because its filename, registry ID, or search-result title contains “ULP” or “Universal Log Parser.” Only install from a distribution channel identified by the publisher.
 
 Keep the complete archive. Copying only `ulp.exe` can omit native/runtime dependencies and can encourage DLL search/loading from unintended locations.
 
 ## Official Distribution Sources
 
-The source tree verifies a portable ZIP build process but does not itself prove where a particular binary was published. For each release, confirm:
+A correctly named ZIP does not prove who published a binary. For each release, confirm:
 
 - the link originates from the publisher-controlled site/channel;
 - the version and filename match the release announcement;
@@ -93,7 +93,7 @@ Confirm the signer against publisher documentation. A valid signature from an un
 
 Scan according to organizational policy. Antivirus reputation can differ for new or uncommon binaries and can change after publication. A clean scan is one signal, not proof of safety; a detection requires investigation rather than automatic dismissal or automatic guilt.
 
-No VirusTotal report URL or detection count is asserted here because none is tied to a specific immutable release in the repository evidence.
+No VirusTotal report URL or detection count is asserted here because no verified report for a specific immutable release is provided here.
 
 ## Dependencies
 
@@ -226,7 +226,7 @@ Store these under suitable ACLs, define retention, and sanitize before sharing. 
 
 ## Reporting Security Problems
 
-The repository currently lacks an owner-approved private vulnerability-reporting address and response/SLA policy. The root `SECURITY.md` must record those details when supplied by the publisher.
+The publisher must provide an approved private vulnerability-reporting address and response policy. Until then, use the product website to request a private reporting channel; do not publish exploit details in a public issue.
 
 Until then, use the current contact path published at [log-parser.com](https://log-parser.com) and ask for a private security channel without initially sending exploit details, secrets, or sensitive data. Do not open a public issue containing a working exploit.
 

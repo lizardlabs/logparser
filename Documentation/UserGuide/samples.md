@@ -43,6 +43,7 @@ The main sample areas are:
 | `samples/sql` | Ordered SQL over CLI-created `employees` and `departments` tables |
 | `samples/actions` | Harmless post-action context display |
 | `samples/templates` | Single and multi-file Scriban generation |
+| `samples/tutorials` | Indexed SQLite log dashboard, compiler/test reports, before/after manifests, assembly allowlist, and TRX conversion |
 | `queries` | Recursive installed Query library with command-tagged recipes |
 
 Paths are relative to the current directory. If running the packaged application elsewhere, use absolute paths or copy the sample folder intact.
@@ -300,7 +301,7 @@ Use lazy inclusion/exclusion directly:
 
 ```powershell
 ulp -i TextLine --from '.\logs\*;!*.bak;!*.tmp' --input.Recurse -1 `
-    --query "SELECT StreamName, RecordNumber, Text FROM tText1 LIMIT 100"
+    --query "SELECT json_extract(Metadata, '$.source') AS SourcePath, json_extract(Metadata, '$.startLine') AS Line, Text FROM tText1 LIMIT 100"
 ```
 
 Inventory files recursively:
@@ -366,7 +367,7 @@ The ID values are strings because these CSV columns were read as text. JSON also
 
 This small sample produces 75-byte CSV, 101-byte TOON, and 667-byte default pretty-printed JSON files. These are **file sizes, not token counts**. JSON includes metadata that TOON does not, so this is not an equal-content compression benchmark. Model tokenizers, compact JSON settings, row shapes, and repeated names all affect token cost. Prefer JSON for reliable interoperability; measure TOON with the actual agent/model and check that it preserves the required data before switching. See [AI format guidance](ai.md#json-or-toon-for-agent-results).
 
-For a source checkout, regenerate the evidence into an empty directory with `powershell -File PortableLogParser/Tests/Build-ManualShowcase.ps1 -Configuration Release -OutputDirectory C:/Temp/ulp-showcase`. The script refuses to replace existing files. The larger build output gallery additionally exercises other writers and input scenarios.
+Download these examples to compare output formats, then run the sample queries with your chosen writer and an unused output filename. Keep the source data and query unchanged when comparing formats.
 
 Writers do not change the SQL or rerun the source. Select a primary writer with `--format`, then add `--also-pipeline FORMAT=PATH` for each additional artifact.
 
@@ -491,6 +492,12 @@ ulp --query "SELECT 'Customer' AS name, 'Entity' AS kind UNION ALL SELECT 'Order
 
 Review [Scriban templates](inputs-and-outputs.md#scriban) for the dynamic output-path convention and overwrite safety.
 
+### Indexed log dashboards and CI reports
+
+Follow [logs to an indexed SQLite dashboard](tutorials.md#turn-logs-into-an-indexed-database-for-dashboards) to create a persistent database, inspect an index, and export rows for Power BI/Tableau. The [development and CI tutorial](tutorials.md#build-a-development-and-ci-evidence-report) covers compiler diagnostics, test statistics, source hotspots, changed-file joins, and dependency-policy checks.
+
+Download the [runnable workflow tutorial bundle](assets/outputs/workflow-tutorials.zip) and extract its `tutorials` directory into your ULP `samples` folder. The files contain fictional input; they do not build or scan your repository automatically. Use a fresh output database for each run. The development fixture intentionally fails its policy assertion so you can verify a failing CI step before adapting it.
+
 ## Sample Inventory
 
 | Group | Checked-in examples |
@@ -498,10 +505,11 @@ Review [Scriban templates](inputs-and-outputs.md#scriban) for the dynamic output
 | ParsingModule | EVT, TextLine, CSV, join/window, provider config, TSV, RegEx, Numbers |
 | SQL | Materialization, joins, aggregates, windows, recursive CTE/calendar, views, JSON, query plan |
 | Structured data | JSON, YAML, TOON |
-| Source code | C#, VB, Razor, HTML, JavaScript, TypeScript, Markdown |
+| Source code | C#, VB, Razor, HTML, JavaScript, TypeScript, Python, Java, Markdown |
 | Query library | Code, Events, Files, recursive disk statistics, generated data, System, Text |
 | Templates | Single summary plus multi-file C# and Markdown generation |
 | Automation | Post-action context display |
+| Workflow tutorials | Portable log database, compiler deduplication, test-result normalization, changed files, assembly-reference allowlist, and batch assertions |
 
 ## Related Documentation
 
