@@ -47,6 +47,7 @@ Basic query and output options:
   --temp-db                    Use a temporary SQLite file deleted on exit
   --database, --db <value>     Use a persistent SQLite file or connection string
   --every <duration>           Repeat the query while this CLI process remains attached
+  --cron <expression>          Five-field calendar schedule while this process is attached
   --runs <number>              Optional recurring-query run limit
   --tail                       Poll one TextLine file and query only newly completed lines
 
@@ -67,6 +68,7 @@ Help topics:
   --help sqlite                SQLite and ParsingModule basics
   --help query-builder         Guided query construction
   --help mcp                   MCP server configuration
+  --help ai                    Experimental AI Chat, privacy, and review workflow
   --help ado                   Direct ADO.NET provider queries
   --help scriban               Templates and multi-file code generation
   --help web                   Local web server, permissions, and HTTPS
@@ -76,7 +78,7 @@ Help topics:
   --help examples              SQL and automation examples
   --help tour                  Product-tour chapters and unattended forms
   --help advanced              Automation and expert switches
-  --help-providers / --help-writers / --help-sqlite / --help-checkpoints / --help-mcp
+  --help-providers / --help-writers / --help-sqlite / --help-checkpoints / --help-mcp / --help-ai
 
 Diagnostics and discovery:
   --list-providers             Machine-friendly provider list
@@ -122,6 +124,9 @@ Queries and automation:
   --session-cleanup-sql <sql>  Run once before each SQLite connection closes
   --session-cleanup-file <f>   Load session cleanup SQL from a file
   --every <duration>           Repeat at 500ms/30s/5m/2h or TimeSpan intervals
+  --cron <expression>          Five fields: minute hour day-of-month month day-of-week
+  --cron-time-zone <id>        Cron timezone; default is local (use UTC for deterministic jobs)
+  --run-now                    Run once immediately before waiting for the first cron match
   --runs <number>              Stop after this many attempted runs; omitted means Ctrl+C
   --wait-first                 Wait one interval before the first recurring run
   --continue-on-error          Keep a recurring CLI query running after a failed run

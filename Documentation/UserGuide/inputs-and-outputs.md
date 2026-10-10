@@ -71,6 +71,7 @@ The following providers are registered in the documented ULP runtime:
 | `EVT` | `WindowsEventLog` | Windows events | Modern Windows channels and `.evtx` files |
 | `EVTXECMD` | — | Forensic events | `.evtx` parsing with EvtxECmd-compatible fields |
 | `EVTXP` | — | Windows events | Classic Win32 event-log access |
+| `REG` | `Registry`, `WindowsRegistry` | Windows system | Read-only local or remote Registry values |
 | `CSV` | — | Structured text | RFC-style comma-separated records |
 | `TSV` | — | Structured text | Tab-separated records |
 | `Delimiter` | `Delimited` | Structured text | A configurable delimiter/quote/escape syntax |
@@ -115,6 +116,8 @@ ulp --detect-format .\samples\data\employees.csv
 ```
 
 The command prints the selected provider, confidence, and evidence. Detection reads at most a small prefix from up to four lazily discovered files; it does not enumerate or load an entire recursive source. Strong signatures identify W3C, log4j/log4net XML, JSON, YAML, TOON, CSV, and TSV. Known extensions cover event logs, workbooks, documents, source code, and other unambiguous sources.
+
+Recognizable Windows sources do not need a file sample: bare `System`, `Application`, `Security`, `Setup`, and `ForwardedEvents` select `EVT`; Registry hives such as `HKCU\Software` select `REG`; `LDAP://` and `GC://` paths select `ADS`. Use an explicit path such as `.\System` when you mean a file or folder with a channel-like name.
 
 An explicit provider always wins. Use one for short or ambiguous data, generic binary files, provider-specific interpretations such as `TextWord` or `RegEx`, and mixed-format globs. Automatic detection rejects a sampled glob when its files require different providers; split that source into separate provider blocks instead.
 
@@ -360,6 +363,20 @@ Access depends on Windows, channel permissions, and source availability. Message
 
 Use `EVTXECMD` when its forensic-compatible field model is required. `EVTXP` exists for classic Win32 behavior. Do not treat the three event providers as interchangeable schemas.
 
+### REG (Windows Registry)
+
+`REG` reads Registry values without changing them. Use a narrow key and an explicit recursion depth when exploring an unfamiliar hive:
+
+```powershell
+ulp --input REG --from 'HKCU\Environment' --table registry_values `
+    --input.Recurse 0 `
+    --query 'SELECT Path, ValueName, ValueType, Value, LastWriteTime FROM registry_values'
+```
+
+The seven fields follow Log Parser's REG shape: `ComputerName`, `Path`, `KeyName`, `ValueName`, `ValueType`, `Value`, and UTC `LastWriteTime`. The default value name is an empty string. Supported roots are `HKCR`, `HKCU`, `HKLM`, `HKCC`, and `HKU`, with full `HKEY_...` names accepted too. A leading backslash is optional; `\\computer\HKLM\Software` reads a remote machine using your Windows credentials and permissions. Separate multiple keys with commas. `\` alone requests all five roots and can be very expensive.
+
+`Recurse=0` reads only the named key; `Recurse=-1` (the Log Parser-compatible default) walks descendants. `MultiSZSep` joins `REG_MULTI_SZ` elements (`|` by default), and `BinaryFormat` chooses `ASC`, `PRINT`, or `HEX` for binary values. `IgnoreAccessErrors=true` skips inaccessible child keys; by default these errors are visible. Query a specific path first instead of scanning the whole Registry.
+
 ### ADS
 
 Queries Active Directory objects and properties. Network/domain availability, credentials, scope, and directory permissions apply. Avoid broad unbounded directory queries.
@@ -374,7 +391,7 @@ CPU figures are sampled observations, not lifetime guarantees. CPU percentage sa
 
 ### FileSystem
 
-Returns file/directory paths, sizes, timestamps, attributes, and optional media metadata. Disable media extraction for faster general inventory:
+Returns file paths, sizes, timestamps, attributes, and optional media metadata. Files are yielded as they are discovered, rather than collecting the entire directory tree first. A query selecting only file statistics never opens media content, even with media extraction enabled:
 
 ```powershell
 ulp --input FileSystem --from ".\samples\data\*" --table files `
@@ -384,13 +401,44 @@ ulp --input FileSystem --from ".\samples\data\*" --table files `
     --query "SELECT Name, Extension, LengthInBytes, LastWriteTime FROM files ORDER BY LengthInBytes DESC"
 ```
 
-Recursive enumeration and content hashing can be expensive. Filter with metadata and apply safe limits first.
+`Metadata` is one JSON column, not a set of media-specific columns. It is populated only when selected or used in a SQL expression, and cached for that row. Supported image, movie and audio types provide only the metadata relevant to the file. Unsupported files, or `IncludeMediaProperties=false`, return `{}`. This reader supports many image/raw formats and selected MP3, WAV, AVI, MOV and MP4 metadata; it is not a complete codec or playback inspector.
+
+The JSON contains `format` and `directories`. Each directory has a `name` and `tags` with `id`, `name`, typed `value`, and readable `description`. Directory-level parse issues appear as `errors`. Large binary tags expose `byteLength` rather than embedded payloads. Tag availability and names vary by format:
+
+```sql
+SELECT f.Name, json_extract(d.value, '$.name') AS metadata_group,
+       json_extract(t.value, '$.name') AS tag,
+       json_extract(t.value, '$.value') AS value
+FROM files AS f,
+     json_each(f.Metadata, '$.directories') AS d,
+     json_each(d.value, '$.tags') AS t
+WHERE f.Extension = 'png';
+```
+
+`IgnoreErrors=true` returns a content-read failure as `Metadata.error`; set it to false to stop on a failure. Recursive enumeration and metadata extraction can be expensive. Select only the columns needed and use bounded queries.
 
 ### SourceCode
 
 Parses supported languages into searchable symbols, document structure, comments, diagnostics, and exact source spans. Generated files and kinds/languages can be filtered. It is intended for code investigation and coding-agent workflows, not compilation or semantic proof.
 
-C#, VB.NET, Razor, HTML, JavaScript, TypeScript, Python, Java, and Markdown share a common row shape. Location and declaration fields include `Language`, `Kind`, `Name`, `FullName`, `ParentName`, `Namespace`, `SourcePath`, `StartLine`, `EndLine`, `Column`, signatures, modifiers, inheritance, documentation, and exact `FullRecord` source. Python adds structural imports, classes and bases, functions/methods, decorators, variables, docstrings, comments, and recoverable syntax diagnostics. Java adds packages, imports, types and inheritance, methods, fields, annotations, Javadoc, brace-aware spans, and recoverable diagnostics. Search/triage fields include `CalledMethods`, `UsedTypes`, statement/complexity counts, and `HasAwait`/`HasThrow`/`HasYield`/`HasLinq`/`HasSqlString`/`HasHttpCall`/`HasFileAccess`. These fields are lightweight parser hints, not compiler binding, runtime proof, or security findings.
+C#, VB.NET, Razor, HTML, JavaScript, TypeScript, Python, Java, and Markdown share compact columns: `Language`, `SourceId`, `SourcePath`, `Kind`, `Name`, `ParentName`, `FullName`, `StartLine`, `EndLine`, `Column`, and `Metadata`, plus the common `RecordIndex` and optional `FullRecord` source. Detailed properties such as namespace, signatures, modifiers, inheritance, documentation, calls, complexity hints and flags are inside `Metadata` JSON, serialized only when requested. For example, use `json_extract(Metadata, '$.ReturnType')` or `json_extract(Metadata, '$.CalledMethods')`. JSON flags are booleans; absent false flags read as NULL, so use `coalesce(json_extract(Metadata, '$.HasAwait'), 0)`. These structural values are search hints, not proof of runtime behavior. Python and Java include language-specific structure and recoverable diagnostics, but not semantic usage binding.
+
+#### Find symbol usages before a rename
+
+C#/VB usage mode resolves identifiers across the selected source set. Select a declaration **or a reference** by its file, one-based line and column to distinguish overloaded methods and shadowed local variables:
+
+```powershell
+ulp --input SourceCode --from '.\samples\symbol-usages\*.cs' --table code `
+    --input.SymbolFile '.\samples\symbol-usages\Counter.cs' --input.SymbolLine 4 --input.SymbolColumn 16 `
+    --query "SELECT Kind, SourcePath, StartLine, Column, Metadata FROM code" --format JSON
+ulp -c.code-usages --from '.\src\*' --p.name Add --format JSON
+```
+
+The first command runs against the supplied sample files. It returns the integer overload's declaration (`Counter.cs`, line 4, column 16) and its caller (`Caller.cs`, line 2, column 54), not the string overload. Selecting the `Value` field at line 2, column 16 returns four locations and excludes the same-named local in `Shadow`. Use your own source path and identifier coordinates when investigating a real project.
+
+The saved name-search query is an overview and can include several symbols with the same name. Group by `Language` and `json_extract(Metadata, '$.SymbolId')`, or use an exact location for one symbol. Results identify declarations and references, with identity, declaration locations and compilation error counts in JSON. `IncludeDiagnostics=true` also reports `SymbolDiagnostic` rows when source or references are missing. Supply necessary assembly DLL paths through semicolon-separated `ReferencePaths`.
+
+This mode does not load/build solution projects, restore packages, apply project compilation constants, edit files, or guarantee a complete solution-wide rename. A complete source/dependency set is required; checkpoint options are rejected in usage mode because incremental reads would omit unchanged declarations. C# and VB are compiled separately; references through interfaces/base members are separate symbol identities. Reflection, string-based configuration and other non-code consumers still need text search. Treat results as rename-planning evidence, review errors, then use an IDE rename and rebuild/test the project.
 
 The bundled Query library provides focused, bounded commands:
 

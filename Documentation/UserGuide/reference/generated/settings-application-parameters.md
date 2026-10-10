@@ -8,7 +8,7 @@ These are configuration-model paths. This root is documented for inspection and 
 
 | Full path | Name | Type | Default | Inherited | Description | Configuration reference |
 | --- | --- | --- | --- | --- | --- | --- |
-| `AppDataFolder` | AppDataFolder | string | "C:\\Users\\dimce\\Documents\\Universal Log Parser\\AppData\\" | No | Folder where program writes log files, backups and other application data. By default this folder is located in My Documents | — |
+| `AppDataFolder` | AppDataFolder | string | "C:\\Users\\dimce\\OneDrive\\Documents\\Universal Log Parser\\AppData\\" | No | Folder where program writes log files, backups and other application data. By default this folder is located in My Documents | — |
 | `ChangeTextSizeInPercent` | ChangeTextSizeInPercent | Int32 | 0 | No | Increase or decrease the default text size (in percent). | — |
 | `DefaultDashboardLimit` | DefaultDashboardLimit | Int32 | 1000 | No | Rows limit when loading the default dashboard from Windows Event Log tree. | — |
 | `DefaultEvtProperties` | DefaultEvtProperties | WindowsEventLogEx | settings group | No | Default settings for reading Windows Event logs (-i:EVT input type). | [DefaultEvtProperties](configuration-WindowsEventLogEx.md) |
@@ -33,7 +33,7 @@ These are configuration-model paths. This root is documented for inspection and 
 | `DefaultEvtProperties.ErrorsToIgonre` | ErrorsToIgonre | Int32 | 0 | Yes | Maximum number of errors allowed. 0 does not ignore errors; -1 ignores all read errors. | — |
 | `DefaultEvtProperties.IgnoreConvertExceptions` | IgnoreConvertExceptions | boolean | False | Yes | Ignore conversion exceptions and return null. Otherwise, string fields will contain the error message for troubleshooting. | — |
 | `DefaultLimit` | DefaultLimit | Int32 | 500 | No | Default rows limit when query is run for the first time. | — |
-| `DefaultUserFilesFolder` | DefaultUserFilesFolder | string | "C:\\Users\\dimce\\Documents\\Universal Log Parser\\" | No | Folder where data files are located. By default this folder is located in My Documents or is LPL installation folder (depending on your installation) | — |
+| `DefaultUserFilesFolder` | DefaultUserFilesFolder | string | "C:\\Users\\dimce\\OneDrive\\Documents\\Universal Log Parser\\" | No | Folder where data files are located. By default this folder is located in My Documents or is LPL installation folder (depending on your installation) | — |
 | `DownloadEvtxECmdMapsOnStart` | DownloadEvtxECmdMapsOnStart | boolean | False | No | Download EvtxECmd maps from the GitHub repository on program start. | — |
 | `EnableCodeCompletionInTextEditor` | EnableCodeCompletionInTextEditor | boolean | True | No | Enable code completion in the editor for supported languages (e.g., SQL, VB.NET, C#). | — |
 | `EvtxECmdMapsFolder` | EvtxECmdMapsFolder | string | "EvtxECmd\\Maps" | No | Folder where the program will look for map files for the EVtxECmd data provider. | — |

@@ -198,6 +198,8 @@ For remote/LAN access:
 
 Basic authentication protects access but relies on HTTPS for confidentiality. A non-loopback bind without authentication is blocked unless `--web-allow-insecure-remote` explicitly accepts the risk.
 
+The packaged browser and external API clients use the same authentication, permission checks, row limit, and query execution controls. `X-ULP-Session` isolates connection-local SQLite state, not users or filesystem permissions. Stateless query routes discard connection-local state after each response, but they do not undo successful persistent-database writes, committed checkpoints, created files, or external provider side effects. ULP does not enable cross-origin browser requests; keep browser integrations same-origin behind a trusted proxy. See the [Web HTTP API reference](reference.md#web-http-api) for the full contract.
+
 ## MCP Security
 
 MCP runs over stdio with the permissions of the client-launched ULP process. The client can request discovery and query operations exposed by ULP. Configure an absolute executable, controlled working/config/query directories, and least-privilege account.

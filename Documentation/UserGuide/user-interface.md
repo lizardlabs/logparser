@@ -138,7 +138,7 @@ In the web Query library and ad-hoc editor, click **Run query**/**Run SQL** or p
 
 ### Editing Queries
 
-In the TUI choose **File > Edit Query**. The multiline dialog returns to the result viewer after a successful run. Query errors stay in the editor so you can correct the SQL without losing it.
+In the TUI choose **File > Edit / Run Query** or press F2. The multiline dialog returns to the result viewer after a successful run. Query errors stay in the editor so you can correct the SQL without losing it. Press F5 or choose **Run Query Again** to rerun the current text without reopening the editor.
 
 In the web interface:
 
@@ -170,7 +170,8 @@ The TUI **File** menu includes:
 - **Open Query...** — choose a `.sql` file;
 - **Save Query** — save to the current path;
 - **Save Query As...** — select a new path and create directories where needed;
-- **Edit Query** — open the current SQL in the multiline editor;
+- **Edit / Run Query** — open the current SQL in the multiline editor;
+- **Run Query Again** — rerun the current SQL;
 - **Quit**.
 
 An empty query cannot be saved. A missing extension is completed with `.sql`.
@@ -198,7 +199,10 @@ The TUI displays a `DataTable`-style grid and supports:
 - toggling headers and cell lines;
 - maximum cell-width choices;
 - activating a cell for a larger value view/edit operation;
-- a selected-cell status showing row, column, and row count.
+- copying selected cells as tab-separated text, with optional column names;
+- a selected-cell status showing row and column context;
+- a title showing the active result table, result-set position, dimensions, and query filename;
+- F1 keyboard/navigation help inside the viewer.
 
 Editing the displayed result does not imply that the original file, event log, provider source, or database has been updated. Data-changing SQL must be explicit.
 
@@ -383,6 +387,11 @@ Panels and navigation can be collapsed to preserve workspace. On narrower window
 | Context | Key | Action |
 | --- | --- | --- |
 | Running terminal query | Ctrl+C | Request cancellation |
+| TUI | F1 | Show keyboard and navigation help |
+| TUI | F2 | Edit and run the current query |
+| TUI | F5 | Run the current query again |
+| TUI | Ctrl+O / Ctrl+S | Open or save a query file |
+| TUI | Ctrl+C | Copy selected cells as tab-separated text |
 | TUI | Ctrl+Q | Quit |
 | Web saved/ad-hoc query | Ctrl+Enter | Run the active query |
 | Web expanded result | Escape | Leave expanded view |
@@ -440,6 +449,8 @@ Terminal.Gui and browser behavior can also depend on the host terminal/browser. 
 6. run and inspect the virtual-scrolling grid;
 7. expand, filter, sort, or export;
 8. press Ctrl+C in the server terminal to stop.
+
+Automation and other applications can use the same JSON service as this browser workflow. See the [Web HTTP API reference](reference.md#web-http-api); it documents authentication, permissions, sessions, endpoint bodies, cancellation, and errors.
 
 ## UI Troubleshooting
 

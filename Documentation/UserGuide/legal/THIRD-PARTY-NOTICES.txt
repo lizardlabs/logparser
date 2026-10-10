@@ -3,30 +3,32 @@ UNIVERSAL LOG PARSER THIRD-PARTY NOTICES
 
 This file describes material third-party components distributed with Universal
 Log Parser. Third-party terms apply independently from the ULP product license.
-The corresponding license texts, provenance records, and source information are
-stored beside this file under licenses/, provenance/, and source-information/.
+The corresponding license texts and provenance records are
+stored beside this file under licenses/ and provenance/.
 
 OPEN-SOURCE AND PERMISSIVELY LICENSED COMPONENTS
 ------------------------------------------------
 
-ULP distributes components under the MIT, BSD-2-Clause, Apache-2.0, MS-PL, and
+ULP distributes components under the MIT, BSD-2-Clause, BSD-3-Clause, Apache-2.0, MS-PL, and
 Public Domain terms identified in dependency-inventory.csv. The complete common
 license texts are under licenses/. Component names, versions, file paths, and
 copyright holders are listed in dependency-inventory.csv and the detailed
 documentation in docs/legal/THIRD-PARTY-NOTICES.md.
 
-TagLib# 2.2.0
-Copyright by the TagLib# authors and contributors.
-License: GNU Lesser General Public License version 2.1 only.
-Shipped file: runtime/TagLibSharp.dll.
-Purpose: optional media-file metadata reading.
-The DLL is shipped as a separate replaceable dynamic library and is an exact
-byte-for-byte match for lib/net45/TagLibSharp.dll from the official TagLibSharp
-2.2.0 NuGet package. ULP does not modify this DLL. The LGPL-2.1 text is at
-licenses/LGPL-2.1.txt. Exact corresponding source and build files for upstream
-tag TaglibSharp-2.2.0.0 are at source-information/TagLibSharp-2.2.0-source.zip.
-Recipients retain the rights granted by the LGPL, including use of a compatible
-modified replacement library and debugging modifications to that library.
+MetadataExtractor 2.9.1
+Copyright 2002-2019 Drew Noakes and contributors; 2014 Imazen LLC
+(initial conversion from Java to C#).
+License: Apache License 2.0. Shipped file: runtime/MetadataExtractor.dll.
+Purpose: optional, read-only image/audio/video metadata extraction.
+The unmodified upstream license and dependency notice are preserved at
+licenses/MetadataExtractor-Apache-2.0.txt.
+
+XmpCore 6.1.10.1
+Derived from Adobe's XMP SDK; ported by Yakov Danila and Nathanael Jones,
+maintained by Drew Noakes and contributors (2015-2021).
+License: BSD 3-Clause. Shipped file: runtime/XmpCore.dll.
+Adobe's license is preserved at licenses/XmpCore-Adobe-BSD-3-Clause.txt.
+See provenance/MetadataExtractor.md for exact packages and hashes.
 
 Microsoft System CLR Types for Microsoft SQL Server 2017
 Copyright Microsoft Corporation. All rights reserved.

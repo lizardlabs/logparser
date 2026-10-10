@@ -8,10 +8,10 @@ These paths apply beneath `--input.` on the command line. Inside ParsingModule i
 
 | Full path | Name | Type | Default | Inherited | Description | Configuration reference |
 | --- | --- | --- | --- | --- | --- | --- |
-| `IgnoreErrors` | IgnoreErrors | boolean | True | No | If True, errors encountered while reading files are ignored. If False, processing stops on the first error. | — |
-| `IncludeAllFiles` | IncludeAllFiles | boolean | False | No | Include every discovered file. When disabled, return only supported image, audio, and video files. | — |
-| `IncludeMediaProperties` | IncludeMediaProperties | boolean | True | No | Extract image, audio, and video metadata for supported media files. Disable this for faster general filesystem inventory queries. | — |
-| `Recurse` | Recurse | Int32 | -1 | No | Maximum subdirectory recursion level when enumerating files. 0 disables recursion; -1 enables unlimited recursion. | — |
+| `IgnoreErrors` | IgnoreErrors | boolean | True | No | Ignore file enumeration/stat errors. Metadata read errors appear in Metadata.error; disable this option to stop on errors. | — |
+| `IncludeAllFiles` | IncludeAllFiles | boolean | True | No | Include all discovered files. Disable to list only media extensions supported by the metadata reader. | — |
+| `IncludeMediaProperties` | IncludeMediaProperties | boolean | True | No | Read supported image, audio and video details into Metadata JSON only when that field is requested. Repeated reads of the field reuse the same result. | — |
+| `Recurse` | Recurse | Int32 | -1 | No | Maximum subdirectory recursion level. 0 disables recursion; -1 enables unlimited recursion. | — |
 | `ExtendedFields` | ExtendedFields | boolean | True | Yes | Include extended fields such as file path, line number, record number, etc. | — |
 | `ErrorsToIgonre` | ErrorsToIgonre | Int32 | 0 | Yes | Maximum number of errors allowed. 0 does not ignore errors; -1 ignores all read errors. | — |
 | `IgnoreConvertExceptions` | IgnoreConvertExceptions | boolean | False | Yes | Ignore conversion exceptions and return null. Otherwise, string fields will contain the error message for troubleshooting. | — |

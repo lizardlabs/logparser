@@ -1,6 +1,6 @@
 # AI Features
 
-ULP includes **experimental AI Chat** in the browser, guided menu, and SQL shell. It can explain a request, ask for missing information, or propose SQLite SQL using the actual schemas and function names available to that session.
+> **Experimental release feature:** ULP includes AI Chat in the browser, guided menu, and SQL shell. Its configuration, prompts, provider compatibility, and behavior may change. It can explain a request, ask for missing information, or propose SQLite SQL using the actual schemas and function names available to that session.
 
 AI is disabled by default. It requires an explicitly configured OpenAI-compatible API, and generated SQL is never executed automatically. Configure it with CLI flags, a `.config` file, or **Options > Configure AI (experimental)**. The TUI editor does not have an embedded AI chat.
 
@@ -86,7 +86,7 @@ The portable package includes four optional Markdown skill folders under `skills
 | `ulp-data-investigation` | Inspect CSV, JSON, YAML, logs, events, files, SQLite, and other supported sources before building bounded queries |
 | `ulp-query-automation` | Reuse saved recipes, bind parameters, apply lifecycle SQL, enforce conditions, and fan one result out to several writers |
 
-Each folder contains a `SKILL.md` plus any supporting references. A skill is guidance for the agent; it is not executable code, a ULP input provider, or permission to access data. The agent still invokes the public `ulp` CLI, and normal client approvals still apply.
+Each folder contains a `SKILL.md` plus any supporting references. A skill is guidance for the agent; it is not executable code, a ULP input provider, or permission to access data. The agent still invokes the public `ulp` CLI, and normal client approvals still apply. The data-investigation skill includes a schema-grounded planning reference that requires provider discovery, table description, a bounded preview, reviewed parameters, and materialization before repeated scans.
 
 ### Install the skills in Codex
 
@@ -150,6 +150,8 @@ ulp --mcp --database C:\Data\agent-session.sqlite --queries-dir C:\Data\ulp-quer
 
 Use an absolute executable path in client configuration. Do not wrap the command in a script that prints banners to standard output because stdout carries the MCP protocol.
 
+After the client starts the server, ULP's initialization guidance includes the exact installed CLI and skills paths. Resource-capable clients can read `ulp://runtime` and then `ulp://skills/{name}`. The runtime resource lists every packaged skill with its exact `SKILL.md` path and resource URI. If a client does not show MCP resources, call `GetRuntimeInfo`, `ListAgentSkills`, and `GetAgentSkill` instead. You should not need to manually point the agent at the executable or skills folder after MCP initialization.
+
 The complete generated setup includes copy-ready configuration for Codex/ChatGPT desktop, VS Code and GitHub Copilot, GitHub Copilot CLI, Claude Desktop, Cursor, and other STDIO clients: [MCP client configuration](reference/generated/mcp-reference.md#client-configuration).
 
 A reliable first conversation separates inspection from execution:
@@ -193,7 +195,7 @@ Client schemas and configuration locations evolve independently of ULP. The gene
 
 ## Independent agent sessions
 
-Call `GetRuntimeInfo` to discover the installed CLI path instead of searching the disk or guessing a release folder. The response also identifies the working directory and Query library. It does not expose API keys or connection strings.
+Call `GetRuntimeInfo` to discover the installed CLI path instead of searching the disk or guessing a release folder. The response also identifies the working directory, Query library, skills directory, skill entry points, and resource URIs. It does not expose API keys or connection strings. Skill reads accept only discovered packaged names; arbitrary paths and traversal are rejected.
 
 For parallel tasks, call `CreateSession` once per task and pass the returned `sessionId` on every data tool call. This includes virtual-table creation, table inspection, query and saved-query execution, exports, materialization, dropping tables, and history. Help and recipe discovery remain shared. Calls that omit the ID use the existing default database.
 

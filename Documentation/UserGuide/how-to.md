@@ -688,6 +688,8 @@ Existing complete lines are skipped by default. Add `--tail-existing` to include
 
 Tail mode polls rather than subscribing to filesystem notifications. It currently supports exactly one seekable local TextLine file, not globs, URLs, or archive members. Checkpoint state exists only for that ULP process. Successful query and output completion advances it; a failed run is retried from the previous safe position. This gives useful at-least-once behavior, not a durable exactly-once guarantee. For file output, include `{RunNumber}` in the path to avoid replacing the preceding poll.
 
+The query sees only the newly completed group for that poll. An aggregate such as `COUNT(*)` therefore describes that group, not every line seen since startup. For cumulative statistics, append selected rows to a deliberate persistent SQLite table or run ordinary checkpointed batches; do not assume tail keeps a lifetime aggregate in memory.
+
 ### How to Run a Post-Action
 
 Start a program only after a successful file result:

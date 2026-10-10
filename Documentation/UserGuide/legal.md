@@ -148,7 +148,6 @@ The customer-facing inventory is provided in:
 - [Dependency Inventory](legal/dependency-inventory.csv);
 - [License Texts](legal/licenses/);
 - [Component Provenance](legal/provenance/);
-- [Required Source Information](legal/source-information/).
 
 The inventory must be regenerated from the exact release package. Do not assume that a project dependency list describes every shipped native binary, JavaScript file, stylesheet, font, pattern definition, or locally built component.
 
@@ -169,7 +168,7 @@ The current candidate must not be described as ready for public distribution unt
 - [ ] warranty, liability, governing-law, export, and sanctions review;
 - [ ] product trademark/brand guidance;
 - [ ] every dependency and material-asset `review`/`unmapped` entry;
-- [ ] LGPL replacement, relinking, and corresponding-source obligations;
+- [ ] preserve the MetadataExtractor Apache and XmpCore BSD notices;
 - [ ] proprietary dependency and redistributable rights;
 - [ ] locally built component ownership/provenance confirmation;
 - [ ] release signing identity and publication-channel approval.

@@ -157,7 +157,9 @@ For local interactive use, keep the default localhost and HTTPS behavior. For a 
 - keep query, configuration, input, and output directories explicitly mounted or assigned;
 - stop the listener when it is no longer needed.
 
-Plain HTTP is an explicit opt-in for controlled scenarios and should not carry credentials or sensitive results over an untrusted network. See [Web Interface Security](security.md#web-interface-security) and the [Web interface guide](interfaces/web.md).
+Plain HTTP is an explicit opt-in for controlled scenarios and should not carry credentials or sensitive results over an untrusted network. See [Web Interface Security](security.md#web-interface-security), the [Web interface guide](interfaces/web.md), and the [Web HTTP API reference](reference.md#web-http-api).
+
+For independent automation calls, prefer the stateless query routes so abandoned clients do not retain connection-local sessions. Reuse a named session when a workflow deliberately builds temporary tables across several requests. Stateless execution repeats configured connection/source initialization on every call and may therefore be more expensive; see [Session-based versus stateless execution](reference.md#session-based-versus-stateless-execution).
 
 ## MCP Deployment
 
@@ -234,17 +236,22 @@ Promote a new ULP package only after representative queries pass in a staging en
 
 Docker support is intentionally deferred until the portable release is stable. The planned image will run **ULP's built-in web server**, not the documentation website.
 
-The intended container contract is:
+The implementation checklist is intentionally visible here so future container work cannot be mistaken for a released feature:
 
-- run ULP as a non-root user;
-- mount the local Query library read-only;
-- mount input data read-only whenever possible;
-- use separate writable mounts for output, logs, checkpoints, and other state;
-- provide configuration and secrets at runtime rather than embedding them in the image;
-- expose only the web-server port;
-- require authentication and protect external traffic with HTTPS, commonly through a trusted reverse proxy;
-- use a read-only container filesystem apart from explicit writable mounts;
-- include a health check and graceful shutdown.
+- [ ] Build and test a Windows Server Core image compatible with ULP's current .NET Framework runtime.
+- [ ] Add an explicit entry point for ULP's built-in web server and run it as a restricted, non-administrator container user.
+- [ ] Mount the Query library and input data read-only whenever possible.
+- [ ] Define separate writable mounts for output, logs, configuration, checkpoints, and other required state.
+- [ ] Inject passwords, API keys, connection secrets, and trusted certificates at runtime; never bake them into image layers.
+- [ ] Expose only the web-server port and require authentication.
+- [ ] Terminate HTTPS directly with a trusted certificate or through a documented, trusted reverse proxy.
+- [ ] Use a read-only container filesystem apart from the documented writable mounts.
+- [ ] Add health/readiness behavior and prove graceful shutdown and restart semantics.
+- [ ] Add a Compose example covering ports, mounts, secrets, and the least-permissive practical web mode.
+- [ ] Test authentication, TLS, Query-library access, read-only inputs, writable outputs, checkpoints, restart persistence, and host mount behavior end to end.
+- [ ] Produce and review an SBOM, vulnerability scan, provenance, signature, registry naming/versioning policy, and clean-Windows-host verification before publication.
+
+Bind mounts refer to paths on the machine running the Docker daemon. A browser or API client on another computer cannot automatically expose its own local files to the container; an administrator must place or mount those files on the Docker host. Likewise, live process and Windows Event Log providers inside a container describe the container environment, not the Windows host, unless a separate explicitly designed and secured host-integration mechanism is added later.
 
 No Docker command or image name is documented until a Dockerfile, entry point, mount contract, authentication flow, and end-to-end tests exist. The portable ZIP remains the supported deployment.
 

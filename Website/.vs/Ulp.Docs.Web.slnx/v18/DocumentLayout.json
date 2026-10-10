@@ -42,7 +42,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -53,6 +53,10 @@
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "installation.md",
@@ -60,7 +64,7 @@
               "RelativeDocumentMoniker": "..\\Documentation\\UserGuide\\installation.md",
               "ToolTip": "C:\\Visual Studio Projects\\lpl6\\PortableLogParserProjects\\docs\\Documentation\\UserGuide\\installation.md",
               "RelativeToolTip": "..\\Documentation\\UserGuide\\installation.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAoAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
               "WhenOpened": "2026-09-07T18:13:59.103Z",
               "EditorCaption": ""

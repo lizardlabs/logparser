@@ -33,6 +33,7 @@ Current status (2026-09-11): local publish output at `artifacts/workflow-tutoria
 - [x] Implement and previously smoke-test framework-dependent and Windows self-contained ZIP packaging with SHA256 checksums. Those historical ZIPs are not the current refreshed site's release artifacts; rebuilding the chosen package is still required before deployment.
 - [x] Document local use, content maintenance, IIS/shared-hosting deployment, configuration, and upgrades.
 - [x] Add a smoke test for the home page, Markdown rendering, search, sitemap, security headers, assets, and path confinement.
+- [x] Make the smoke test work in a fresh Windows PowerShell process and add a Windows CI check for the independent documentation site. This validates the site only; it does not publish it or solve the ULP source build's external dependencies.
 - [ ] Choose the final public documentation URL and set `Site:CanonicalBaseUrl` before publishing.
 - [ ] Confirm the hosting destination/runtime, HTTPS/proxy configuration, footer/download URLs, and explicit owner approval to deploy.
 - [ ] Complete human desktop/mobile, keyboard, contrast, long-table/code, and print-layout review; automated HTTP tests do not replace visual acceptance.

@@ -40,7 +40,8 @@ This inventory is an engineering compliance aid, not legal advice. Entries marke
 | SharpCompress | 0.24.0 | MIT | Copyright (c) 2014 Adam Hathcock; preserve notice. |
 | UAParser | 3.1.44 | Apache-2.0 | Preserve Apache license/notices. |
 | YAXLib | 2.14 | MIT | Copyright 2009–2013 Sina Iravanian; preserve notice. |
-| TagLib# | 2.2.0 | [LGPL-2.1-only](licenses/LGPL-2.1.txt) | **APPROVED WITH CONDITIONS:** the unmodified, replaceable DLL exactly matches the upstream package. Matching library/build source and LGPL terms are shipped under `source-information` and `licenses`; product terms must preserve LGPL replacement and debugging rights. |
+| MetadataExtractor | 2.9.1 | [Apache-2.0](licenses/MetadataExtractor-Apache-2.0.txt) | Unmodified NuGet library; preserve upstream copyright, license and dependency notice. |
+| XmpCore | 6.1.10.1 | [BSD-3-Clause](licenses/XmpCore-Adobe-BSD-3-Clause.txt) | Adobe XMP SDK port; preserve the Adobe license and contributor attribution. |
 | Microsoft.SqlServer.Types | 14.0.1016.290 | [Microsoft System CLR Types for Microsoft SQL Server 2017 terms](licenses/Microsoft-SQL-Server-System-CLR-Types-2017.rtf) | **APPROVED WITH CONDITIONS:** shipped DLL and license exactly match Microsoft's signed package. Preserve notices and comply with all distribution, platform, trademark, indemnity, and excluded-license conditions summarized in the provenance record. |
 | Microsoft Visual C++ runtime binaries | 14.x family | Microsoft Visual C++ redistributable terms | **REVIEW:** confirm the build toolchain grants redistribution and ship the applicable Microsoft terms. |
 | CodeReader.Core | 1.0.0 | Provenance not recorded here | **REVIEW:** local-source dependency with no license declaration found. Classify it as a documented Lizard Labs-owned product component, add the actual third-party terms, or replace/remove it before release. |
@@ -49,4 +50,4 @@ This inventory is an engineering compliance aid, not legal advice. Entries marke
 
 ## Commercial-suitability finding
 
-The MIT, BSD-2-Clause, Apache-2.0, MS-PL, and Public Domain entries are generally permissive and commonly suitable for commercial distribution when their notice obligations are met. No GPL/AGPL component was found. TagLib# is LGPL-2.1-only and has an implemented dynamic-library/source compliance path; Microsoft.SqlServer.Types is proprietary and approved with conditions for the exact audited package. Modified/prebuilt components and commercial web assets still need the provenance decisions identified above. Do not treat this engineering conclusion as legal approval.
+The MIT, BSD-2-Clause, BSD-3-Clause, Apache-2.0, MS-PL, and Public Domain entries permit distribution subject to their notice obligations. MetadataExtractor and XmpCore replace TagLibSharp in the current package; no TagLib binary or corresponding-source archive is included. Microsoft.SqlServer.Types is proprietary and approved with conditions for the exact audited package. Modified/prebuilt components and commercial web assets still need the provenance decisions identified above. Do not treat this engineering conclusion as legal approval.

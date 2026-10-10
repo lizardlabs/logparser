@@ -624,7 +624,7 @@
         "narg": 1,
         "type": "s",
         "compatibility_status": "ULP extension",
-        "signature": "directory_exists(arg1)",
+        "signature": "directory_exists(path)",
         "category": "Scalar",
         "description": "Test whether a directory path exists and is accessible.",
         "returns": "Boolean test represented as an SQL value; inspect NULL handling."
@@ -914,30 +914,30 @@
         "narg": 1,
         "type": "s",
         "compatibility_status": "Compatible",
-        "signature": "extract_extension(arg1)",
+        "signature": "extract_extension(path)",
         "category": "Scalar",
-        "description": "Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "description": "Return the extension portion of a path using compatibility rules.",
+        "returns": "Path text using host operating-system rules; invalid input may return NULL."
       },
       {
         "name": "extract_filename",
         "narg": 1,
         "type": "s",
         "compatibility_status": "Compatible",
-        "signature": "extract_filename(arg1)",
+        "signature": "extract_filename(path)",
         "category": "Scalar",
-        "description": "Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "description": "Return the filename portion of a path.",
+        "returns": "Path text using host operating-system rules; invalid input may return NULL."
       },
       {
         "name": "extract_path",
         "narg": 1,
         "type": "s",
         "compatibility_status": "Compatible",
-        "signature": "extract_path(arg1)",
+        "signature": "extract_path(path)",
         "category": "Scalar",
-        "description": "Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "description": "Return the directory portion of a path.",
+        "returns": "Path text using host operating-system rules; invalid input may return NULL."
       },
       {
         "name": "extract_prefix",
@@ -1004,7 +1004,7 @@
         "narg": 1,
         "type": "s",
         "compatibility_status": "ULP extension",
-        "signature": "file_exists(arg1)",
+        "signature": "file_exists(path)",
         "category": "Scalar",
         "description": "Test whether a file path exists and is accessible.",
         "returns": "Boolean test represented as an SQL value; inspect NULL handling."
@@ -1014,37 +1014,37 @@
         "narg": 1,
         "type": "s",
         "compatibility_status": "ULP extension",
-        "signature": "file_hash(arg1)",
+        "signature": "file_hash(path)",
         "category": "Scalar",
-        "description": "Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "description": "Read a file and compute a digest. The one-argument form defaults to SHA-256; the optional algorithm supports MD5, SHA-1, SHA-256, SHA-384, and SHA-512.",
+        "returns": "Uppercase hexadecimal digest text; missing/unreadable input or an unsupported algorithm returns NULL."
       },
       {
         "name": "file_hash",
         "narg": 2,
         "type": "s",
         "compatibility_status": "ULP extension",
-        "signature": "file_hash(arg1, arg2)",
+        "signature": "file_hash(path, algorithm)",
         "category": "Scalar",
-        "description": "Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "description": "Read a file and compute a digest. The one-argument form defaults to SHA-256; the optional algorithm supports MD5, SHA-1, SHA-256, SHA-384, and SHA-512.",
+        "returns": "Uppercase hexadecimal digest text; missing/unreadable input or an unsupported algorithm returns NULL."
       },
       {
         "name": "file_hash_sha256",
         "narg": 1,
         "type": "s",
         "compatibility_status": "ULP extension",
-        "signature": "file_hash_sha256(arg1)",
+        "signature": "file_hash_sha256(path)",
         "category": "Scalar",
         "description": "Read a file and compute its SHA-256 hash.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "returns": "Uppercase hexadecimal digest text; missing/unreadable input or an unsupported algorithm returns NULL."
       },
       {
         "name": "file_size",
         "narg": 1,
         "type": "s",
         "compatibility_status": "ULP extension",
-        "signature": "file_size(arg1)",
+        "signature": "file_size(path)",
         "category": "Scalar",
         "description": "Read a file's size in bytes.",
         "returns": "Integer (NULL/error behavior depends on the input)."
@@ -1894,10 +1894,10 @@
         "narg": 2,
         "type": "s",
         "compatibility_status": "ULP extension",
-        "signature": "levenshtein(arg1, arg2)",
-        "category": "Scalar",
-        "description": "Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "signature": "levenshtein(left, right)",
+        "category": "Regular expressions",
+        "description": "Return the Levenshtein edit distance between two text values.",
+        "returns": "Non-negative integer edit distance."
       },
       {
         "name": "like",
@@ -1994,10 +1994,10 @@
         "narg": 1,
         "type": "a",
         "compatibility_status": "ULP extension",
-        "signature": "lower_quartile(arg1)",
+        "signature": "lower_quartile(value)",
         "category": "Aggregate",
-        "description": "Registered aggregate function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "description": "Continuous 25th numeric percentile; alias of PERCENTILE_25.",
+        "returns": "Numeric value; empty/invalid-input behavior is function-specific."
       },
       {
         "name": "lsmode",
@@ -2154,10 +2154,10 @@
         "narg": 1,
         "type": "a",
         "compatibility_status": "ULP extension",
-        "signature": "mode(arg1)",
+        "signature": "mode(value)",
         "category": "Aggregate",
-        "description": "Registered aggregate function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "description": "Most frequent non-NULL value. A tie for the highest frequency, or an empty group, returns NULL.",
+        "returns": "Most frequent value, preserving its SQLite value type; NULL for a tie or empty group."
       },
       {
         "name": "mul",
@@ -2314,27 +2314,27 @@
         "narg": 2,
         "type": "s",
         "compatibility_status": "ULP extension",
-        "signature": "path_change_extension(arg1, arg2)",
+        "signature": "path_change_extension(path, extension)",
         "category": "Scalar",
         "description": "Change a path's extension without renaming the file.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "returns": "Path text using host operating-system rules; invalid input may return NULL."
       },
       {
         "name": "path_combine",
         "narg": 2,
         "type": "s",
         "compatibility_status": "ULP extension",
-        "signature": "path_combine(arg1, arg2)",
+        "signature": "path_combine(left, right)",
         "category": "Scalar",
         "description": "Combine path components using operating-system path rules.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "returns": "Path text using host operating-system rules; invalid input may return NULL."
       },
       {
         "name": "path_is_rooted",
         "narg": 1,
         "type": "s",
         "compatibility_status": "ULP extension",
-        "signature": "path_is_rooted(arg1)",
+        "signature": "path_is_rooted(path)",
         "category": "Scalar",
         "description": "Test whether a path is rooted; this is not a safe-path authorization check.",
         "returns": "Boolean test represented as an SQL value; inspect NULL handling."
@@ -2364,9 +2364,9 @@
         "narg": 1,
         "type": "a",
         "compatibility_status": "ULP extension",
-        "signature": "percentile_25(arg1)",
+        "signature": "percentile_25(value)",
         "category": "Aggregate",
-        "description": "25th numeric percentile.",
+        "description": "Continuous 25th numeric percentile; alias of LOWER_QUARTILE.",
         "returns": "Numeric value; empty/invalid-input behavior is function-specific."
       },
       {
@@ -2374,9 +2374,9 @@
         "narg": 1,
         "type": "a",
         "compatibility_status": "ULP extension",
-        "signature": "percentile_75(arg1)",
+        "signature": "percentile_75(value)",
         "category": "Aggregate",
-        "description": "75th numeric percentile.",
+        "description": "Continuous 75th numeric percentile; alias of UPPER_QUARTILE.",
         "returns": "Numeric value; empty/invalid-input behavior is function-specific."
       },
       {
@@ -2384,9 +2384,9 @@
         "narg": 1,
         "type": "a",
         "compatibility_status": "ULP extension",
-        "signature": "percentile_90(arg1)",
+        "signature": "percentile_90(value)",
         "category": "Aggregate",
-        "description": "90th numeric percentile.",
+        "description": "Continuous 90th numeric percentile.",
         "returns": "Numeric value; empty/invalid-input behavior is function-specific."
       },
       {
@@ -2394,9 +2394,9 @@
         "narg": 1,
         "type": "a",
         "compatibility_status": "ULP extension",
-        "signature": "percentile_95(arg1)",
+        "signature": "percentile_95(value)",
         "category": "Aggregate",
-        "description": "95th numeric percentile.",
+        "description": "Continuous 95th numeric percentile.",
         "returns": "Numeric value; empty/invalid-input behavior is function-specific."
       },
       {
@@ -2404,9 +2404,9 @@
         "narg": 1,
         "type": "a",
         "compatibility_status": "ULP extension",
-        "signature": "percentile_99(arg1)",
+        "signature": "percentile_99(value)",
         "category": "Aggregate",
-        "description": "99th numeric percentile.",
+        "description": "Continuous 99th numeric percentile.",
         "returns": "Numeric value; empty/invalid-input behavior is function-specific."
       },
       {
@@ -2614,40 +2614,40 @@
         "narg": 2,
         "type": "s",
         "compatibility_status": "ULP extension",
-        "signature": "regexp(arg1, arg2)",
-        "category": "Scalar",
-        "description": "Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "signature": "regexp(pattern, text)",
+        "category": "Regular expressions",
+        "description": "Match text against a loaded-extension regular expression. The function form takes pattern first and text second; malformed or missing patterns fail the query.",
+        "returns": "Integer 1 or 0; malformed or missing patterns fail the query."
       },
       {
         "name": "regexp_like",
         "narg": 2,
         "type": "s",
         "compatibility_status": "ULP extension",
-        "signature": "regexp_like(arg1, arg2)",
-        "category": "Scalar",
-        "description": "Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "signature": "regexp_like(text, pattern)",
+        "category": "Regular expressions",
+        "description": "Test source text against a loaded-extension regular expression. The function form takes source text first and pattern second.",
+        "returns": "Integer 1 or 0; malformed or missing patterns fail the query."
       },
       {
         "name": "regexp_replace",
         "narg": 3,
         "type": "s",
         "compatibility_status": "ULP extension",
-        "signature": "regexp_replace(arg1, arg2, arg3)",
-        "category": "Scalar",
-        "description": "Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "signature": "regexp_replace(text, pattern, replacement)",
+        "category": "Regular expressions",
+        "description": "Replace loaded-extension regular-expression matches in source text.",
+        "returns": "Text; invalid-pattern and NULL behavior depends on the selected regular-expression family."
       },
       {
         "name": "regexp_substr",
         "narg": 2,
         "type": "s",
         "compatibility_status": "ULP extension",
-        "signature": "regexp_substr(arg1, arg2)",
-        "category": "Scalar",
-        "description": "Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "signature": "regexp_substr(text, pattern)",
+        "category": "Regular expressions",
+        "description": "Return the first substring matching a loaded-extension regular expression.",
+        "returns": "Text; invalid-pattern and NULL behavior depends on the selected regular-expression family."
       },
       {
         "name": "replace",
@@ -2864,27 +2864,27 @@
         "narg": 3,
         "type": "s",
         "compatibility_status": "ULP extension",
-        "signature": "rx_get_group_value(arg1, arg2, arg3)",
+        "signature": "rx_get_group_value(text, pattern, group)",
         "category": "Regular expressions",
         "description": "Extract a captured RegEx group from text.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "returns": "Text; invalid-pattern and NULL behavior depends on the selected regular-expression family."
       },
       {
         "name": "rx_grok_to_regex",
         "narg": 1,
         "type": "s",
         "compatibility_status": "ULP extension",
-        "signature": "rx_grok_to_regex(arg1)",
+        "signature": "rx_grok_to_regex(grok_pattern)",
         "category": "Regular expressions",
         "description": "Expand Grok aliases into a regular-expression pattern.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "returns": "Text; invalid-pattern and NULL behavior depends on the selected regular-expression family."
       },
       {
         "name": "rx_is_match",
         "narg": 2,
         "type": "s",
         "compatibility_status": "ULP extension",
-        "signature": "rx_is_match(arg1, arg2)",
+        "signature": "rx_is_match(text, pattern)",
         "category": "Regular expressions",
         "description": "Test text against a .NET regular expression.",
         "returns": "Boolean test represented as an SQL value; inspect NULL handling."
@@ -2894,7 +2894,7 @@
         "narg": 2,
         "type": "s",
         "compatibility_status": "ULP extension",
-        "signature": "rx_matches_count(arg1, arg2)",
+        "signature": "rx_matches_count(text, pattern)",
         "category": "Regular expressions",
         "description": "Count regular-expression matches in text.",
         "returns": "Integer (NULL/error behavior depends on the input)."
@@ -2904,30 +2904,30 @@
         "narg": 3,
         "type": "s",
         "compatibility_status": "ULP extension",
-        "signature": "rx_replace(arg1, arg2, arg3)",
+        "signature": "rx_replace(text, pattern, replacement)",
         "category": "Regular expressions",
         "description": "Replace RegEx matches in text.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "returns": "Text; invalid-pattern and NULL behavior depends on the selected regular-expression family."
       },
       {
         "name": "rx_split",
         "narg": 2,
         "type": "s",
         "compatibility_status": "ULP extension",
-        "signature": "rx_split(arg1, arg2)",
+        "signature": "rx_split(text, pattern)",
         "category": "Regular expressions",
         "description": "Split text using a RegEx pattern; inspect the result representation before further processing.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "returns": "Text; invalid-pattern and NULL behavior depends on the selected regular-expression family."
       },
       {
         "name": "rx_split",
         "narg": 3,
         "type": "s",
         "compatibility_status": "ULP extension",
-        "signature": "rx_split(arg1, arg2, arg3)",
+        "signature": "rx_split(text, pattern, separator)",
         "category": "Regular expressions",
         "description": "Split text using a RegEx pattern; inspect the result representation before further processing.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "returns": "Text; invalid-pattern and NULL behavior depends on the selected regular-expression family."
       },
       {
         "name": "SEQUENCE",
@@ -3194,17 +3194,17 @@
         "narg": 1,
         "type": "a",
         "compatibility_status": "ULP extension",
-        "signature": "stddev(arg1)",
+        "signature": "stddev(value)",
         "category": "Aggregate",
-        "description": "Registered aggregate function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "description": "Alias of sample standard deviation. NULL observations are ignored; the current runtime returns zero for an empty or one-value group.",
+        "returns": "Numeric value; empty/invalid-input behavior is function-specific."
       },
       {
         "name": "stddev_pop",
         "narg": 1,
         "type": "a",
         "compatibility_status": "ULP extension",
-        "signature": "stddev_pop(arg1)",
+        "signature": "stddev_pop(value)",
         "category": "Aggregate",
         "description": "Population standard deviation of numeric observations.",
         "returns": "Numeric value; empty/invalid-input behavior is function-specific."
@@ -3214,7 +3214,7 @@
         "narg": 1,
         "type": "a",
         "compatibility_status": "ULP extension",
-        "signature": "stddev_samp(arg1)",
+        "signature": "stddev_samp(value)",
         "category": "Aggregate",
         "description": "Sample standard deviation of numeric observations.",
         "returns": "Numeric value; empty/invalid-input behavior is function-specific."
@@ -3224,10 +3224,10 @@
         "narg": 1,
         "type": "a",
         "compatibility_status": "ULP extension",
-        "signature": "stdev(arg1)",
+        "signature": "stdev(value)",
         "category": "Aggregate",
-        "description": "Registered aggregate function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "description": "Alias of sample standard deviation. NULL observations are ignored; the current runtime returns zero for an empty or one-value group.",
+        "returns": "Numeric value; empty/invalid-input behavior is function-specific."
       },
       {
         "name": "strcat",
@@ -3424,10 +3424,10 @@
         "narg": 1,
         "type": "s",
         "compatibility_status": "ULP extension",
-        "signature": "to_absolute_path(arg1)",
+        "signature": "to_absolute_path(path)",
         "category": "Scalar",
-        "description": "Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "description": "Resolve a relative path against the ULP process working directory; this does not authorize access or require the path to exist.",
+        "returns": "Path text using host operating-system rules; invalid input may return NULL."
       },
       {
         "name": "to_camel_case",
@@ -3774,10 +3774,10 @@
         "narg": 1,
         "type": "a",
         "compatibility_status": "ULP extension",
-        "signature": "upper_quartile(arg1)",
+        "signature": "upper_quartile(value)",
         "category": "Aggregate",
-        "description": "Registered aggregate function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "description": "Continuous 75th numeric percentile; alias of PERCENTILE_75.",
+        "returns": "Numeric value; empty/invalid-input behavior is function-specific."
       },
       {
         "name": "url_component_encode",
@@ -3864,7 +3864,7 @@
         "narg": 1,
         "type": "a",
         "compatibility_status": "ULP extension",
-        "signature": "var_pop(arg1)",
+        "signature": "var_pop(value)",
         "category": "Aggregate",
         "description": "Population variance of numeric observations.",
         "returns": "Numeric value; empty/invalid-input behavior is function-specific."
@@ -3874,7 +3874,7 @@
         "narg": 1,
         "type": "a",
         "compatibility_status": "ULP extension",
-        "signature": "var_samp(arg1)",
+        "signature": "var_samp(value)",
         "category": "Aggregate",
         "description": "Sample variance of numeric observations.",
         "returns": "Numeric value; empty/invalid-input behavior is function-specific."
@@ -3884,10 +3884,10 @@
         "narg": 1,
         "type": "a",
         "compatibility_status": "ULP extension",
-        "signature": "variance(arg1)",
+        "signature": "variance(value)",
         "category": "Aggregate",
-        "description": "Registered aggregate function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use.",
-        "returns": "Return type is not declared by runtime registration; see description or worked examples."
+        "description": "Alias of sample variance. NULL observations are ignored; the current runtime returns zero for an empty or one-value group.",
+        "returns": "Numeric value; empty/invalid-input behavior is function-specific."
       },
       {
         "name": "win32_error_description",

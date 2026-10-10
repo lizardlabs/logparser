@@ -27,25 +27,25 @@ Signatures show accepted argument counts, not inferred argument types. `...` mea
 
 | Function | Signature | Kind | Description | Return information |
 | --- | --- | --- | --- | --- |
-| lower_quartile | `lower_quartile(arg1)` | a | Registered aggregate function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
+| lower_quartile | `lower_quartile(value)` | a | Continuous 25th numeric percentile; alias of PERCENTILE_25. | Numeric value; empty/invalid-input behavior is function-specific. |
 | median | `median(arg1)` | a | Middle value of numeric observations, interpolating when appropriate. | Numeric value; empty/invalid-input behavior is function-specific. |
-| mode | `mode(arg1)` | a | Registered aggregate function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
+| mode | `mode(value)` | a | Most frequent non-NULL value. A tie for the highest frequency, or an empty group, returns NULL. | Most frequent value, preserving its SQLite value type; NULL for a tie or empty group. |
 | percentile | `percentile(arg1, arg2)` | a | Interpolated numeric percentile; the percentile argument is from zero to one hundred. | Numeric value; empty/invalid-input behavior is function-specific. |
-| percentile_25 | `percentile_25(arg1)` | a | 25th numeric percentile. | Numeric value; empty/invalid-input behavior is function-specific. |
-| percentile_75 | `percentile_75(arg1)` | a | 75th numeric percentile. | Numeric value; empty/invalid-input behavior is function-specific. |
-| percentile_90 | `percentile_90(arg1)` | a | 90th numeric percentile. | Numeric value; empty/invalid-input behavior is function-specific. |
-| percentile_95 | `percentile_95(arg1)` | a | 95th numeric percentile. | Numeric value; empty/invalid-input behavior is function-specific. |
-| percentile_99 | `percentile_99(arg1)` | a | 99th numeric percentile. | Numeric value; empty/invalid-input behavior is function-specific. |
+| percentile_25 | `percentile_25(value)` | a | Continuous 25th numeric percentile; alias of LOWER_QUARTILE. | Numeric value; empty/invalid-input behavior is function-specific. |
+| percentile_75 | `percentile_75(value)` | a | Continuous 75th numeric percentile; alias of UPPER_QUARTILE. | Numeric value; empty/invalid-input behavior is function-specific. |
+| percentile_90 | `percentile_90(value)` | a | Continuous 90th numeric percentile. | Numeric value; empty/invalid-input behavior is function-specific. |
+| percentile_95 | `percentile_95(value)` | a | Continuous 95th numeric percentile. | Numeric value; empty/invalid-input behavior is function-specific. |
+| percentile_99 | `percentile_99(value)` | a | Continuous 99th numeric percentile. | Numeric value; empty/invalid-input behavior is function-specific. |
 | percentile_cont | `percentile_cont(arg1, arg2)` | a | Interpolated numeric percentile; percentile is a fraction from zero to one. | Numeric value; empty/invalid-input behavior is function-specific. |
 | percentile_disc | `percentile_disc(arg1, arg2)` | a | Observed-value numeric percentile; percentile is a fraction from zero to one. | Numeric value; empty/invalid-input behavior is function-specific. |
-| stddev | `stddev(arg1)` | a | Registered aggregate function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
-| stddev_pop | `stddev_pop(arg1)` | a | Population standard deviation of numeric observations. | Numeric value; empty/invalid-input behavior is function-specific. |
-| stddev_samp | `stddev_samp(arg1)` | a | Sample standard deviation of numeric observations. | Numeric value; empty/invalid-input behavior is function-specific. |
-| stdev | `stdev(arg1)` | a | Registered aggregate function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
-| upper_quartile | `upper_quartile(arg1)` | a | Registered aggregate function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
-| var_pop | `var_pop(arg1)` | a | Population variance of numeric observations. | Numeric value; empty/invalid-input behavior is function-specific. |
-| var_samp | `var_samp(arg1)` | a | Sample variance of numeric observations. | Numeric value; empty/invalid-input behavior is function-specific. |
-| variance | `variance(arg1)` | a | Registered aggregate function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
+| stddev | `stddev(value)` | a | Alias of sample standard deviation. NULL observations are ignored; the current runtime returns zero for an empty or one-value group. | Numeric value; empty/invalid-input behavior is function-specific. |
+| stddev_pop | `stddev_pop(value)` | a | Population standard deviation of numeric observations. | Numeric value; empty/invalid-input behavior is function-specific. |
+| stddev_samp | `stddev_samp(value)` | a | Sample standard deviation of numeric observations. | Numeric value; empty/invalid-input behavior is function-specific. |
+| stdev | `stdev(value)` | a | Alias of sample standard deviation. NULL observations are ignored; the current runtime returns zero for an empty or one-value group. | Numeric value; empty/invalid-input behavior is function-specific. |
+| upper_quartile | `upper_quartile(value)` | a | Continuous 75th numeric percentile; alias of PERCENTILE_75. | Numeric value; empty/invalid-input behavior is function-specific. |
+| var_pop | `var_pop(value)` | a | Population variance of numeric observations. | Numeric value; empty/invalid-input behavior is function-specific. |
+| var_samp | `var_samp(value)` | a | Sample variance of numeric observations. | Numeric value; empty/invalid-input behavior is function-specific. |
+| variance | `variance(value)` | a | Alias of sample variance. NULL observations are ignored; the current runtime returns zero for an empty or one-value group. | Numeric value; empty/invalid-input behavior is function-specific. |
 | zipfile | `zipfile(...)` | a | Registered aggregate function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
 
 ## Date and time
@@ -152,13 +152,18 @@ Signatures show accepted argument counts, not inferred argument types. `...` mea
 
 | Function | Signature | Kind | Description | Return information |
 | --- | --- | --- | --- | --- |
-| rx_get_group_value | `rx_get_group_value(arg1, arg2, arg3)` | s | Extract a captured RegEx group from text. | Return type is not declared by runtime registration; see description or worked examples. |
-| rx_grok_to_regex | `rx_grok_to_regex(arg1)` | s | Expand Grok aliases into a regular-expression pattern. | Return type is not declared by runtime registration; see description or worked examples. |
-| rx_is_match | `rx_is_match(arg1, arg2)` | s | Test text against a .NET regular expression. | Boolean test represented as an SQL value; inspect NULL handling. |
-| rx_matches_count | `rx_matches_count(arg1, arg2)` | s | Count regular-expression matches in text. | Integer (NULL/error behavior depends on the input). |
-| rx_replace | `rx_replace(arg1, arg2, arg3)` | s | Replace RegEx matches in text. | Return type is not declared by runtime registration; see description or worked examples. |
-| rx_split | `rx_split(arg1, arg2)` | s | Split text using a RegEx pattern; inspect the result representation before further processing. | Return type is not declared by runtime registration; see description or worked examples. |
-| rx_split | `rx_split(arg1, arg2, arg3)` | s | Split text using a RegEx pattern; inspect the result representation before further processing. | Return type is not declared by runtime registration; see description or worked examples. |
+| levenshtein | `levenshtein(left, right)` | s | Return the Levenshtein edit distance between two text values. | Non-negative integer edit distance. |
+| regexp | `regexp(pattern, text)` | s | Match text against a loaded-extension regular expression. The function form takes pattern first and text second; malformed or missing patterns fail the query. | Integer 1 or 0; malformed or missing patterns fail the query. |
+| regexp_like | `regexp_like(text, pattern)` | s | Test source text against a loaded-extension regular expression. The function form takes source text first and pattern second. | Integer 1 or 0; malformed or missing patterns fail the query. |
+| regexp_replace | `regexp_replace(text, pattern, replacement)` | s | Replace loaded-extension regular-expression matches in source text. | Text; invalid-pattern and NULL behavior depends on the selected regular-expression family. |
+| regexp_substr | `regexp_substr(text, pattern)` | s | Return the first substring matching a loaded-extension regular expression. | Text; invalid-pattern and NULL behavior depends on the selected regular-expression family. |
+| rx_get_group_value | `rx_get_group_value(text, pattern, group)` | s | Extract a captured RegEx group from text. | Text; invalid-pattern and NULL behavior depends on the selected regular-expression family. |
+| rx_grok_to_regex | `rx_grok_to_regex(grok_pattern)` | s | Expand Grok aliases into a regular-expression pattern. | Text; invalid-pattern and NULL behavior depends on the selected regular-expression family. |
+| rx_is_match | `rx_is_match(text, pattern)` | s | Test text against a .NET regular expression. | Boolean test represented as an SQL value; inspect NULL handling. |
+| rx_matches_count | `rx_matches_count(text, pattern)` | s | Count regular-expression matches in text. | Integer (NULL/error behavior depends on the input). |
+| rx_replace | `rx_replace(text, pattern, replacement)` | s | Replace RegEx matches in text. | Text; invalid-pattern and NULL behavior depends on the selected regular-expression family. |
+| rx_split | `rx_split(text, pattern)` | s | Split text using a RegEx pattern; inspect the result representation before further processing. | Text; invalid-pattern and NULL behavior depends on the selected regular-expression family. |
+| rx_split | `rx_split(text, pattern, separator)` | s | Split text using a RegEx pattern; inspect the result representation before further processing. | Text; invalid-pattern and NULL behavior depends on the selected regular-expression family. |
 
 ## Reserved registrations
 
@@ -213,7 +218,7 @@ Signatures show accepted argument counts, not inferred argument types. `...` mea
 | degrees | `degrees(arg1)` | s | Convert radians to degrees. | Return type is not declared by runtime registration; see description or worked examples. |
 | dehumanize_text | `dehumanize_text(arg1)` | s | Convert readable words toward an identifier. | Return type is not declared by runtime registration; see description or worked examples. |
 | difference | `difference(arg1, arg2)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
-| directory_exists | `directory_exists(arg1)` | s | Test whether a directory path exists and is accessible. | Boolean test represented as an SQL value; inspect NULL handling. |
+| directory_exists | `directory_exists(path)` | s | Test whether a directory path exists and is accessible. | Boolean test represented as an SQL value; inspect NULL handling. |
 | div | `div(arg1, arg2)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
 | editdist3 | `editdist3(arg1)` | s | Weighted edit distance; the one-argument form loads a cost table instead of comparing text. | Return type is not declared by runtime registration; see description or worked examples. |
 | editdist3 | `editdist3(arg1, arg2)` | s | Weighted edit distance; the one-argument form loads a cost table instead of comparing text. | Return type is not declared by runtime registration; see description or worked examples. |
@@ -223,20 +228,20 @@ Signatures show accepted argument counts, not inferred argument types. `...` mea
 | exec | `exec(...)` | s | Dynamic execution helper; use only trusted SQL with restricted operating-system permissions. | Return type is not declared by runtime registration; see description or worked examples. |
 | exp | `exp(arg1)` | s | Exponential function. | Return type is not declared by runtime registration; see description or worked examples. |
 | exp10 | `exp10(arg1)` | s | Raise ten to a power. | Return type is not declared by runtime registration; see description or worked examples. |
-| extract_extension | `extract_extension(arg1)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
-| extract_filename | `extract_filename(arg1)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
-| extract_path | `extract_path(arg1)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
+| extract_extension | `extract_extension(path)` | s | Return the extension portion of a path using compatibility rules. | Path text using host operating-system rules; invalid input may return NULL. |
+| extract_filename | `extract_filename(path)` | s | Return the filename portion of a path. | Path text using host operating-system rules; invalid input may return NULL. |
+| extract_path | `extract_path(path)` | s | Return the directory portion of a path. | Path text using host operating-system rules; invalid input may return NULL. |
 | extract_prefix | `extract_prefix(arg1, arg2, arg3)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
 | extract_suffix | `extract_suffix(arg1, arg2, arg3)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
 | extract_token | `extract_token(arg1, arg2)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
 | extract_token | `extract_token(arg1, arg2, arg3)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
 | extract_value | `extract_value(arg1, arg2)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
 | extract_value | `extract_value(arg1, arg2, arg3)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
-| file_exists | `file_exists(arg1)` | s | Test whether a file path exists and is accessible. | Boolean test represented as an SQL value; inspect NULL handling. |
-| file_hash | `file_hash(arg1)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
-| file_hash | `file_hash(arg1, arg2)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
-| file_hash_sha256 | `file_hash_sha256(arg1)` | s | Read a file and compute its SHA-256 hash. | Return type is not declared by runtime registration; see description or worked examples. |
-| file_size | `file_size(arg1)` | s | Read a file's size in bytes. | Integer (NULL/error behavior depends on the input). |
+| file_exists | `file_exists(path)` | s | Test whether a file path exists and is accessible. | Boolean test represented as an SQL value; inspect NULL handling. |
+| file_hash | `file_hash(path)` | s | Read a file and compute a digest. The one-argument form defaults to SHA-256; the optional algorithm supports MD5, SHA-1, SHA-256, SHA-384, and SHA-512. | Uppercase hexadecimal digest text; missing/unreadable input or an unsupported algorithm returns NULL. |
+| file_hash | `file_hash(path, algorithm)` | s | Read a file and compute a digest. The one-argument form defaults to SHA-256; the optional algorithm supports MD5, SHA-1, SHA-256, SHA-384, and SHA-512. | Uppercase hexadecimal digest text; missing/unreadable input or an unsupported algorithm returns NULL. |
+| file_hash_sha256 | `file_hash_sha256(path)` | s | Read a file and compute its SHA-256 hash. | Uppercase hexadecimal digest text; missing/unreadable input or an unsupported algorithm returns NULL. |
+| file_size | `file_size(path)` | s | Read a file's size in bytes. | Integer (NULL/error behavior depends on the input). |
 | floor | `floor(arg1)` | s | Round down toward negative infinity. | Return type is not declared by runtime registration; see description or worked examples. |
 | from_camel_case | `from_camel_case(arg1)` | s | Turn a camelCase identifier into readable words; not an exact reversible encoding. | Return type is not declared by runtime registration; see description or worked examples. |
 | from_pascal_case | `from_pascal_case(arg1)` | s | Turn a PascalCase identifier into readable words; not an exact reversible encoding. | Return type is not declared by runtime registration; see description or worked examples. |
@@ -279,7 +284,6 @@ Signatures show accepted argument counts, not inferred argument types. `...` mea
 | last_rows_affected | `last_rows_affected()` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
 | leftstr | `leftstr(arg1, arg2)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
 | length | `length(arg1)` | s | Character count for text or byte count for a blob. | Integer (NULL/error behavior depends on the input). |
-| levenshtein | `levenshtein(arg1, arg2)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
 | like | `like(arg1, arg2)` | s | SQL LIKE pattern match; percent and underscore are wildcards, with an optional escape character. | Return type is not declared by runtime registration; see description or worked examples. |
 | like | `like(arg1, arg2, arg3)` | s | SQL LIKE pattern match; percent and underscore are wildcards, with an optional escape character. | Return type is not declared by runtime registration; see description or worked examples. |
 | likelihood | `likelihood(arg1, arg2)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
@@ -313,9 +317,9 @@ Signatures show accepted argument counts, not inferred argument types. `...` mea
 | padc | `padc(arg1, arg2)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
 | padl | `padl(arg1, arg2)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
 | padr | `padr(arg1, arg2)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
-| path_change_extension | `path_change_extension(arg1, arg2)` | s | Change a path's extension without renaming the file. | Return type is not declared by runtime registration; see description or worked examples. |
-| path_combine | `path_combine(arg1, arg2)` | s | Combine path components using operating-system path rules. | Return type is not declared by runtime registration; see description or worked examples. |
-| path_is_rooted | `path_is_rooted(arg1)` | s | Test whether a path is rooted; this is not a safe-path authorization check. | Boolean test represented as an SQL value; inspect NULL handling. |
+| path_change_extension | `path_change_extension(path, extension)` | s | Change a path's extension without renaming the file. | Path text using host operating-system rules; invalid input may return NULL. |
+| path_combine | `path_combine(left, right)` | s | Combine path components using operating-system path rules. | Path text using host operating-system rules; invalid input may return NULL. |
+| path_is_rooted | `path_is_rooted(path)` | s | Test whether a path is rooted; this is not a safe-path authorization check. | Boolean test represented as an SQL value; inspect NULL handling. |
 | pi | `pi()` | s | The mathematical constant pi. | Return type is not declared by runtime registration; see description or worked examples. |
 | pluralize | `pluralize(arg1)` | s | English word pluralization. | Return type is not declared by runtime registration; see description or worked examples. |
 | power | `power(arg1, arg2)` | s | Raise a number to a power. | Numeric value; empty/invalid-input behavior is function-specific. |
@@ -333,10 +337,6 @@ Signatures show accepted argument counts, not inferred argument types. `...` mea
 | read_text_lines | `read_text_lines(...)` | s | Read a bounded line range from a normal text file. | Text; missing input returns NULL and configured safety limits fail the query. |
 | readfile | `readfile(arg1)` | s | Read a file into a blob; requires filesystem access and can consume substantial memory. | BLOB; invalid or unavailable input may return NULL or fail. |
 | readtext | `readtext(...)` | s | Extract bounded text from normal text, binary, PDF, DOCX, or ODT using the same options as the Text input provider. | Text; missing input returns NULL and configured safety limits fail the query. |
-| regexp | `regexp(arg1, arg2)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
-| regexp_like | `regexp_like(arg1, arg2)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
-| regexp_replace | `regexp_replace(arg1, arg2, arg3)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
-| regexp_substr | `regexp_substr(arg1, arg2)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
 | replace | `replace(arg1, arg2, arg3)` | s | Replace occurrences of a substring. | Text (see description for exceptions and NULLs). |
 | replace_chr | `replace_chr(arg1, arg2, arg3)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
 | replace_if_not_null | `replace_if_not_null(arg1, arg2)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
@@ -397,7 +397,7 @@ Signatures show accepted argument counts, not inferred argument types. `...` mea
 | tan | `tan(arg1)` | s | Tangent of an angle in radians. | Return type is not declared by runtime registration; see description or worked examples. |
 | tanh | `tanh(arg1)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
 | time | `time(...)` | s | Format a time with optional SQLite date modifiers. | Text (see description for exceptions and NULLs). |
-| to_absolute_path | `to_absolute_path(arg1)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
+| to_absolute_path | `to_absolute_path(path)` | s | Resolve a relative path against the ULP process working directory; this does not authorize access or require the path to exist. | Path text using host operating-system rules; invalid input may return NULL. |
 | to_camel_case | `to_camel_case(arg1)` | s | Convert an identifier to camelCase text. | Return type is not declared by runtime registration; see description or worked examples. |
 | to_date | `to_date(arg1)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |
 | to_hex | `to_hex(arg1)` | s | Registered scalar function. Detailed argument semantics are not supplied by this runtime's documentation metadata; check the curated function guide before use. | Return type is not declared by runtime registration; see description or worked examples. |

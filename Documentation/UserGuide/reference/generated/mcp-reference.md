@@ -14,7 +14,9 @@ The server supports multiple provider types and independent task sessions. Exist
 
 ## Independent task sessions and CLI discovery
 
-Call `GetRuntimeInfo` to find the actual CLI executable, working directory, and Query library. Do not guess an installation path. In a release package this identifies the root launcher, not just the application in `runtime`.
+MCP initialization instructions identify the actual CLI executable and installed skills directory. Read the direct `ulp://runtime` resource first. It contains the CLI, application, working, Query-library, and skills paths plus the packaged skill names and their `ulp://skills/{name}` resource URIs. Clients without resource browsing can call `GetRuntimeInfo`, `ListAgentSkills`, and `GetAgentSkill` for the same discovery. Do not guess an installation or skills path. In a release package CLI discovery identifies the root launcher, not just the application in `runtime`.
+
+Read the task-appropriate skill before planning a query. The data-investigation skill requires provider help, `DescribeTable`, a bounded preview, and SQL derived only from returned columns. The code-intelligence skill explains live versus materialized SourceCode analysis. Resource reads are restricted to packaged `SKILL.md` files; arbitrary paths and traversal are rejected.
 
 ```text
 CreateSession(sessionId: "code-review")
@@ -32,7 +34,8 @@ Sessions isolate SQLite state, **not permissions or users**. Every client has th
 
 ## Available tools
 
-- `GetRuntimeInfo`: discover the CLI and local directories without exposing connection strings or secrets.
+- `GetRuntimeInfo`: discover the CLI, Query library, installed skills, and skill resource URIs without exposing connection strings or secrets.
+- `ListAgentSkills` and `GetAgentSkill`: discover and read the packaged ULP workflows when a client does not display MCP resources.
 - `CreateSession`, `ListSessions`, `CloseSession`: manage independent task databases.
 
 - `ListDataProviders`: discover provider keys.

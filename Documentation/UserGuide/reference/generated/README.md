@@ -28,6 +28,7 @@
 ## Data providers
 
 - [EVT - Windows Event Log channels and .evtx files using the modern Windows event API](provider-EVT.md)
+- [REG - Read-only Windows Registry values from local or remote hives and keys](provider-REG.md)
 - [EVTXECMD - Forensic Windows .evtx parsing with EvtxECmd-compatible fields](provider-EVTXECMD.md)
 - [RegEx - Multi-line text records parsed with regular expressions or Grok patterns](provider-RegEx.md)
 - [CSV - Comma-separated records with configurable headers, quoting, and escaping](provider-CSV.md)

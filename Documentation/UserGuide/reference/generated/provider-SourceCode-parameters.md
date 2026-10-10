@@ -19,6 +19,7 @@ These paths apply beneath `--input.` on the command line. Inside ParsingModule i
 | `IncludeFullRecord` | IncludeFullRecord | boolean | True | No | Adds FullRecord containing the exact source lines covered by each parsed declaration, member, comment, or diagnostic. This makes SQL LIKE and regular-expression searches useful as a structured grep replacement. | — |
 | `IncludeGeneratedFiles` | IncludeGeneratedFiles | boolean | False | No | Include generated source files such as *.g.cs, *.generated.cs, *.designer.cs, and TemporaryGeneratedFile_*.cs. | — |
 | `IncludeSourceLines` | IncludeSourceLines | boolean | False | No | Include one Kind=SourceLine row per source line. Use FullRecord or Comments with SQL LIKE/Rx_Is_Match for grep-style searches with exact 1-based line numbers. | — |
+| `IncludeSymbolUsages` | IncludeSymbolUsages | boolean | False | No | Return bound C#/VB symbol declarations and references across the selected source files. This snapshot requires all relevant source files and assembly references. | — |
 | `IncludeUsingDirectives` | IncludeUsingDirectives | boolean | False | No | Include C#/VB using/import directives and JavaScript/TypeScript/Python/Java module import rows. | — |
 | `IncludeXmlDocumentationTrivia` | IncludeXmlDocumentationTrivia | boolean | False | No | Include separate XML documentation trivia rows. Parsed declarations already expose their XML documentation in the Documentation field. | — |
 | `IncludedKinds` | IncludedKinds | string | "" | No | Optional comma-separated list of row kinds to return, such as Class, Interface, TypeAlias, Function, Heading, Paragraph, CodeFence, Link, Table, Comment, or Diagnostic. Empty returns every enabled kind. | — |
@@ -28,7 +29,12 @@ These paths apply beneath `--input.` on the command line. Inside ParsingModule i
 | `MaximumRowsPerFile` | MaximumRowsPerFile | Int32 | 0 | No | Maximum number of rows returned from each source file. 0 returns every matching row. | — |
 | `ProjectPath` | ProjectPath | string | "" | No | Optional project path copied into the ProjectPath output field. | — |
 | `Recurse` | Recurse | Int32 | -1 | No | Maximum directory recursion depth. 0 reads only the selected directory; -1 has no depth limit. | — |
+| `ReferencePaths` | ReferencePaths | string | "" | No | Optional semicolon-separated paths to assembly DLLs needed to bind the source snapshot. No project build or source execution is performed. | — |
 | `SourceId` | SourceId | string | "" | No | Optional stable source identifier. When empty, the source filename without its extension is used. | — |
+| `SymbolColumn` | SymbolColumn | Int32 | 0 | No | 1-based column of the selected identifier. 0 is allowed only when the selected line/name identifies a single symbol. | — |
+| `SymbolFile` | SymbolFile | string | "" | No | Source file containing the exact symbol to search. Use SymbolLine and optionally SymbolColumn to distinguish shadowed names and overloads. | — |
+| `SymbolLine` | SymbolLine | Int32 | 0 | No | 1-based line of the selected symbol identifier. 0 disables location selection. | — |
+| `SymbolName` | SymbolName | string | "" | No | Optional symbol name to find. Without a location, returns every bound symbol with this name, including overloads. Setting this enables symbol-usage mode. | — |
 | `BinaryNonText` | BinaryNonText | choice: BinaryNonTextMode | Replace | Yes | For Binary text format, replace or ignore bytes that are not conservative printable characters. Values: Replace, Ignore. | — |
 | `BinaryPreserveLineBreaks` | BinaryPreserveLineBreaks | boolean | True | Yes | For Binary text format, preserve CR/LF bytes. When disabled, line breaks are removed rather than replaced. | — |
 | `BinaryReplacement` | BinaryReplacement | string | "." | Yes | Single character used for non-readable bytes in Binary Replace mode. | — |

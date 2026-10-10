@@ -9,6 +9,6 @@ These paths apply beneath `--input.` on the command line. Inside ParsingModule i
 | Full path | Name | Type | Default | Inherited | Description | Configuration reference |
 | --- | --- | --- | --- | --- | --- | --- |
 | `Culture` | Culture | string | "current" | No | Culture used for localized string fields (MonthName, DayOfWeekName, LongDate, ShortDate). Use "current" for the current UI culture. Default is "current". | — |
-| `DateFrom` | DateFrom | DateTime | 2025-09-16T00:00:00.0000000+02:00 | No | Start date (inclusive) for generated rows. Default is Today minus 1 year. | — |
+| `DateFrom` | DateFrom | DateTime | 2025-10-07T00:00:00.0000000+02:00 | No | Start date (inclusive) for generated rows. Default is Today minus 1 year. | — |
 | `DateTo` | DateTo | DateTime | Today | No | End date (inclusive) for generated rows. Default is Today. | — |
 | `Extended` | Extended | boolean | True | No | If True, includes extended fields (week, day-of-year, leap year, etc.). If False, returns only the basic fields up to IsoDate. | — |

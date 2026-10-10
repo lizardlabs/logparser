@@ -63,7 +63,15 @@ Basic authentication does not encrypt credentials or results. For any LAN or rem
 
 The web interface uses the directory selected by `--queries-dir`, `ULP_QUERIES_DIR`, or the installed default. SQL files remain authoritative, and web changes are visible to the CLI immediately. File IDs are relative paths inside that directory; rooted and traversal paths are rejected. Saved-query parameter overrides must match parameters declared in the query metadata and are bound as SQLite parameters, not substituted into SQL text.
 
-Each request receives its own SQLite connection. Command-line data-source blocks and session-initialization SQL are recreated for those connections, and Query library recipes continue to create their declared `ParsingModule` sources. `--web-max-rows` limits the rows returned to the browser; use bounded SQL as well when a source itself is expensive.
+Requests carrying the same `X-ULP-Session` value share one SQLite connection across the Query library, ad-hoc editor, safe Shell, schema browser, and Experimental AI schema context. Different browser tabs normally use different session IDs. Sessions isolate connection-local state; they are not users, permission boundaries, or filesystem sandboxes. `--web-max-rows` limits rows returned to the client; use bounded SQL as well when a source itself is expensive.
+
+## Stateful and stateless API execution
+
+The packaged browser uses the session routes. Independent automation can use `POST /api/stateless/query/run?id=...` for a saved query or `POST /api/stateless/query/adhoc` for SQL. A stateless request creates, initializes, uses, cleans up, and disposes its own SQLite connection. Do not send `X-ULP-Session` to these routes. They retain the normal authentication, permission, parameter, row-limit, result, checkpoint, and cancellation behavior.
+
+Connection-local tables disappear after a stateless response. Successful writes to a persistent database, checkpoint updates, files, and external provider side effects do not. Stateless calls repeat configured source and lifecycle initialization on every request, so a named session is more efficient for multi-step analysis.
+
+See the [complete Web HTTP API](../reference.md#web-http-api) for endpoints, headers, request bodies, responses, permission rules, and examples.
 
 ## Local assets and web root
 

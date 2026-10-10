@@ -8,7 +8,7 @@ Factory defaults, before saved configuration or command-line overrides. Copy the
 
 ```text
 --input.IgnoreErrors=True
---input.IncludeAllFiles=False
+--input.IncludeAllFiles=True
 --input.IncludeMediaProperties=True
 --input.Recurse=-1
 --input.ExtendedFields=True

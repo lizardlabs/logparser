@@ -7,7 +7,7 @@
 Runtime default snapshot for this configuration model. These lines are reference values, not direct command-line syntax. Unset, complex, unavailable, and secret values are comments, not fabricated command values. Dates, paths, and culture can reflect the environment where this reference was generated; copying them fixes those values rather than preserving a moving date range. Unicode escapes preserve embedded quotes safely.
 
 ```text
-AppDataFolder = "C:\\Users\\dimce\\Documents\\Universal Log Parser\\AppData\\"
+AppDataFolder = "C:\\Users\\dimce\\OneDrive\\Documents\\Universal Log Parser\\AppData\\"
 ChangeTextSizeInPercent = 0
 DefaultDashboardLimit = 1000
 DefaultEvtProperties.AdvancedEventLogQuery = ""
@@ -31,7 +31,7 @@ DefaultEvtProperties.ExtendedFields = True
 DefaultEvtProperties.ErrorsToIgonre = 0
 DefaultEvtProperties.IgnoreConvertExceptions = False
 DefaultLimit = 500
-DefaultUserFilesFolder = "C:\\Users\\dimce\\Documents\\Universal Log Parser\\"
+DefaultUserFilesFolder = "C:\\Users\\dimce\\OneDrive\\Documents\\Universal Log Parser\\"
 DownloadEvtxECmdMapsOnStart = False
 EnableCodeCompletionInTextEditor = True
 EvtxECmdMapsFolder = "EvtxECmd\\Maps"

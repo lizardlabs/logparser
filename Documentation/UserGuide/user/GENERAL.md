@@ -1,6 +1,6 @@
 # Getting Started
 
-If you prefer to watch ULP work before entering any paths or SQL, run `ulp --tour`. The guided product tour explains and previews bounded examples for generated data, directory statistics, text filtering, output formats, multiple result sets, and optional Windows events. See [Take the product tour](../tutorials.md#take-the-product-tour).
+If you prefer to watch ULP work before entering any paths or SQL, run `ulp --tour`. The guided product tour boxes each explanation and previews bounded examples for generated data, file filtering and grouped size statistics, text filtering, output formats, multiple result sets, and optional Windows event previews and summaries. See [Take the product tour](../tutorials.md#take-the-product-tour).
 
 Universal Log Parser (ULP) turns files, logs, Windows events, structured data, system information, and other record sources into tables that you can query with SQLite SQL. The same result can be reviewed in a terminal or user interface, saved in several formats, reused by automation, or exposed to an MCP client.
 
@@ -80,7 +80,7 @@ You do not need to be a database administrator. The guided menu and Query Builde
 - Query other practical ADO.NET data sources while keeping SQLite and ParsingModule as the primary workflow.
 - Run as an MCP server for compatible local tools.
 
-AI-assisted SQL is in development and is not a supported command-line feature. Experimental web AI features require explicit configuration and may send schema and conversation data to the configured external provider.
+AI Chat is included as an **Experimental** release feature in the browser, guided menu, and SQL shell. It is disabled by default, requires explicit OpenAI-compatible provider configuration, may send schema and conversation data outside the computer, and always presents SQL for review before execution.
 
 ## Requirements
 

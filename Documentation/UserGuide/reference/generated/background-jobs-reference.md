@@ -4,7 +4,7 @@
 
 Background Jobs run long SELECT/CTE queries without blocking the interactive ULP menu. On the shared **Use query** screen choose **Run in background**, then open **Background jobs** from the main menu or Options.
 
-Recurring queries repeat a reviewed SELECT/CTE at a fixed interval. On **Use query**, choose **Run on a schedule**, configure an interval such as `30s` or `5m`, optionally set a run limit, then use **Recurring queries** to inspect, pause, resume, or cancel it. The first run can start immediately or after one interval.
+Recurring queries repeat a reviewed SELECT/CTE. On **Use query**, choose **Run on a schedule**, configure an interval such as `30s` or `5m`, optionally set a run limit, then use **Recurring queries** to inspect, pause, resume, or cancel it. The first interval run can start immediately or after one interval. Attached command-line runs also accept a five-field `--cron` calendar expression.
 
 ## Supported output
 
@@ -32,7 +32,9 @@ The ordinary CLI can repeat a query while remaining in the foreground:
 ulp --query "SELECT datetime('now') AS checked_at" --every 30s --runs 10
 ```
 
-The first run is immediate unless `--wait-first` is supplied. Terminal, File, and NONE output remain available. `--continue-on-error` advances to the next interval after an error; otherwise the first nonzero run stops the command. Ctrl+C cancels the current query or wait and exits with code 130. This is an attached process, not a durable service or detached cron daemon.
+The first interval run is immediate unless `--wait-first` is supplied. For a calendar schedule use, for example, `--cron "0 2 * * MON-FRI" --cron-time-zone UTC`; it waits for the first matching minute unless `--run-now` is supplied. Cron supports `*`, lists, ranges, steps, numeric values, English three-letter month/day names, and standard day-of-month/day-of-week OR semantics. Terminal, File, and NONE output remain available. `--continue-on-error` advances to the next run after an error; otherwise the first nonzero run stops the command. Ctrl+C cancels the current query or wait and exits with code 130. These schedules remain attached to this process, not a durable service.
+
+Cron evaluates matching UTC instants in the selected timezone. A nonexistent local minute during the spring DST transition is skipped. A repeated local minute during the autumn transition represents two distinct instants and may run twice. Use `UTC` when that behavior is undesirable or deterministic automation is required.
 
 ## Live tail
 

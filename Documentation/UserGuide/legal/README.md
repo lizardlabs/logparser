@@ -7,6 +7,6 @@ Customer-facing release material:
 - [Generated shipped-file inventory](dependency-inventory.csv)
 - [Bundled license texts](licenses/)
 - [Component provenance](provenance/)
-- [Required source information](source-information/)
+- [Media metadata dependency provenance](provenance/MetadataExtractor.md)
 
 ULP's proprietary product terms are separate from third-party licenses. Required third-party notices, provenance, and corresponding-source/relinking information remain available here; they do not make ULP open source.

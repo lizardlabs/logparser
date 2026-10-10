@@ -173,8 +173,43 @@ These functions combine rows. Use `GROUP BY` for one result per category. Except
 | `PERCENTILE_CONT(value, fraction)` | Real/NULL | Continuous percentile with fraction from 0 to 1. | `SELECT PERCENTILE_CONT(duration_ms, 0.95) FROM requests;` |
 | `PERCENTILE_DISC(value, fraction)` | Number/NULL | Discrete percentile selecting an observed value. | `SELECT PERCENTILE_DISC(duration_ms, 0.95) FROM requests;` |
 | `PERCENTILE(value, percent)` | Real/NULL | Continuous percentile using 0 to 100 instead of 0 to 1. | `SELECT PERCENTILE(duration_ms, 95) FROM requests;` |
+| `LOWER_QUARTILE(value)`, `PERCENTILE_25(value)` | Number/NULL | Continuous 25th percentile aliases. | `SELECT LOWER_QUARTILE(duration_ms) FROM requests;` |
+| `UPPER_QUARTILE(value)`, `PERCENTILE_75(value)` | Number/NULL | Continuous 75th percentile aliases. | `SELECT UPPER_QUARTILE(duration_ms) FROM requests;` |
+| `PERCENTILE_90(value)`, `PERCENTILE_95(value)`, `PERCENTILE_99(value)` | Number/NULL | Fixed continuous percentile shortcuts. | `SELECT PERCENTILE_95(duration_ms) FROM requests;` |
+| `STDDEV_POP(value)`, `VAR_POP(value)` | Real | Population standard deviation and variance. | `SELECT STDDEV_POP(duration_ms) FROM requests;` |
+| `STDDEV_SAMP(value)`, `STDDEV(value)`, `STDEV(value)` | Real | Sample standard deviation and its aliases. | `SELECT STDDEV_SAMP(duration_ms) FROM requests;` |
+| `VAR_SAMP(value)`, `VARIANCE(value)` | Real | Sample variance and its alias. | `SELECT VAR_SAMP(duration_ms) FROM requests;` |
+| `MODE(value)` | Value/NULL | Unique most frequent non-NULL value; a top-frequency tie returns NULL. | `SELECT MODE(status) FROM requests;` |
 
 Use the same percentile argument throughout each group. Invalid percentile arguments produce NULL in ULP's percentile helpers. Exact percentiles retain values for ordering; expect more memory use than a simple count or sum on very large groups.
+
+The fixed percentile functions use continuous interpolation, so their result does not have to be an observed input value. The population functions divide by the number of observations; sample functions use the sample denominator. In the current runtime the standard-deviation and variance families return `0.0` for an empty or one-value group, while percentile functions and `MODE` return NULL for an empty group. Feed these functions numeric columns: SQLite-style coercion can turn non-numeric text into zero.
+
+### Compare distribution statistics
+
+This checked example ignores the NULL observation and shows both population and sample calculations. A separate input supplies an unambiguous mode.
+
+<!-- example: distribution-statistics -->
+```sql
+WITH values_to_measure(value) AS (
+  VALUES (1), (2), (3), (4), (NULL)
+), repeated(value) AS (
+  VALUES (1), (2), (2), (2), (3), (NULL)
+)
+SELECT LOWER_QUARTILE(value) AS lower_quartile,
+       UPPER_QUARTILE(value) AS upper_quartile,
+       PERCENTILE_90(value) AS p90,
+       round(STDDEV_POP(value), 6) AS population_stddev,
+       round(STDDEV_SAMP(value), 6) AS sample_stddev,
+       round(VAR_POP(value), 6) AS population_variance,
+       round(VAR_SAMP(value), 6) AS sample_variance,
+       (SELECT MODE(value) FROM repeated) AS mode_value
+FROM values_to_measure;
+```
+
+| lower_quartile | upper_quartile | p90 | population_stddev | sample_stddev | population_variance | sample_variance | mode_value |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1.5 | 3.5 | 4 | 1.118034 | 1.290994 | 1.25 | 1.666667 | 2 |
 
 ## Window functions
 
@@ -246,8 +281,34 @@ Test missing values with `IS NULL`, never `= NULL`. To treat blank fields as abs
 | `RX_GET_GROUP_VALUE(text, pattern, group)` | Extract the first match's named capture as text. | `RX_GET_GROUP_VALUE('status=500', 'status=(?<code>[0-9]+)', 'code')` |
 | `RX_REPLACE(text, pattern, replacement)` | Replace regular-expression matches. | `RX_REPLACE('item123', '[0-9]+', '#')` |
 | `RX_MATCHES_COUNT(text, pattern)` | Count regular-expression matches. | `RX_MATCHES_COUNT('a1 b2', '[0-9]+')` |
+| `RX_SPLIT(text, pattern[, separator])` | Split with a .NET/Grok pattern, then join the pieces with the supplied separator (comma by default). | `RX_SPLIT('a,b,,c', ',', '\|')` |
+| `RX_GROK_TO_REGEX(grok_pattern)` | Expand Grok aliases to the .NET regular expression used by ULP. | `RX_GROK_TO_REGEX('%{NUMBER:value}')` |
+| `regexp(pattern, text)` | Loaded-extension match function used by SQLite's `REGEXP` operator; the function form puts the pattern first. | `regexp('^[A-Z]+$', 'ERROR')` |
+| `regexp_like(text, pattern)` | Loaded-extension match function with source text first. | `regexp_like('error 500', '[0-9]+')` |
+| `regexp_substr(text, pattern)` | First substring matched by the loaded extension. | `regexp_substr('error 500', '[0-9]+')` |
+| `regexp_replace(text, pattern, replacement)` | Replace matches with loaded-extension syntax. | `regexp_replace('id=123', '[0-9]+', '#')` |
+| `levenshtein(left, right)` | Character edit distance for approximate matching. | `levenshtein('kitten', 'sitting')` → `3` |
+
+`RX_*` uses ULP's .NET/Grok configuration. The lowercase `regexp*` family comes from a loaded SQLite extension and is a separate dialect. Do not assume that escaping, named groups, or replacement syntax is interchangeable between those families. A malformed or missing `regexp*` pattern fails the query; validate fixed patterns during development and do not accept unrestricted patterns from untrusted callers.
 
 The RegEx/Grok **input formats** create columns from named captures. They are often a better starting point for repeatedly parsing structured logs than scattering expression calls throughout a query. Use [input format help](inputs-and-outputs.md) and the installed function inventory for additional regular-expression overloads.
+
+### Match, extract, replace, split, and compare text
+
+<!-- example: regex-toolkit -->
+```sql
+SELECT regexp('^[A-Z]+$', 'ERROR') AS uppercase_word,
+       regexp_like('error 500 retry', '[0-9]+') AS has_number,
+       regexp_substr('error 500 retry', '[0-9]+') AS first_number,
+       regexp_replace('id=123', '[0-9]+', '#') AS redacted_id,
+       RX_GET_GROUP_VALUE('status=503', 'status=(?<code>[0-9]+)', 'code') AS status_code,
+       RX_SPLIT('a,b,,c', ',', '|') AS split_and_join,
+       levenshtein('kitten', 'sitting') AS edit_distance;
+```
+
+| uppercase_word | has_number | first_number | redacted_id | status_code | split_and_join | edit_distance |
+| ---: | ---: | --- | --- | --- | --- | ---: |
+| 1 | 1 | 500 | id=# | 503 | a\|b\|\|c | 3 |
 
 ## Blob and binary functions
 
@@ -434,6 +495,7 @@ These functions access the host. Run only against paths the user has placed in s
 | `FILE_EXISTS(path)` | Integer | Check for an existing file. | `FILE_EXISTS('samples/data/application.log')` |
 | `DIRECTORY_EXISTS(path)` | Integer | Check for an existing directory. | `DIRECTORY_EXISTS('samples/data')` |
 | `FILE_SIZE(path)` | Integer/NULL | File length in bytes, not formatted text. | `FILE_SIZE('samples/data/application.log')` |
+| `FILE_HASH(path[, algorithm])` | Text/NULL | Uppercase digest; defaults to SHA-256 and accepts MD5, SHA-1, SHA-256, SHA-384, or SHA-512. | `FILE_HASH('samples/data/application.log', 'SHA256')` |
 | `FILE_HASH_SHA256(path)` | Text/NULL | SHA-256 digest of file contents. | `FILE_HASH_SHA256('samples/data/application.log')` |
 | `READTEXT(path[, options])` | Text/NULL | Read bounded text through the same source and document extraction path as the `Text` input provider. Supports text, PDF, DOCX, ODT, and explicit binary projection. | `READTEXT('report.pdf', 'maxChars=200000;pdfMaximumPages=25')` |
 | `READ_TEXT(path[, options])` | Text/NULL | Alias for `READTEXT`. | `READ_TEXT('notes.txt')` |
@@ -441,6 +503,10 @@ These functions access the host. Run only against paths the user has placed in s
 | `EXTRACT_FILENAME(path)` | Text | File portion of a path. | `EXTRACT_FILENAME('C:/Logs/service.log')` |
 | `EXTRACT_EXTENSION(path)` | Text | Extension portion using the compatibility extraction rules. | `EXTRACT_EXTENSION('service.log')` |
 | `EXTRACT_PATH(path)` | Text | Directory portion of a path. | `EXTRACT_PATH('C:/Logs/service.log')` |
+| `PATH_COMBINE(left, right)` | Text/NULL | Combine two path parts with host path rules. | `PATH_COMBINE('logs', 'app.log')` |
+| `PATH_CHANGE_EXTENSION(path, extension)` | Text/NULL | Return the path with a changed extension; no file is renamed. | `PATH_CHANGE_EXTENSION('app.log', '.txt')` |
+| `PATH_IS_ROOTED(path)` | Integer | Test whether a path is rooted; this is not an access check. | `PATH_IS_ROOTED('C:/Logs/app.log')` |
+| `TO_ABSOLUTE_PATH(path)` | Text/NULL | Resolve against ULP's working directory; the result need not exist. | `TO_ABSOLUTE_PATH('logs')` |
 | `COMPUTER_NAME()` | Text | Current host name. | `COMPUTER_NAME()` |
 | `IPV4_TO_INT(text)` | Integer | Convert an IPv4 address to its numeric representation. | `IPV4_TO_INT('127.0.0.1')` |
 | `INT_TO_IPV4(n)` | Text | Convert a numeric IPv4 value to dotted text. | `INT_TO_IPV4(IPV4_TO_INT('127.0.0.1'))` |
@@ -449,6 +515,23 @@ These functions access the host. Run only against paths the user has placed in s
 | `RESOLVE_SID(sid)` | Text | Resolve a Windows security identifier when permitted. | `RESOLVE_SID('S-1-5-18')` |
 
 `READTEXT` options are a semicolon-separated list. Available keys are `format`, `nonText`, `replacement`, `preserveLineBreaks`, `maxChars`, `documentMaximumBytes`, and `pdfMaximumPages`. `format` accepts `Auto`, `Text`, `Binary`, `Docx`, `Odt`, or `Pdf`. The default `maxChars` is 16 Mi characters; exceeding a configured limit is an error rather than silent truncation. PDF extraction reads embedded text only—scanned-image OCR is not included. Only use file-reading functions with trusted paths and SQL.
+
+`PATH_COMBINE` and `TO_ABSOLUTE_PATH` normalize syntax; they do not provide a security boundary. Resolve the final path, then enforce an approved root in the calling interface before reading or writing. The generated inventory also exposes extension functions named `readfile` and `writefile`. `readfile` loads an entire file as a BLOB and `writefile` changes the filesystem, so prefer bounded `READTEXT`/`READ_TEXT_LINES` for analysis and normal ULP output pipelines for writes. Web/API permissions can reject filesystem operations even though the SQLite runtime registers the names.
+
+### Build and inspect paths without changing files
+
+<!-- example: path-helpers -->
+```sql
+SELECT PATH_COMBINE('logs', 'app.log') AS combined,
+       PATH_CHANGE_EXTENSION('logs/app.log', '.txt') AS changed,
+       PATH_IS_ROOTED('C:/Logs/app.log') AS rooted,
+       EXTRACT_FILENAME('C:/Logs/app.log') AS filename,
+       EXTRACT_EXTENSION('C:/Logs/app.log') AS extension;
+```
+
+| combined | changed | rooted | filename | extension |
+| --- | --- | ---: | --- | --- |
+| logs\app.log | logs/app.txt | 1 | app.log | log |
 
 ## Query counters and compatibility names
 

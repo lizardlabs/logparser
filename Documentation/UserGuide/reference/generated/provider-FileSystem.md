@@ -34,35 +34,12 @@ For stream-based providers, comma/semicolon-separated file sources are expanded 
 | `CreationTime` | timestamp | Default configuration | CreationTime value reported by the FileSystem provider. |
 | `LastAccessTime` | timestamp | Default configuration | LastAccessTime value reported by the FileSystem provider. |
 | `LastWriteTime` | timestamp | Default configuration | LastWriteTime value reported by the FileSystem provider. |
-| `MimeType` | string | Default configuration | MimeType value reported by the FileSystem provider. |
-| `Writeable` | string | Default configuration | Writeable value reported by the FileSystem provider. |
-| `PossiblyCorrupt` | string | Default configuration | PossiblyCorrupt value reported by the FileSystem provider. |
-| `CorruptionReasons` | string | Default configuration | CorruptionReasons value reported by the FileSystem provider. |
-| `TagTypesOnDisk` | string | Default configuration | TagTypesOnDisk value reported by the FileSystem provider. |
-| `TagTypes` | string | Default configuration | TagTypes value reported by the FileSystem provider. |
-| `Width` | integer | Default configuration | Width value reported by the FileSystem provider. |
-| `Height` | integer | Default configuration | Height value reported by the FileSystem provider. |
-| `Resolution` | string | Default configuration | Resolution value reported by the FileSystem provider. |
-| `PhotoWidth` | integer | Default configuration | PhotoWidth value reported by the FileSystem provider. |
-| `PhotoHeight` | integer | Default configuration | PhotoHeight value reported by the FileSystem provider. |
-| `PhotoQuality` | integer | Default configuration | PhotoQuality value reported by the FileSystem provider. |
-| `VideoWidth` | integer | Default configuration | VideoWidth value reported by the FileSystem provider. |
-| `VideoHeight` | integer | Default configuration | VideoHeight value reported by the FileSystem provider. |
-| `MediaTypes` | string | Default configuration | MediaTypes value reported by the FileSystem provider. |
-| `Codecs` | string | Default configuration | Codecs value reported by the FileSystem provider. |
-| `Description` | string | Default configuration | Description value reported by the FileSystem provider. |
-| `AudioBitrate` | integer | Default configuration | AudioBitrate value reported by the FileSystem provider. |
-| `AudioSampleRate` | integer | Default configuration | AudioSampleRate value reported by the FileSystem provider. |
-| `BitsPerSample` | integer | Default configuration | BitsPerSample value reported by the FileSystem provider. |
-| `AudioChannels` | integer | Default configuration | AudioChannels value reported by the FileSystem provider. |
-| `DurationTimeSpan` | string | Default configuration | DurationTimeSpan value reported by the FileSystem provider. |
-| `Duration` | timestamp | Default configuration | Duration value reported by the FileSystem provider. |
-| `DurationInDays` | real | Default configuration | DurationInDays value reported by the FileSystem provider. |
-| `DurationInHours` | real | Default configuration | DurationInHours value reported by the FileSystem provider. |
-| `DurationInMinutes` | real | Default configuration | DurationInMinutes value reported by the FileSystem provider. |
-| `DurationInSeconds` | real | Default configuration | DurationInSeconds value reported by the FileSystem provider. |
-| `DurationInMilliseconds` | integer | Default configuration | DurationInMilliseconds value reported by the FileSystem provider. |
-| `MediaProperties` | string | Default configuration | MediaProperties value reported by the FileSystem provider. |
+| `Metadata` | string | Default configuration | Metadata value reported by the FileSystem provider. |
 | `RecordIndex` | integer | Default configuration | RecordIndex value reported by the FileSystem provider. |
 
 Fields can change with the input or selected options; configuration parameters below are not additional result columns.
+
+
+## Optional media metadata
+
+File enumeration is lazy. File paths, sizes and timestamps do not read file contents. `Metadata` is JSON and is read only when requested, then cached for that row. Supported images, audio and video supply relevant `directories`, each containing `name`, `tags` (`id`, `name`, typed `value`, `description`) and optional `errors`. Unsupported or disabled metadata returns `{}`. `IgnoreErrors` returns read failures as `Metadata.error`; disable it to stop on failures. Use `json_each` to explore tags and `json_extract` to retrieve values. Opaque binary tags expose byte length rather than their full payload.

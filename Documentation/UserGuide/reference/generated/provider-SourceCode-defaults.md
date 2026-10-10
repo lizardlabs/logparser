@@ -18,6 +18,7 @@ Factory defaults, before saved configuration or command-line overrides. Copy the
 --input.IncludeFullRecord=True
 --input.IncludeGeneratedFiles=False
 --input.IncludeSourceLines=False
+--input.IncludeSymbolUsages=False
 --input.IncludeUsingDirectives=False
 --input.IncludeXmlDocumentationTrivia=False
 --input.IncludedKinds=""
@@ -27,7 +28,12 @@ Factory defaults, before saved configuration or command-line overrides. Copy the
 --input.MaximumRowsPerFile=0
 --input.ProjectPath=""
 --input.Recurse=-1
+--input.ReferencePaths=""
 --input.SourceId=""
+--input.SymbolColumn=0
+--input.SymbolFile=""
+--input.SymbolLine=0
+--input.SymbolName=""
 --input.BinaryNonText=Replace
 --input.BinaryPreserveLineBreaks=True
 --input.BinaryReplacement="."

@@ -8,8 +8,8 @@ Factory defaults, before saved configuration or command-line overrides. Copy the
 
 ```text
 --input.Culture="current"
---input.DateFrom="2025-09-16T00:00:00.0000000+02:00"
---input.DateTo="2026-09-16T00:00:00.0000000+02:00"
+--input.DateFrom="2025-10-07T00:00:00.0000000+02:00"
+--input.DateTo="2026-10-07T00:00:00.0000000+02:00"
 --input.Extended=True
 ```
 

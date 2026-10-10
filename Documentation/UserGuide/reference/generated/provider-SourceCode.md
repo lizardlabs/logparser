@@ -41,60 +41,14 @@ FROM code_rows WHERE Name LIKE '%Parser%' ORDER BY SourcePath, StartLine;
 | `Language` | string | Default configuration | Language reader that produced the row. |
 | `SourceId` | string | Default configuration | Caller-supplied source identifier, or the source filename when omitted. |
 | `SourcePath` | string | Default configuration | Path of the parsed source document. |
-| `ProjectPath` | string | Default configuration | Optional project path copied from the provider configuration. |
 | `Kind` | string | Default configuration | Declaration, syntax, document-structure, comment, diagnostic, or source-line category. |
 | `Name` | string | Default configuration | Simple parsed name or concise label for the row. |
 | `ParentName` | string | Default configuration | Immediate parsed parent name when the reader exposes a hierarchy. |
 | `FullName` | string | Default configuration | Qualified parsed name or document hierarchy when available. |
-| `Namespace` | string | Default configuration | Declared namespace when available. |
-| `Modifiers` | string | Default configuration | Declaration modifiers as source text. |
-| `Accessibility` | string | Default configuration | Declared accessibility when available. |
-| `DataType` | string | Default configuration | Declared value/type text or a document-reader-specific structural value. |
-| `ReturnType` | string | Default configuration | Declared return type when available. |
-| `Parameters` | string | Default configuration | Parsed parameter or signature text. |
-| `Attributes` | string | Default configuration | Declared attributes or annotations when available. |
-| `Documentation` | string | Default configuration | Parsed declaration documentation or diagnostic message. |
-| `Comments` | string | Default configuration | Associated comment, code-fence content, or reader-specific descriptive text. |
 | `StartLine` | integer | Default configuration | One-based first source line covered by the row. |
 | `EndLine` | integer | Default configuration | One-based last source line covered by the row. |
 | `Column` | integer | Default configuration | One-based starting source column when available. |
-| `SymbolId` | string | Default configuration | Reader-generated structural identity within the source. |
-| `Hash` | string | Default configuration | Hash of the exact source text represented by the row. |
-| `IsStatic` | string | Default configuration | True when the declaration has static/shared syntax. |
-| `IsAsync` | string | Default configuration | True when the declaration has asynchronous syntax. |
-| `IsVirtual` | string | Default configuration | True when the declaration has virtual/overridable syntax. |
-| `IsOverride` | string | Default configuration | True when the declaration has override syntax. |
-| `IsAbstract` | string | Default configuration | True when the declaration has abstract/must-override syntax. |
-| `IsSealed` | string | Default configuration | True when the declaration has sealed/not-inheritable syntax. |
-| `IsPartial` | string | Default configuration | True when the declaration has partial syntax. |
-| `IsGeneric` | string | Default configuration | True when generic parameters are declared. |
-| `IsNullable` | string | Default configuration | True when nullable syntax is detected. |
-| `IsObsolete` | string | Default configuration | True when an obsolete/deprecated annotation is detected. |
-| `IsExtensionMethod` | string | Default configuration | True when extension-method syntax is detected. |
-| `IsConstructor` | string | Default configuration | True when the represented member is a constructor. |
-| `IsPrimaryConstructor` | string | Default configuration | True when primary-constructor syntax is detected. |
-| `IsRecord` | string | Default configuration | True when the represented declaration is a record. |
-| `IsInitOnly` | string | Default configuration | True when init-only setter syntax is detected. |
-| `IsRequired` | string | Default configuration | True when required-member syntax is detected. |
-| `HasGetter` | string | Default configuration | True when a property getter is declared. |
-| `HasSetter` | string | Default configuration | True when a property setter is declared. |
-| `HasAwait` | string | Default configuration | Pattern hint that await syntax occurs in the represented source. |
-| `HasThrow` | string | Default configuration | Pattern hint that throw syntax occurs in the represented source. |
-| `HasYield` | string | Default configuration | Pattern hint that yield syntax occurs in the represented source. |
-| `HasLinq` | string | Default configuration | Pattern hint that LINQ-style operations occur in the represented source. |
-| `HasSqlString` | string | Default configuration | Pattern hint that SQL-like text occurs in the represented source. |
-| `HasHttpCall` | string | Default configuration | Pattern hint that HTTP/network-call syntax occurs in the represented source. |
-| `HasFileAccess` | string | Default configuration | Pattern hint that filesystem-access syntax occurs in the represented source. |
-| `BaseType` | string | Default configuration | Declared base type text when available. |
-| `Interfaces` | string | Default configuration | Declared interface/base-interface list when available. |
-| `GenericArguments` | string | Default configuration | Declared generic parameter or argument text. |
-| `GenericConstraints` | string | Default configuration | Declared generic constraints. |
-| `CalledMethods` | string | Default configuration | Extracted call-name list for search and triage; targets and overloads are not resolved. |
-| `UsedTypes` | string | Default configuration | Extracted type-name clues; not a complete semantic dependency graph. |
-| `ParameterCount` | integer | Default configuration | Number of parsed parameters for the row. |
-| `AttributeCount` | integer | Default configuration | Number of parsed attributes or annotations for the row. |
-| `StatementCount` | integer | Default configuration | Reader-produced statement count or estimate for comparative analysis. |
-| `CyclomaticHint` | integer | Default configuration | Branch-oriented complexity hint for ranking; not a formal complexity measurement. |
+| `Metadata` | string | Default configuration | JSON with relevant language-specific signatures, documentation, syntax flags and metrics; symbol-usage mode adds binding and declaration locations. Serialized only when requested. |
 | `FullRecord` | string | Default configuration | Exact source lines covered by the row when IncludeFullRecord is enabled. |
 
 Fields can change with the input or selected options; configuration parameters below are not additional result columns.
@@ -102,8 +56,8 @@ Fields can change with the input or selected options; configuration parameters b
 
 ## Coding-agent workflows
 
-Use `Language`, `Kind`, `Name`, `FullName`, `ParentName`, `Namespace`, and exact `StartLine`/`EndLine` values for navigation. C# and VB.NET results include declarations and symbols. Razor, HTML, JavaScript, TypeScript, Python, Java, and Markdown results expose useful structure without running or rendering the files. Results may include declarations, imports, sections, markup, links, comments, embedded blocks, behavior hints, and recoverable diagnostics. `CalledMethods`, complexity values, and `Has*` fields are search and triage hints rather than compiler or security verdicts.
+Use `Language`, `Kind`, `Name`, `FullName`, `ParentName`, and exact `StartLine`/`EndLine`/`Column` values for navigation. Detailed language-specific information is in `Metadata` JSON: for example, `json_extract(Metadata, '$.ReturnType')`, `json_extract(Metadata, '$.CalledMethods')`, and `json_extract(Metadata, '$.CyclomaticHint')`. Flags are JSON booleans; an absent false flag reads as NULL, so use `coalesce(json_extract(Metadata, '$.HasThrow'), 0)`. These syntax and behavior values are search/triage hints. Files are never executed.
 
 The bundled Query library provides focused commands for symbols, structured metadata, exact text/context, comments, calls, imports, inheritance, documentation, diagnostics, behavior hints, public APIs, duplicate bodies, inventory, and complexity hotspots. Examples include `ulp -c.code-symbol`, `ulp -c.code-context`, `ulp -c.code-comments`, `ulp -c.code-behavior`, and `ulp -c.code-hotspots`. Override their default `.\*` source with `--from` and pass native parameters such as `--p.name Parser` or `--p.text TODO`.
 
-For exact line search, set `IncludeSourceLines:ON` and `IncludedKinds:SourceLine`, then filter `FullRecord` with `LIKE` or `Rx_Is_Match`. For declaration bodies, leave `IncludeFullRecord` enabled and query structured member rows. Syntax diagnostics are available as `Kind='Diagnostic'`; semantic compilation diagnostics are outside this provider's current scope.
+For exact line search, set `IncludeSourceLines:ON` and `IncludedKinds:SourceLine`, then filter `FullRecord` with `LIKE` or `Rx_Is_Match`. For declaration bodies, leave `IncludeFullRecord` enabled. Set `SymbolName` for bound C#/VB usages, or select one exact symbol with `SymbolFile`, `SymbolLine`, and `SymbolColumn`. This builds a source snapshot using selected files and optional `ReferencePaths`; it does not build a project. `SymbolDeclaration`/`SymbolReference` rows contain identity and binding details in Metadata. `SymbolDiagnostic` rows report compilation errors when diagnostics are enabled; missing sources/dependencies can make results incomplete. ULP locates usages; it does not edit or rename source files.

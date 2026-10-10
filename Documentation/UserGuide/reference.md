@@ -12,6 +12,7 @@ For a guided introduction, start with [Getting Started](getting-started.md). For
 - [Source Blocks](#source-blocks)
 - [Query Syntax](#query-syntax)
 - [Query Library](#query-library)
+- [Web HTTP API](#web-http-api)
 - [SQLite Connections](#sqlite-connections)
 - [Configuration](#configuration)
 - [Configuration Files](#configuration-files)
@@ -169,7 +170,7 @@ Help topics include `general`, `providers`, `writers`, `sqlite`, `query-builder`
 
 Use the same switches in an explicit `.config` file, or configure **Options → AI settings** in the menu. Saved menu settings accept key references only, not literal keys. SQL shell commands are `.ai question`, `.ai-run`, `.ai-clear`, and `.ai-config`. AI remains opt-in and never executes a proposal automatically. See [AI configuration and safety](ai.md) before enabling a provider.
 
-For external agents, `ulp --mcp` exposes `CreateSession`, `ListSessions`, `CloseSession`, and `GetRuntimeInfo`. Pass `sessionId` on each stateful tool call for independent work. These sessions isolate SQLite state, not account/file permissions. See [MCP session guidance](ai.md#independent-agent-sessions).
+For external agents, `ulp --mcp` exposes `CreateSession`, `ListSessions`, `CloseSession`, and `GetRuntimeInfo`. Initialization and the `ulp://runtime` resource advertise the exact CLI, Query library, and packaged-skill paths; `ulp://skills/{name}`, `ListAgentSkills`, and `GetAgentSkill` expose the relevant operating instructions. Pass `sessionId` on each stateful tool call for independent work. These sessions isolate SQLite state, not account/file permissions. See [MCP session guidance](ai.md#independent-agent-sessions).
 
 ## Commands
 
@@ -393,6 +394,340 @@ ulp --command errors --param minimum_level=3
 ```
 
 An explicit CLI source/output option overrides recipe metadata. Duplicate command tags and malformed metadata are reported with their file locations.
+
+## Web HTTP API
+
+ULP's browser application uses a JSON HTTP API that is also available to scripts and other applications while `ulp --web` is running. It is not a second service: API clients use the same Query library, permission policy, row limit, SQLite behavior, and per-session state as the packaged browser application.
+
+The current route prefix is `/api`. Use the [Web interface guide](user/WEB.md) for interactive startup and [Web Interface Security](security.md#web-interface-security) before exposing a listener beyond localhost.
+
+### Start an API server
+
+For a copy-ready loopback demonstration:
+
+```powershell
+$env:ULP_WEB_PASSWORD = 'replace-with-a-strong-password'
+ulp --web --web-bind localhost --web-port 8088 --web-http `
+  --web-user api-user --web-password @env:ULP_WEB_PASSWORD `
+  --web-mode full --web-max-rows 5000
+```
+
+This deliberately uses HTTP only on loopback so a first API call does not require trusting a development certificate. Do not use this form across a network. For routine automation, use HTTPS with a trusted PFX or certificate-store thumbprint:
+
+```powershell
+$env:ULP_CERT_PASSWORD = 'replace-with-the-PFX-password'
+ulp --web --web-bind 192.168.1.20 --web-port 8443 --web-https `
+  --web-certificate C:\Certificates\ulp.pfx `
+  --web-certificate-password @env:ULP_CERT_PASSWORD `
+  --web-user api-user --web-password @env:ULP_WEB_PASSWORD `
+  --web-mode query-runner --web-max-rows 5000
+```
+
+Without an explicit certificate, ULP creates a temporary self-signed certificate. Use a trusted certificate for unattended clients and all LAN/remote use; do not disable certificate validation in production automation.
+
+`--web-mode` controls the available API operations:
+
+| Mode | Saved query list/run | Query source | Ad-hoc SQL | Create/edit/delete |
+| --- | ---: | ---: | ---: | ---: |
+| `full` | Yes | Yes | Yes | Yes |
+| `query-runner` | Yes | No | No | No |
+| `read-only` | Yes | Yes | No | No |
+| `no-source` | Yes | No | No | No |
+
+The switches `--web-no-query-source`, `--web-no-adhoc`, `--web-no-edit`, `--web-no-shell`, and `--web-no-ai` can remove permissions from the selected mode. Always read `/api/server` instead of assuming that a browser button or endpoint is available.
+
+### Authentication and common headers
+
+When authentication is configured, send HTTP Basic authentication on every request. Basic authentication protects access, but HTTPS provides confidentiality.
+
+| Header | When to send | Meaning |
+| --- | --- | --- |
+| `Authorization: Basic ...` | Every request when authentication is enabled | Web username and password |
+| `Accept: application/json` | Every API request | Request a JSON response |
+| `Content-Type: application/json` | Requests with a JSON body | Describe the body |
+| `X-ULP-Request: 1` | Every non-GET API request | Required application-request check; omission returns 403 |
+| `X-ULP-Session: <id>` | Session-based requests only | Share one SQLite session; omission selects `default`; stateless routes reject this header |
+| `X-ULP-Operation: <guid>` | A query or Shell request that may be cancelled | Correlate the running request with `/api/cancel` |
+
+This PowerShell setup is reused by the examples below:
+
+```powershell
+$baseUrl = 'http://localhost:8088'
+$session = 'automation-example'
+$credentials = [Convert]::ToBase64String(
+  [Text.Encoding]::UTF8.GetBytes("api-user:$env:ULP_WEB_PASSWORD"))
+
+$headers = @{
+  Authorization   = "Basic $credentials"
+  Accept          = 'application/json'
+  'X-ULP-Session' = $session
+}
+$writeHeaders = $headers.Clone()
+$writeHeaders['X-ULP-Request'] = '1'
+```
+
+PowerShell 7 can use `-Authentication Basic -Credential` instead. Protect credentials as secrets and do not write the expanded `Authorization` value to logs.
+
+### Sessions and operations
+
+All Query-library runs, ad-hoc SQL, Shell SQL, schema discovery, and AI schema context with the same `X-ULP-Session` value share one SQLite connection. This allows one call to create a temporary or virtual table and a later call to query it. Different session IDs have independent connection-local state, and operations in one session are serialized.
+
+Session IDs are case-sensitive, may contain letters, digits, `-`, and `_`, and may be at most 80 characters. The server accepts at most 64 active sessions. Omitting the header uses the shared `default` session. Close sessions you create with `POST /api/session/close`.
+
+A session is a state boundary, not an account, authorization, or filesystem-security boundary. Every session still runs with the web-server process identity and the server's configured permissions.
+
+For cancelable endpoints, generate a GUID, send it as `X-ULP-Operation`, and retain it until the request completes. A simultaneous `POST /api/cancel` request with that GUID asks SQLite and the active operation to stop. Operation IDs may not be reused while still active.
+
+### Session-based versus stateless execution
+
+ULP provides both models. Choose explicitly rather than relying on an omitted session header:
+
+| Behavior | Session-based routes | Stateless routes |
+| --- | --- | --- |
+| Saved query | `POST /api/query/run` | `POST /api/stateless/query/run` |
+| Ad-hoc SQL | `POST /api/query/adhoc` | `POST /api/stateless/query/adhoc` |
+| SQLite connection | Reused by one session ID | New connection for every request |
+| `X-ULP-Session` | Optional; omission uses `default` | Rejected with 400 |
+| Temporary/virtual tables | Available to later calls in the same session | Available only inside that request's SQL script |
+| Initialization | Once when the session connection opens | On every request |
+| Cleanup | On session close or server shutdown | Before the request connection is disposed |
+| Best fit | Browser workspaces, multi-step analysis, AI schema context | Independent service calls, jobs, webhooks, and horizontally simple clients |
+
+Both paths apply the same authentication, permission checks, Query-library preparation, SQL preprocessing, named parameters, configured sources, lifecycle SQL, checkpoint transaction, returned-row limit, result format, logging, and cancellation. Stateless calls do not create entries in the Web session pool and do not require `/api/session/close`.
+
+Stateless means connection-local state is discarded. It does **not** roll back successful writes to a persistent database, undo file/provider side effects, or erase committed checkpoint files. A successful multi-statement request can create a temporary table and query it later in that same SQL script, but a later stateless request receives a new connection. Initialization on every call also costs more than reusing a session, especially when it creates expensive virtual tables.
+
+### Discover server capabilities
+
+```powershell
+$server = Invoke-RestMethod -Uri "$baseUrl/api/server" -Headers $headers
+$server.permissions
+```
+
+`GET /api/server` returns the server name, access mode, read-only status, HTTPS/authentication flags, maximum returned rows, permission map, advertised stateless endpoint paths, Shell availability, and Experimental AI availability/model/base URL. It never returns passwords, API keys, certificate secrets, or connection strings.
+
+### Endpoint reference
+
+Query-string `id` values are Query-library-relative IDs and must be URL-encoded. The server rejects rooted paths and traversal outside the configured library.
+
+| Method and path | Required permission | Request / result |
+| --- | --- | --- |
+| `GET /api/server` | No additional feature permission | Server capability and permission object |
+| `GET /api/queries` | View Query library | Array of query summaries; source is omitted |
+| `GET /api/query?id=<id>` | View Query library | One query summary; source is included only with source permission |
+| `POST /api/query/run?id=<id>` | Run saved queries | Parameters and optional unsaved SQL override; query result |
+| `POST /api/query/adhoc` | Run ad-hoc SQL | SQL and parameters; query result |
+| `POST /api/stateless/query/run?id=<id>` | Run saved queries | Connection-per-request saved query; same body/result as session route |
+| `POST /api/stateless/query/adhoc` | Run ad-hoc SQL | Connection-per-request SQL; same body/result as session route |
+| `POST /api/query` | Create queries | New saved-query metadata/source; 201 summary |
+| `PUT /api/query?id=<id>` | Edit queries | Updated `Source`; query summary |
+| `DELETE /api/query?id=<id>` | Delete queries | No body; 204 on success |
+| `POST /api/query/duplicate?id=<id>` | Create queries | New `Id`; 201 summary |
+| `POST /api/shell` | Execute Shell commands | Safe ULP/SQLite command; message and optional result |
+| `POST /api/ai` | Use AI and configured AI service | Conversation request; generated SQL and explanation |
+| `POST /api/cancel` | Authenticated application request | Operation ID; `cancelled` is `true` or `false` |
+| `POST /api/session/close` | Authenticated application request | Close the selected session; 204 |
+
+### List and read saved queries
+
+```powershell
+$queries = Invoke-RestMethod -Uri "$baseUrl/api/queries" -Headers $headers
+$queries | Select-Object Id, Folder, Title, Description, Provider
+
+$queryId = [Uri]::EscapeDataString('files/directory-summary')
+$query = Invoke-RestMethod -Uri "$baseUrl/api/query?id=$queryId" -Headers $headers
+```
+
+A query summary contains `Id`, `Folder`, `Category`, `Title`, `Description`, `Commands`, `Provider`, `Parameters`, and `Source`. `Source` is `null` when the server does not permit source viewing.
+
+### Run a saved query
+
+Parameter overrides must name parameters declared by that saved query. They are bound values, not SQL text substitution.
+
+```powershell
+$body = @{
+  Parameters = @{
+    extension = '.log'
+    minimum_bytes = '1024'
+  }
+} | ConvertTo-Json -Depth 5
+
+$result = Invoke-RestMethod -Method Post `
+  -Uri "$baseUrl/api/query/run?id=$queryId" `
+  -Headers $writeHeaders -ContentType 'application/json' -Body $body
+```
+
+In `full` mode, `Sql` may be included to run an unsaved edit of the selected saved query while retaining its metadata and data-source setup:
+
+```json
+{
+  "Sql": "SELECT Extension, COUNT(*) AS Files FROM files GROUP BY Extension;",
+  "Parameters": {}
+}
+```
+
+An SQL override also requires the ad-hoc-query permission. Saving the query first is not required.
+
+### Run ad-hoc SQL
+
+```powershell
+$body = @{
+  Sql = 'SELECT @message AS Message, sqlite_version() AS SQLiteVersion;'
+  Parameters = @{ message = 'Hello from the ULP API' }
+} | ConvertTo-Json -Depth 5
+
+$result = Invoke-RestMethod -Method Post `
+  -Uri "$baseUrl/api/query/adhoc" `
+  -Headers $writeHeaders -ContentType 'application/json' -Body $body
+```
+
+### Run a stateless query
+
+Do not copy `$writeHeaders` for this call because that object contains `X-ULP-Session`. Build a request header set without the session header:
+
+```powershell
+$statelessHeaders = @{
+  Authorization   = "Basic $credentials"
+  Accept          = 'application/json'
+  'X-ULP-Request' = '1'
+}
+
+$body = @{
+  Sql = 'SELECT @message AS Message, sqlite_version() AS SQLiteVersion;'
+  Parameters = @{ message = 'Independent request' }
+} | ConvertTo-Json -Depth 5
+
+$result = Invoke-RestMethod -Method Post `
+  -Uri "$baseUrl/api/stateless/query/adhoc" `
+  -Headers $statelessHeaders -ContentType 'application/json' -Body $body
+```
+
+Run a saved query through an independent connection by sending the same parameter body used by the session route:
+
+```powershell
+$body = @{ Parameters = @{ extension = '.log'; minimum_bytes = '1024' } } |
+  ConvertTo-Json -Depth 5
+
+$result = Invoke-RestMethod -Method Post `
+  -Uri "$baseUrl/api/stateless/query/run?id=$queryId" `
+  -Headers $statelessHeaders -ContentType 'application/json' -Body $body
+```
+
+The saved route still permits an unsaved `Sql` override only when the server grants ad-hoc-query permission. Add an `X-ULP-Operation` GUID when the call must be cancelable; `/api/cancel` works identically for session and stateless operations.
+
+The query result has this shape:
+
+```json
+{
+  "QueryId": "adhoc",
+  "QueryTitle": "Ad-hoc query",
+  "RowCount": 1,
+  "Truncated": false,
+  "DurationMilliseconds": 2.4,
+  "Tables": [
+    {
+      "Name": "Result 1",
+      "Columns": [
+        { "Name": "Message", "Type": "String" },
+        { "Name": "SQLiteVersion", "Type": "String" }
+      ],
+      "Rows": [["Hello from the ULP API", "3.x"]]
+    }
+  ]
+}
+```
+
+Multiple SQL result sets appear as separate entries in `Tables`. A database `NULL` is JSON `null`. `RowCount` is the number of rows returned after the web row limit, not a count of every matching source row. When `Truncated` is `true`, narrow the query or raise the deliberate `--web-max-rows` limit; a returned-row limit does not make an unbounded source scan inexpensive.
+
+### Create, edit, duplicate, and delete saved queries
+
+Create a query:
+
+```json
+POST /api/query
+{
+  "Id": "team/recent-errors",
+  "Title": "Recent errors",
+  "Description": "Bounded error report for automation.",
+  "Source": "SELECT * FROM events WHERE Level <= 2 LIMIT 100;"
+}
+```
+
+Update its SQL source:
+
+```json
+PUT /api/query?id=team%2Frecent-errors
+{
+  "Source": "SELECT TimeGenerated, SourceName, Message FROM events WHERE Level <= 2 LIMIT 50;"
+}
+```
+
+Duplicate it with `POST /api/query/duplicate?id=team%2Frecent-errors` and body `{ "Id": "team/recent-errors-copy" }`. Delete it with `DELETE /api/query?id=team%2Frecent-errors`. All non-GET calls require `X-ULP-Request: 1`; create and duplicate return 201, while successful delete returns 204.
+
+### Use the safe Shell endpoint
+
+```powershell
+$body = @{ Command = '.tables'; Parameters = @{} } | ConvertTo-Json -Depth 5
+$shell = Invoke-RestMethod -Method Post -Uri "$baseUrl/api/shell" `
+  -Headers $writeHeaders -ContentType 'application/json' -Body $body
+```
+
+The Shell accepts `.help`, `.tables`, `.schema NAME`, `.info`, `.run QUERY_ID`, `.clear`, and SQLite SQL. It does not run operating-system commands. The response contains `Message` and, for commands that produce tabular data, `Result` in the query-result shape above.
+
+### Cancel a request and close the session
+
+Cancellation is a second request made while the original operation is still running:
+
+```http
+POST /api/cancel
+X-ULP-Request: 1
+X-ULP-Session: automation-example
+Content-Type: application/json
+
+{ "OperationId": "8e51aa37-cdd0-4f6e-a6fd-411711d270d5" }
+```
+
+The original saved-query, ad-hoc, or Shell request must have carried the same GUID in `X-ULP-Operation`. A canceled operation returns HTTP 499 with a JSON error.
+
+Release connection-local state when the client finishes:
+
+```powershell
+Invoke-RestMethod -Method Post -Uri "$baseUrl/api/session/close" `
+  -Headers $writeHeaders -ContentType 'application/json' -Body '{}'
+```
+
+### Experimental AI endpoint
+
+`POST /api/ai` is **Experimental** and is available only when the server was started with AI enabled and the active policy permits it.
+
+```json
+{
+  "Message": "Write a bounded query that groups the current files by extension.",
+  "Messages": [
+    { "Role": "user", "Content": "Use only tables in the current session." }
+  ]
+}
+```
+
+The response contains `Message`, `Sql`, and `Model`. ULP supplies a bounded description of the active session's schema to the configured provider; generated SQL is returned for review and is never executed automatically. An unconfigured AI service returns 503. See [AI Features](ai.md) for privacy and provider guidance.
+
+### Errors and client rules
+
+API failures use a JSON body such as `{ "error": "The saved query was not found." }`. Common statuses are:
+
+| Status | Meaning |
+| ---: | --- |
+| 400 | Invalid JSON, missing ID, invalid parameter, session ID, or operation ID |
+| 401 | Basic authentication required or rejected |
+| 403 | Permission denied or missing `X-ULP-Request: 1` on a non-GET request |
+| 404 | Query or endpoint not found |
+| 499 | Request canceled |
+| 500 | Request failed; sanitized response, details in the ULP log |
+| 503 | Experimental AI requested but unavailable |
+
+ULP does not enable cross-origin browser access. Browser JavaScript should be served from the same ULP origin or from a same-origin trusted reverse proxy. Native applications, PowerShell, and command-line HTTP clients are not subject to browser CORS enforcement.
+
+Treat API access as direct access to the data available to the ULP server account. Use HTTPS, least-permissive web modes, bounded SQL, explicit sessions, protected secrets, and operating-system permissions on inputs, outputs, the Query library, configuration, and logs.
 
 ## SQLite Connections
 

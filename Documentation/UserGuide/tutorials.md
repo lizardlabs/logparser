@@ -27,13 +27,16 @@ From the extracted ULP folder, start the guided tour:
 ulp --tour
 ```
 
-The tour explains and previews every SQL statement before you decide whether to run it. Its chapters demonstrate:
+The tour places each explanation in a separate bordered panel, previews the exact SQL, and then lets you decide whether to run it. Its chapters demonstrate:
 
 1. querying a generated number table;
-2. listing the current directory and producing extension/size statistics as two result sets;
-3. reading several temporary text files through one wildcard and filtering warnings and errors;
-4. rendering the same rows as CSV, JSON, and TOON;
-5. reading five recent warning/error records from the local Windows System event channel, when available.
+2. surveying the current directory;
+3. filtering controlled sample files by extension and size;
+4. grouping files by extension and calculating count, total, average, and maximum size;
+5. reading several temporary text files through one wildcard and filtering warnings and errors;
+6. rendering the same rows as CSV, JSON, and TOON;
+7. reading five recent warning/error records from the local Windows System event channel, when available;
+8. grouping a bounded sample of recent System events by severity and provider.
 
 All work uses an isolated in-memory database. Directory reading is non-recursive, text fixtures are created under the operating-system temporary directory and removed afterward, the Event Log is read-only, and the tour makes no network requests.
 
@@ -47,11 +50,95 @@ List or run individual chapters:
 
 ```powershell
 ulp --tour=list
+ulp --tour=file-filter
+ulp --tour=file-stats
 ulp --tour=text
 ulp --tour=formats
+ulp --tour=events
+ulp --tour=event-stats
 ```
 
-The `events` chapter is optional. If the local System event channel is unavailable, ULP explains that skip and continues. Press Ctrl+C to cancel an active chapter. From `ulp --menu`, choose **LEARN · Product tour** for the same guided experience.
+The `events` and `event-stats` chapters are optional. If the local System event channel is unavailable, ULP explains that skip and continues. Press Ctrl+C to cancel an active chapter. From `ulp --menu`, choose **LEARN · Product tour** for the same guided experience.
+
+### Learn file filtering
+
+Run the deterministic filtering chapter:
+
+```powershell
+ulp --tour=file-filter
+```
+
+It reads the tour's temporary directory, keeps non-empty `.log` files, and sorts by the numeric `LengthInBytes` value. The important pattern is to filter and sort using raw values, then call `HUMANIZE_BYTES` only for the displayed size. The chapter deliberately excludes `ignored.tmp`, which makes the filter visible even on a machine with no sample data installed.
+
+Apply the same pattern to your current directory:
+
+```powershell
+ulp --input FileSystem --from '.\*' --table files `
+    --query "SELECT FullName, LengthInBytes, HUMANIZE_BYTES(LengthInBytes, '0.##') AS Size, LastWriteTime FROM files WHERE lower(ltrim(EXTRACT_EXTENSION(FullName), '.')) = 'log' AND LengthInBytes >= 1048576 ORDER BY LengthInBytes DESC LIMIT 50" `
+    --format TextTable
+```
+
+This example keeps `.log` files of at least 1 MiB. Remove the size condition when small files matter. Add `--input.Recurse -1` only after choosing a narrow root; a recursive drive-wide scan can be expensive. Other useful predicates include `LastWriteTime >= datetime('now', '-7 days')`, `Name LIKE 'error%'`, and `LengthInBytes = 0`.
+
+### Group and compare file statistics
+
+Run the grouped-statistics chapter:
+
+```powershell
+ulp --tour=file-stats
+```
+
+The chapter materializes its small snapshot once and groups it by extension. It calculates file count, total bytes, average bytes, and the largest file. On your own folder, a compact grouped report is:
+
+```powershell
+ulp --input FileSystem --from '.\*' --table files `
+    --query "SELECT lower(coalesce(nullif(EXTRACT_EXTENSION(FullName), ''), '(no extension)')) AS Extension, COUNT(*) AS Files, HUMANIZE_BYTES(SUM(LengthInBytes), '0.##') AS TotalSize, HUMANIZE_BYTES(AVG(LengthInBytes), '0.##') AS AverageSize, HUMANIZE_BYTES(MAX(LengthInBytes), '0.##') AS LargestFile FROM files GROUP BY lower(coalesce(nullif(EXTRACT_EXTENSION(FullName), ''), '(no extension)')) ORDER BY SUM(LengthInBytes) DESC" `
+    --format TextTable
+```
+
+Group by a path expression instead of extension to compare folders. Keep the raw `SUM(LengthInBytes)` in the `ORDER BY`; formatted text such as `900 B` and `2 MB` does not have numeric sort order. Counts and sizes reflect only the selected wildcard, recursion depth, and exclusions.
+
+### Inspect recent Windows System events
+
+Run the five-row event preview:
+
+```powershell
+ulp --tour=events
+```
+
+The provider reads newest records first and skips message formatting, XML, strings, and SID resolution. The query returns only warnings and errors and stops after five matches. This is useful for learning the columns without dumping a complete channel. Event availability and permissions vary by machine.
+
+For grouped analysis, run:
+
+```powershell
+ulp --tour=event-stats
+```
+
+That chapter first materializes at most 200 newest System events. It then produces two result sets: counts by `EventTypeName`, and the ten most common `ProviderName` values with error and warning counts. These are **sample statistics**, not totals for the complete System log. Change the sample limit deliberately when you need a wider time window, and consider a persistent checkpoint for repeated operational monitoring.
+
+The central SQL pattern is:
+
+```sql
+CREATE TEMP TABLE recent_events AS
+SELECT TimeCreated, EventTypeName, EventId, ProviderName
+FROM event_source
+LIMIT 200;
+
+SELECT EventTypeName, COUNT(*) AS Events
+FROM recent_events
+GROUP BY EventTypeName
+ORDER BY Events DESC;
+
+SELECT ProviderName,
+       COUNT(*) AS Events,
+       SUM(CASE WHEN EventTypeName = 'Error' THEN 1 ELSE 0 END) AS Errors
+FROM recent_events
+GROUP BY ProviderName
+ORDER BY Events DESC
+LIMIT 10;
+```
+
+Materializing the bounded sample prevents each grouped result from rereading the live event source. A frequent provider or event ID identifies where to investigate; it does not by itself prove root cause. Enable formatted messages only when the metadata has narrowed the records you need.
 
 ## Find the failure in an application log
 
@@ -204,6 +291,43 @@ ulp --input SourceCode --from samples/data/source-code-agent-sample.cs --table c
 ```
 
 The path and line-span fields let you return to the original file. Discover additional fields with `--list-columns code`; do not assume every language exposes the same semantic information.
+
+### Compare Python and Java through one query
+
+The supplied Python and Java fixtures deliberately describe similar code and each contains one recoverable syntax problem. Read both files into the same virtual table:
+
+```powershell
+ulp --no-config --no-env --input SourceCode `
+    --from 'samples/data/source-code-agent-sample.py,samples/data/source-code-agent-sample.java' `
+    --table code `
+    --query "WITH ulp_source_details AS (SELECT *, CASE WHEN json_extract(Metadata, '$.HasAwait') = 1 THEN 'True' ELSE 'False' END AS HasAwait, CASE WHEN json_extract(Metadata, '$.HasThrow') = 1 THEN 'True' ELSE 'False' END AS HasThrow, CASE WHEN json_extract(Metadata, '$.HasHttpCall') = 1 THEN 'True' ELSE 'False' END AS HasHttpCall, CASE WHEN json_extract(Metadata, '$.HasFileAccess') = 1 THEN 'True' ELSE 'False' END AS HasFileAccess FROM code) SELECT Language, Kind, Name, ParentName, StartLine, EndLine, HasAwait, HasThrow, HasHttpCall, HasFileAccess FROM ulp_source_details WHERE Kind IN ('Class','Interface','Function','Method') ORDER BY Language, StartLine" `
+    --format TextTable --no-pager
+```
+
+Representative rows include:
+
+| Language | Kind | Name | ParentName | Lines | Await | Throw | HTTP | File |
+| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Java | Class | `ReportService` |  | 9–22 | False | True | True | True |
+| Java | Method | `load` | `ReportService` | 12–19 | False | True | True | True |
+| Java | Interface | `Reporter` |  | 24–26 | False | False | False | False |
+| Python | Class | `ReportService` |  | 4–12 | True | True | True | True |
+| Python | Method | `load` | `ReportService` | 6–12 | True | True | True | True |
+| Python | Function | `summarize` |  | 14–16 | False | False | False | False |
+
+The shared columns make cross-language inventories and first-pass triage straightforward. They do **not** mean the readers perform compiler binding. `CalledMethods`, `UsedTypes`, and the behavior flags are searchable evidence hints; inspect `FullRecord` at the reported span before drawing a conclusion.
+
+Now find parse problems without abandoning the usable rows:
+
+```powershell
+ulp --no-config --no-env --input SourceCode `
+    --from 'samples/data/source-code-agent-sample.py,samples/data/source-code-agent-sample.java' `
+    --table code `
+    --query "WITH ulp_source_details AS (SELECT *, coalesce(json_extract(Metadata, '$.Documentation'), '') AS Documentation FROM code) SELECT Language, Name AS Code, Documentation AS Problem, SourcePath, StartLine FROM ulp_source_details WHERE Kind='Diagnostic' ORDER BY Language, StartLine" `
+    --format TextTable --no-pager
+```
+
+This reports `JAVA001` for the unclosed Java type and `PY001` for the Python declaration missing its colon. Diagnostics are rows, so the same query can become a CI condition or an agent-readable JSON result. They are parser diagnostics, not a replacement for `javac`, Python compilation, type checking, tests, or a security scanner.
 
 For repeated repository analysis, save this as `code-snapshot.sql`, adjust the source, and choose a new output database:
 
@@ -389,7 +513,7 @@ The helper refuses to overwrite an existing CSV, rejects DTDs, converts duration
 ```powershell
 ulp --no-config --no-env --input SourceCode `
     --from samples/data/source-code-agent-sample.cs --input.IncludedKinds Method `
-    --table code --query "SELECT Name, StartLine, EndLine, CyclomaticHint FROM code ORDER BY StartLine" `
+    --table code --query "WITH ulp_source_details AS (SELECT *, coalesce(json_extract(Metadata, '$.CyclomaticHint'), 0) AS CyclomaticHint FROM code) SELECT Name, StartLine, EndLine, CyclomaticHint FROM ulp_source_details ORDER BY StartLine" `
     --format TextTable
 ```
 

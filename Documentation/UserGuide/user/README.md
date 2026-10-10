@@ -40,7 +40,7 @@ This compatibility index is produced by `ulp --docs`. The chapter-based manual i
 - [Dates - Generated date series for calendar joins, ranges, and test data](../reference/generated/provider-Dates.md)
 - [CustomPlugin - Records produced by a custom .NET source-code plugin](../reference/generated/provider-CustomPlugin.md)
 - [EVTXP - Classic Windows Event Log reader using the Win32 API](../reference/generated/provider-EVTXP.md)
-- [SourceCode - C#, VB.NET, Razor, HTML, JavaScript, TypeScript, and Markdown files parsed into searchable symbols, document structure, comments, diagnostics, and exact source spans](../reference/generated/provider-SourceCode.md)
+- [SourceCode - C#, VB.NET, Razor, HTML, JavaScript, TypeScript, Python, Java, and Markdown files parsed into searchable symbols, document structure, comments, diagnostics, and exact source spans](../reference/generated/provider-SourceCode.md)
 - [Excel - Excel workbooks and worksheets without Office or database drivers](../reference/generated/provider-Excel.md)
 - [ADS - Active Directory objects and properties with Microsoft Log Parser 2.2-compatible modes](../reference/generated/provider-ADS.md)
 - [Processes - Point-in-time local process metrics including memory, CPU, handles, threads, and executable details](../reference/generated/provider-Processes.md)

@@ -480,6 +480,28 @@ ulp -i SourceCode --from '.\samples\data\source-code-*' --table code `
     --query "SELECT FileName, Kind, Name, StartLine, EndLine FROM code ORDER BY FileName, StartLine"
 ```
 
+Use the language-independent behavior columns to narrow a review before opening source files:
+
+```powershell
+ulp --no-config --no-env -i SourceCode `
+    --from '.\samples\data\source-code-agent-sample.py,.\samples\data\source-code-agent-sample.java' `
+    --table code `
+    --query "WITH ulp_source_details AS (SELECT *, CASE WHEN json_extract(Metadata, '$.HasHttpCall') = 1 THEN 'True' ELSE 'False' END AS HasHttpCall, CASE WHEN json_extract(Metadata, '$.HasFileAccess') = 1 THEN 'True' ELSE 'False' END AS HasFileAccess FROM code) SELECT Language, Kind, Name, ParentName, SourcePath, StartLine, EndLine FROM ulp_source_details WHERE (HasHttpCall='True' OR HasFileAccess='True') AND Kind IN ('Class','Function','Method') ORDER BY Language, StartLine" `
+    --format JSON --no-pager
+```
+
+List recoverable structural problems separately:
+
+```powershell
+ulp --no-config --no-env -i SourceCode `
+    --from '.\samples\data\source-code-agent-sample.py,.\samples\data\source-code-agent-sample.java' `
+    --table code `
+    --query "WITH ulp_source_details AS (SELECT *, coalesce(json_extract(Metadata, '$.Documentation'), '') AS Documentation FROM code) SELECT Language, Name AS Code, Documentation AS Problem, SourcePath, StartLine FROM ulp_source_details WHERE Kind='Diagnostic' ORDER BY Language, StartLine" `
+    --format TextTable --no-pager
+```
+
+The fixtures yield `PY001` and `JAVA001` while preserving the valid declarations around them. Treat these as lightweight parser diagnostics and the behavior flags as investigation hints, then verify the exact `FullRecord` span and use the language's compiler, type checker, tests, and security tools for authoritative results.
+
 Installed code recipes include `code-inventory.sql`, `complexity-hotspots.sql`, `find-symbol.sql`, `find-calls.sql`, and `find-text.sql` under `queries/Code`.
 
 ### Scriban generation

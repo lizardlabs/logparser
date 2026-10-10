@@ -7,6 +7,11 @@
       "reference": "provider-EVT.md"
     },
     {
+      "name": "REG",
+      "description": "Read-only Windows Registry values from local or remote hives and keys",
+      "reference": "provider-REG.md"
+    },
+    {
       "name": "EVTXECMD",
       "description": "Forensic Windows .evtx parsing with EvtxECmd-compatible fields",
       "reference": "provider-EVTXECMD.md"
